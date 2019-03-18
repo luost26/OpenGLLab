@@ -49,6 +49,18 @@ namespace wglfw {
             glfwSetFramebufferSizeCallback(_window, cbfun);
         }
         
+        bool shouldClose() {
+            return glfwWindowShouldClose(_window);
+        }
+        
+        void setShouldClose(bool close) {
+            glfwSetWindowShouldClose(_window, close);
+        }
+        
+        int getKey(int key) {
+            return glfwGetKey(_window, key);
+        }
+        
     };
     
     

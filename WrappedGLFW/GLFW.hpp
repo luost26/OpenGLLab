@@ -80,6 +80,21 @@ namespace wglfw {
         static void makeContextCurrent(Window * window) {
             glfwMakeContextCurrent(window->glfwWindow());
         }
+      
+        static void swapBuffers(Window * window) {
+            glfwSwapBuffers(window->glfwWindow());
+        }
+        
+        static void pollEvents() {
+            glfwPollEvents();
+        }
+        
+        static void loadOpenGLUsingGLAD() {
+            if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+            {
+                throw Exception();
+            }
+        }
         
     };
     
