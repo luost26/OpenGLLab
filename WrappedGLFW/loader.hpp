@@ -10,4 +10,6 @@
 #include "GLFW.hpp"
 #include "Window.hpp"
 
+#include "Shader.hpp"
+
 #endif /* loader_hpp */

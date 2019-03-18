@@ -23,8 +23,7 @@ namespace wglfw {
     };
     
     class WindowCreationException : Exception {
-        const char * what () const throw ()
-        {
+        const char * what () const throw () {
             return "Failed to create GLFW window";
         }
     };
