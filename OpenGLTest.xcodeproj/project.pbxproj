@@ -313,7 +313,7 @@
 				HEADER_SEARCH_PATHS = (
 					/usr/local/include/,
 					./glad/include,
-					./glm,
+					./include,
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -331,7 +331,7 @@
 				HEADER_SEARCH_PATHS = (
 					/usr/local/include/,
 					./glad/include,
-					./glm,
+					./include,
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
