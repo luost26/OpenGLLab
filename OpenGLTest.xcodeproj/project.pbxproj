@@ -35,6 +35,7 @@
 		8912EF4E223FE1EA0040AE27 /* Exception.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Exception.hpp; sourceTree = "<group>"; };
 		8912EF50223FE5800040AE27 /* GLFW.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = GLFW.hpp; sourceTree = "<group>"; };
 		8912EF53223FF44C0040AE27 /* Shader.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Shader.hpp; sourceTree = "<group>"; };
+		8912EF54223FFA950040AE27 /* Program.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Program.hpp; sourceTree = "<group>"; };
 		893BEB82223FB1D100C92EA1 /* OpenGLTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = OpenGLTest; sourceTree = BUILT_PRODUCTS_DIR; };
 		893BEB85223FB1D100C92EA1 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		893BEB8D223FB28200C92EA1 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
@@ -117,6 +118,7 @@
 				8912EF4E223FE1EA0040AE27 /* Exception.hpp */,
 				8912EF4C223FDE200040AE27 /* Window.hpp */,
 				8912EF53223FF44C0040AE27 /* Shader.hpp */,
+				8912EF54223FFA950040AE27 /* Program.hpp */,
 				8912EF4A223FD1ED0040AE27 /* support.hpp */,
 				8912EF49223FD0A80040AE27 /* loader.hpp */,
 			);

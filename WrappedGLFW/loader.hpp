@@ -9,7 +9,7 @@
 
 #include "GLFW.hpp"
 #include "Window.hpp"
-
 #include "Shader.hpp"
+#include "Program.hpp"
 
 #endif /* loader_hpp */

@@ -90,6 +90,10 @@ namespace wglfw {
                 throw ShaderCompilationException(_shader);
             }
         }
+        
+        ~Shader() {
+            glDeleteShader(_shader);
+        }
     };
     
     class VertexShader : public Shader {
