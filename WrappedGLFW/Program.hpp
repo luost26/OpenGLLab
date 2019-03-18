@@ -7,6 +7,7 @@
 #ifndef Program_hpp
 #define Program_hpp
 
+#include "support.hpp"
 #include "Shader.hpp"
 
 namespace wglfw {

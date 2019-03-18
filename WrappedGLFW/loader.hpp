@@ -9,7 +9,10 @@
 
 #include "GLFW.hpp"
 #include "Window.hpp"
+#include "GL.hpp"
 #include "Shader.hpp"
 #include "Program.hpp"
+#include "VertexArray.hpp"
+#include "ArrayBuffer.hpp"
 
 #endif /* loader_hpp */
