@@ -1,8 +1,11 @@
 #include "../WrappedGLFW/loader.hpp"
 #include <glm/vec4.hpp>
+#include <glm/vec3.hpp>
+
 #include <iostream>
 
 using namespace wglfw;
+using namespace glm;
 
 void processInput(Window *window)
 {
@@ -50,31 +53,18 @@ int main()
 
     GLFW::loadOpenGLUsingGLAD();
     
-    
-    VertexShader * vShader = new VertexShader();
-    vShader->source(ShaderSource::fromCString(vertexShaderSource));
-    vShader->compile();
-    
-    FragmentShader * fShader = new FragmentShader();
-    fShader->source(ShaderSource::fromCString(fragmentShaderSource));
-    fShader->compile();
-    
     Program * prog = new Program();
-    prog->attach(vShader)
-            ->attach(fShader)
-            ->link();
+    prog->attach(VertexShader::make()->source(ShaderSource::fromCString(vertexShaderSource))->compile())
+        ->attach(FragmentShader::make()->source(ShaderSource::fromCString(fragmentShaderSource))->compile())
+        ->link();
     
-    delete vShader;
-    delete fShader;
-    
-    // set up vertex data (and buffer(s)) and configure vertex attributes
-    // ------------------------------------------------------------------
-    float vertices[] = {
-        0.5f,  0.5f, 0.0f,  // top right
-        0.5f, -0.5f, 0.0f,  // bottom right
-        -0.5f, -0.5f, 0.0f,  // bottom left
-        -0.5f,  0.5f, 0.0f   // top left
+    vec3 vertices[] = {
+        vec3(0.5, 0.5, 0.0),
+        vec3(0.5, -0.5, 0.0),
+        vec3(-0.5, -0.5, 0.0),
+        vec3(-0.5, 0.5, 0.0)
     };
+    
     unsigned int indices[] = {  // note that we start from 0!
         0, 1, 3,  // first Triangle
         1, 2, 3   // second Triangle
@@ -86,11 +76,9 @@ int main()
     ArrayBuffer * VB = new ArrayBuffer();
     ElementArrayBuffer * EB = new ElementArrayBuffer();
 
-    VB->bind();
-    VB->load(sizeof(vertices), vertices, GL_STATIC_DRAW);
+    VB->bind()->load(sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-    EB->bind();
-    EB->load(sizeof(indices), indices, GL_STATIC_DRAW);
+    EB->bind()->load(sizeof(indices), indices, GL_STATIC_DRAW);
 
     VB->getVertexAttributePointer(VertexAttributePointerConfiguration::make()
                                   ->index(0)

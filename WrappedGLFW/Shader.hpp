@@ -77,18 +77,20 @@ namespace wglfw {
             return _shader;
         }
         
-        void source(ShaderSource * source) {
+        Shader * source(ShaderSource * source) {
             char * src = source->source();
             glShaderSource(_shader, 1, &src, NULL);
+            return this;
         }
         
-        void compile() {
+        Shader * compile() {
             glCompileShader(_shader);
             int success;
             glGetShaderiv(_shader, GL_COMPILE_STATUS, &success);
             if (!success) {
                 throw ShaderCompilationException(_shader);
             }
+            return this;
         }
         
         ~Shader() {
@@ -98,11 +100,19 @@ namespace wglfw {
     
     class VertexShader : public Shader {
     public:
+        static VertexShader * make() {
+            return new VertexShader();
+        }
+        
         VertexShader(): Shader(GL_VERTEX_SHADER) {}
     };
     
     class FragmentShader : public Shader {
     public:
+        static FragmentShader * make() {
+            return new FragmentShader();
+        }
+        
         FragmentShader(): Shader(GL_FRAGMENT_SHADER) {}
     };
 }

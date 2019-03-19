@@ -42,12 +42,18 @@ namespace wglfw {
             return _buffer;
         }
         
-        virtual void bind() {}
-        virtual void unbind() {}
+        virtual Buffer * bind() {
+            return this;
+        }
+        virtual Buffer * unbind() {
+            return this;
+        }
         virtual bool isBound() {
             return false;
         }
-        virtual void load(GLsizeiptr size, const GLvoid * data, GLenum usage) {}
+        virtual Buffer * load(GLsizeiptr size, const GLvoid * data, GLenum usage) {
+            return this;
+        }
         
         virtual ~Buffer() {
             glDeleteBuffers(1, &_buffer);
@@ -122,21 +128,24 @@ namespace wglfw {
             return bound == _buffer;
         }
         
-        void bind() {
+        ArrayBuffer * bind() {
             glBindBuffer(GL_ARRAY_BUFFER, _buffer);
+            return this;
         }
         
-        void unbind() {
+        ArrayBuffer * unbind() {
             if (isBound()) {
                 glBindBuffer(GL_ARRAY_BUFFER, 0);
             }
+            return this;
         }
         
-        void load(GLsizeiptr size, const GLvoid * data, GLenum usage) {
+        ArrayBuffer * load(GLsizeiptr size, const GLvoid * data, GLenum usage) {
             if (!isBound()) {
                 throw BufferNotBoundException();
             }
             glBufferData(GL_ARRAY_BUFFER, size, data, usage);
+            return this;
         }
         
         VertexAttributePointer * getVertexAttributePointer(VertexAttributePointerConfiguration * config) {
@@ -159,21 +168,24 @@ namespace wglfw {
             return bound == _buffer;
         }
         
-        void bind() {
+        ElementArrayBuffer * bind() {
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _buffer);
+            return this;
         }
         
-        void unbind() {
+        ElementArrayBuffer * unbind() {
             if (isBound()) {
                 glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
             }
+            return this;
         }
         
-        void load(GLsizeiptr size, const GLvoid * data, GLenum usage) {
+        ElementArrayBuffer * load(GLsizeiptr size, const GLvoid * data, GLenum usage) {
             if (!isBound()) {
                 throw BufferNotBoundException();
             }
             glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, data, usage);
+            return this;
         }
     };
     

@@ -47,7 +47,7 @@ namespace wglfw {
         void setFramebufferSizeCallback(GLFWframebuffersizefun cbfun) {
             glfwSetFramebufferSizeCallback(_window, cbfun);
         }
-        
+                
         bool shouldClose() {
             return glfwWindowShouldClose(_window);
         }

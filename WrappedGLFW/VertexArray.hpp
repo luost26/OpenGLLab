@@ -45,14 +45,16 @@ namespace wglfw {
             return bound == _VAO;
         }
         
-        void bind() {
+        VertexArray * bind() {
             glBindVertexArray(_VAO);
+            return this;
         }
         
-        void unbind() {
+        VertexArray * unbind() {
             if (isBound()) {
                 glBindVertexArray(0);
             }
+            return this;
         }
         
         unsigned int VAO() {
