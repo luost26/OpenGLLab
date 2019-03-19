@@ -39,6 +39,8 @@
 		8912EF55223FFD840040AE27 /* GL.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = GL.hpp; sourceTree = "<group>"; };
 		8912EF562240048F0040AE27 /* VertexArray.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = VertexArray.hpp; sourceTree = "<group>"; };
 		8912EF57224009C70040AE27 /* ArrayBuffer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ArrayBuffer.hpp; sourceTree = "<group>"; };
+		8912EF582240809C0040AE27 /* simple.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = simple.frag; sourceTree = "<group>"; };
+		8912EF5A224086BE0040AE27 /* Triangle.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Triangle.hpp; sourceTree = "<group>"; };
 		893BEB82223FB1D100C92EA1 /* OpenGLTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = OpenGLTest; sourceTree = BUILT_PRODUCTS_DIR; };
 		893BEB85223FB1D100C92EA1 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		893BEB8D223FB28200C92EA1 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
@@ -66,6 +68,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8912EF592240869F0040AE27 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				8912EF5A224086BE0040AE27 /* Triangle.hpp */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
 		893BEB79223FB1D100C92EA1 = {
 			isa = PBXGroup;
 			children = (
@@ -110,6 +120,7 @@
 			isa = PBXGroup;
 			children = (
 				893BEB9A223FB64200C92EA1 /* simple.vert */,
+				8912EF582240809C0040AE27 /* simple.frag */,
 			);
 			path = Shaders;
 			sourceTree = "<group>";
@@ -117,6 +128,7 @@
 		893BEB9B223FC19A00C92EA1 /* WrappedGLFW */ = {
 			isa = PBXGroup;
 			children = (
+				8912EF592240869F0040AE27 /* Utilities */,
 				8912EF50223FE5800040AE27 /* GLFW.hpp */,
 				8912EF4E223FE1EA0040AE27 /* Exception.hpp */,
 				8912EF4C223FDE200040AE27 /* Window.hpp */,

@@ -15,4 +15,6 @@
 #include "VertexArray.hpp"
 #include "ArrayBuffer.hpp"
 
+#include "Utilities/Triangle.hpp"
+
 #endif /* loader_hpp */

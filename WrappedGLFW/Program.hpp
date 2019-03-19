@@ -9,6 +9,10 @@
 
 #include "support.hpp"
 #include "Shader.hpp"
+#include <string>
+
+#include <glm/vec3.hpp>
+#include <glm/vec4.hpp>
 
 namespace wglfw {
     
@@ -49,6 +53,23 @@ namespace wglfw {
                 throw ProgramLinkException(_program);
             }
         }
+        
+        int getUniformLocation(const std::string & name) {
+            return glGetUniformLocation(_program, name.c_str());
+        }
+        
+        void setFloat(const std::string & name, float value) {
+            glUniform1f(getUniformLocation(name), value);
+        }
+        
+        void setVec4(const std::string & name, glm::vec4 value) {
+            glUniform4f(getUniformLocation(name), value.x, value.y, value.z, value.w);
+        }
+        
+        void setVec3(const std::string & name, glm::vec3 value) {
+            glUniform3f(getUniformLocation(name), value.x, value.y, value.z);
+        }
+        
     };
     
 }

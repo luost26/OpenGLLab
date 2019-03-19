@@ -3,14 +3,17 @@
 #include <glm/vec3.hpp>
 
 #include <iostream>
+#include <cmath>
+#include <cstdlib>
 
 using namespace wglfw;
 using namespace glm;
 
 void processInput(Window *window)
 {
-    if (glfwGetKey(window->glfwWindow(), GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        glfwSetWindowShouldClose(window->glfwWindow(), true);
+    if (window->getKey(GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+        window->setShouldClose(true);
+    }
 }
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
@@ -22,18 +25,8 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
-const char *vertexShaderSource = "#version 330 core\n"
-"layout (location = 0) in vec3 aPos;\n"
-"void main()\n"
-"{\n"
-"   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-"}\0";
-const char *fragmentShaderSource = "#version 330 core\n"
-"out vec4 FragColor;\n"
-"void main()\n"
-"{\n"
-"   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
-"}\n\0";
+const char *vShaderPath = "/Users/tommyluo/workspace/Project/OpenGLTest/Shaders/simple.vert";
+const char *fShaderPath = "/Users/tommyluo/workspace/Project/OpenGLTest/Shaders/simple.frag";
 
 int main()
 {
@@ -54,15 +47,30 @@ int main()
     GLFW::loadOpenGLUsingGLAD();
     
     Program * prog = new Program();
-    prog->attach(VertexShader::make()->source(ShaderSource::fromCString(vertexShaderSource))->compile())
-        ->attach(FragmentShader::make()->source(ShaderSource::fromCString(fragmentShaderSource))->compile())
-        ->link();
     
-    vec3 vertices[] = {
-        vec3(0.5, 0.5, 0.0),
-        vec3(0.5, -0.5, 0.0),
-        vec3(-0.5, -0.5, 0.0),
-        vec3(-0.5, 0.5, 0.0)
+    try {
+        prog->attach(VertexShader::make()->source(ShaderSource::fromFile(vShaderPath))->compile())
+            ->attach(FragmentShader::make()->source(ShaderSource::fromFile(fShaderPath))->compile())
+            ->link();
+    } catch (ShaderCompilationException e) {
+        std::cerr << e.what() << std::endl;
+        return -1;
+    } catch (ProgramLinkException e) {
+        std::cerr << e.what() << std::endl;
+        return -1;
+    }
+    
+    struct ColoredVertex {
+        vec3 pos, rgb;
+        ColoredVertex(vec3 p, vec3 c): pos(p), rgb(c) {};
+        ColoredVertex() {};
+    };
+    
+    ColoredVertex vertices[] = {
+        ColoredVertex(vec3(0.5, 0.5, 0), vec3(1.0, 0, 0)),
+        ColoredVertex(vec3(0.5, -0.5, 0), vec3(0, 1.0, 0)),
+        ColoredVertex(vec3(-0.5, -0.5, 0), vec3(0, 0, 1.0)),
+        ColoredVertex(vec3(-0.5, 0.5, 0), vec3(1.0, 0, 1.0))
     };
     
     unsigned int indices[] = {  // note that we start from 0!
@@ -85,15 +93,23 @@ int main()
                                   ->size(3)
                                   ->type(GL_FLOAT)
                                   ->normalized(GL_FALSE)
-                                  ->stride(3*sizeof(float))
-                                  ->pointer((void *)0)
+                                  ->stride(sizeof(ColoredVertex))
+                                  ->pointer(0)
                                 )->enable();
+    VB->getVertexAttributePointer(VertexAttributePointerConfiguration::make()
+                                  ->index(1)
+                                  ->size(3)
+                                  ->type(GL_FLOAT)
+                                  ->normalized(GL_FALSE)
+                                  ->stride(sizeof(ColoredVertex))
+                                  ->pointer((void*)sizeof(glm::vec3))
+                                  )->enable();
     
     VB->unbind();
     VA->unbind();
     
     // uncomment this call to draw in wireframe polygons.
-    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+//    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     while (!window->shouldClose())
     {
@@ -102,6 +118,8 @@ int main()
         GL::clear(new ColorCleaner(glm::vec4(0.2f, 0.3f, 0.3f, 1.0f)));
         
         GL::useProgram(prog);
+        
+//        prog->setVec4("ourColor", glm::vec4(sin((double)rand()), cos((double)rand()), sin((double)rand()), sin((double)rand())) );
 
         VA->bind();
         
