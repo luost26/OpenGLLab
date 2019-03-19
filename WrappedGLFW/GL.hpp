@@ -15,7 +15,7 @@ namespace wglfw {
     
     class Cleaner {
     public:
-        virtual void clean();
+        virtual void clean() {}
     };
     
     class ColorCleaner : public Cleaner {
@@ -39,6 +39,16 @@ namespace wglfw {
             cleaner->clean();
         }
         
+        static void setViewport(GLint x, GLint y, GLsizei width, GLsizei height) {
+            glViewport(x, y, width, height);
+        }
+        
+        static void drawElements(GLenum mode,
+                                 GLsizei count,
+                                 GLenum type,
+                                 const GLvoid * indices) {
+            glDrawElements(mode, count, type, indices);
+        }
     };
     
 }
