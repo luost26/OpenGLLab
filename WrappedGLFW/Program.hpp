@@ -9,7 +9,6 @@
 
 #include "support.hpp"
 #include "Shader.hpp"
-#include <string>
 
 #include <glm/vec3.hpp>
 #include <glm/vec4.hpp>
@@ -54,19 +53,33 @@ namespace wglfw {
             }
         }
         
-        int getUniformLocation(const std::string & name) {
-            return glGetUniformLocation(_program, name.c_str());
+        void use() {
+            glUseProgram(_program);
         }
         
-        void setFloat(const std::string & name, float value) {
+        bool isUsing() {
+            int p;
+            glGetIntegerv(GL_CURRENT_PROGRAM, &p);
+            return p == _program;
+        }
+        
+        int getUniformLocation(const char * name) {
+            return glGetUniformLocation(_program, name);
+        }
+        
+        void setFloat(const char * name, float value) {
             glUniform1f(getUniformLocation(name), value);
         }
         
-        void setVec4(const std::string & name, glm::vec4 value) {
+        void setInt(const char * name, int value) {
+            glUniform1i(getUniformLocation(name), value);
+        }
+        
+        void setVec4(const char * name, glm::vec4 value) {
             glUniform4f(getUniformLocation(name), value.x, value.y, value.z, value.w);
         }
         
-        void setVec3(const std::string & name, glm::vec3 value) {
+        void setVec3(const char * name, glm::vec3 value) {
             glUniform3f(getUniformLocation(name), value.x, value.y, value.z);
         }
         

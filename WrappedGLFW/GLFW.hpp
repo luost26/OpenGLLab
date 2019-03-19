@@ -96,6 +96,10 @@ namespace wglfw {
             }
         }
         
+        static float getTime() {
+            return glfwGetTime();
+        }
+        
     };
     
     GLFW * GLFW::_instance = NULL;

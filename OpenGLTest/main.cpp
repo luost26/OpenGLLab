@@ -1,6 +1,8 @@
 #include "../WrappedGLFW/loader.hpp"
-#include <glm/vec4.hpp>
+
+#include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
+#include <glm/vec4.hpp>
 
 #include <iostream>
 #include <cmath>
@@ -60,17 +62,18 @@ int main()
         return -1;
     }
     
-    struct ColoredVertex {
+    struct ColoredTexturedVertex {
         vec3 pos, rgb;
-        ColoredVertex(vec3 p, vec3 c): pos(p), rgb(c) {};
-        ColoredVertex() {};
+        vec2 tc;
+        ColoredTexturedVertex(vec3 p, vec3 c, vec2 t): pos(p), rgb(c), tc(t) {};
+        ColoredTexturedVertex() {};
     };
     
-    ColoredVertex vertices[] = {
-        ColoredVertex(vec3(0.5, 0.5, 0), vec3(1.0, 0, 0)),
-        ColoredVertex(vec3(0.5, -0.5, 0), vec3(0, 1.0, 0)),
-        ColoredVertex(vec3(-0.5, -0.5, 0), vec3(0, 0, 1.0)),
-        ColoredVertex(vec3(-0.5, 0.5, 0), vec3(1.0, 0, 1.0))
+    ColoredTexturedVertex vertices[] = {
+        ColoredTexturedVertex(vec3(0.8, 0.8, 0), vec3(1.0, 0, 0), vec2(1.0,1.0)),
+        ColoredTexturedVertex(vec3(0.8, -0.8, 0), vec3(0, 1.0, 0), vec2(1.0,0)),
+        ColoredTexturedVertex(vec3(-0.8, -0.8, 0), vec3(0, 0, 1.0), vec2(0,0)),
+        ColoredTexturedVertex(vec3(-0.8, 0.8, 0), vec3(1.0, 0, 1.0), vec2(0,1.0))
     };
     
     unsigned int indices[] = {  // note that we start from 0!
@@ -93,7 +96,7 @@ int main()
                                   ->size(3)
                                   ->type(GL_FLOAT)
                                   ->normalized(GL_FALSE)
-                                  ->stride(sizeof(ColoredVertex))
+                                  ->stride(sizeof(ColoredTexturedVertex))
                                   ->pointer(0)
                                 )->enable();
     VB->getVertexAttributePointer(VertexAttributePointerConfiguration::make()
@@ -101,12 +104,29 @@ int main()
                                   ->size(3)
                                   ->type(GL_FLOAT)
                                   ->normalized(GL_FALSE)
-                                  ->stride(sizeof(ColoredVertex))
+                                  ->stride(sizeof(ColoredTexturedVertex))
                                   ->pointer((void*)sizeof(glm::vec3))
                                   )->enable();
+    VB->getVertexAttributePointer(VertexAttributePointerConfiguration::make()
+                                  ->index(2)
+                                  ->size(2)
+                                  ->type(GL_FLOAT)
+                                  ->normalized(GL_FALSE)
+                                  ->stride(sizeof(ColoredTexturedVertex))
+                                  ->pointer((void*)(2*sizeof(glm::vec3)))
+                                  )->enable();
+    
+    Texture2D * texture = new Texture2D();
+    TextureImage * timg = TextureImage::fromPath("/Users/tommyluo/workspace/Project/OpenGLTest/Textures/wall.jpg");
+    texture->bind()->wrapS(GL_REPEAT)->wrapT(GL_REPEAT)
+            ->minFilter(GL_LINEAR)->magFilter(GL_LINEAR)
+            ->loadImage(timg)->generateMipmap();
+    delete timg;
     
     VB->unbind();
     VA->unbind();
+    
+    prog->setInt("texture0", GL_TEXTURE0);
     
     // uncomment this call to draw in wireframe polygons.
 //    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -117,10 +137,12 @@ int main()
         
         GL::clear(new ColorCleaner(glm::vec4(0.2f, 0.3f, 0.3f, 1.0f)));
         
-        GL::useProgram(prog);
+        texture->bindToTextureUnit(GL_TEXTURE0);
         
-//        prog->setVec4("ourColor", glm::vec4(sin((double)rand()), cos((double)rand()), sin((double)rand()), sin((double)rand())) );
-
+        prog->use();
+        
+        prog->setFloat("alpha", sin(GLFW::getTime())/2.0f + 0.5f );
+        
         VA->bind();
         
         GL::drawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);

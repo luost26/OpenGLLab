@@ -7,6 +7,8 @@
 #ifndef Exception_hpp
 #define Exception_hpp
 
+#include <exception>
+
 namespace wglfw {
     struct Exception : public std::exception
     {

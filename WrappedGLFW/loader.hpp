@@ -14,6 +14,7 @@
 #include "Program.hpp"
 #include "VertexArray.hpp"
 #include "ArrayBuffer.hpp"
+#include "Texture.hpp"
 
 #include "Utilities/Triangle.hpp"
 
