@@ -64,58 +64,71 @@ int main()
         return -1;
     }
     
-    struct ColoredTexturedVertex {
-        vec3 pos, rgb;
-        vec2 tc;
-        ColoredTexturedVertex(vec3 p, vec3 c, vec2 t): pos(p), rgb(c), tc(t) {};
-        ColoredTexturedVertex() {};
-    };
-    
-    ColoredTexturedVertex vertices[] = {
-        ColoredTexturedVertex(vec3(0.8, 0.8, 0), vec3(1.0, 0, 0), vec2(1.0,1.0)),
-        ColoredTexturedVertex(vec3(0.8, -0.8, 0), vec3(0, 1.0, 0), vec2(1.0,0)),
-        ColoredTexturedVertex(vec3(-0.8, -0.8, 0), vec3(0, 0, 1.0), vec2(0,0)),
-        ColoredTexturedVertex(vec3(-0.8, 0.8, 0), vec3(1.0, 0, 1.0), vec2(0,1.0))
-    };
-    
-    unsigned int indices[] = {  // note that we start from 0!
-        0, 1, 3,  // first Triangle
-        1, 2, 3   // second Triangle
+    float vertices[] = {
+        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+        0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
+        0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+        0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+        
+        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+        0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+        0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+        0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+        -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+        
+        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+        -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+        
+        0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+        0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+        0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+        0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+        0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+        0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+        
+        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+        0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
+        0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+        0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+        
+        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+        0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+        0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+        0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+        -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
+        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
     };
     
     VertexArray * VA = new VertexArray();
     VA->bind();
     
     ArrayBuffer * VB = new ArrayBuffer();
-    ElementArrayBuffer * EB = new ElementArrayBuffer();
-
     VB->bind()->load(sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    EB->bind()->load(sizeof(indices), indices, GL_STATIC_DRAW);
 
     VB->getVertexAttributePointer(VertexAttributePointerConfiguration::make()
                                   ->index(0)
                                   ->size(3)
                                   ->type(GL_FLOAT)
                                   ->normalized(GL_FALSE)
-                                  ->stride(sizeof(ColoredTexturedVertex))
+                                  ->stride(5*sizeof(float))
                                   ->pointer(0)
                                 )->enable();
-    VB->getVertexAttributePointer(VertexAttributePointerConfiguration::make()
-                                  ->index(1)
-                                  ->size(3)
-                                  ->type(GL_FLOAT)
-                                  ->normalized(GL_FALSE)
-                                  ->stride(sizeof(ColoredTexturedVertex))
-                                  ->pointer((void*)sizeof(glm::vec3))
-                                  )->enable();
     VB->getVertexAttributePointer(VertexAttributePointerConfiguration::make()
                                   ->index(2)
                                   ->size(2)
                                   ->type(GL_FLOAT)
                                   ->normalized(GL_FALSE)
-                                  ->stride(sizeof(ColoredTexturedVertex))
-                                  ->pointer((void*)(2*sizeof(glm::vec3)))
+                                  ->stride(5*sizeof(float))
+                                  ->pointer((void*)(3*sizeof(float)))
                                   )->enable();
     
     Texture2D * texture = new Texture2D();
@@ -135,11 +148,14 @@ int main()
 
     glm::mat4 trans(1.0f);
     
+    CleanerCollection * cleaner = new CleanerCollection;
+    cleaner->add(new ColorBufferCleaner(glm::vec4(0.2f, 0.3f, 0.3f, 1.0f)))->add(new DepthBufferCleaner);
+    
     while (!window->shouldClose())
     {
         processInput(window);
         
-        GL::clear(new ColorCleaner(glm::vec4(0.2f, 0.3f, 0.3f, 1.0f)));
+        GL::clear(cleaner);
         
         texture->bindToTextureUnit(GL_TEXTURE0);
         
@@ -163,6 +179,9 @@ int main()
         VA->bind();
         
         GL::drawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        GL::drawArrays(GL_TRIANGLES, 0, 36);
+        
+        GL::enableDepthTest();
         
         GLFW::swapBuffers(window);
         GLFW::pollEvents();
@@ -170,7 +189,6 @@ int main()
     
     delete VA;
     delete VB;
-    delete EB;
     
     GLFW::terminate();
     return 0;
