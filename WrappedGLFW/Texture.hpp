@@ -15,6 +15,13 @@
 
 namespace wglfw {
     
+    class TextureNotBoundException : Exception {
+        const char * what () const throw () {
+            return "The given texture is not bound.";
+        }
+    };
+    
+    
     class TextureImage {
     private:
         TextureImage() {};
@@ -57,6 +64,12 @@ namespace wglfw {
     protected:
         unsigned int _texture;
         Texture(unsigned int t): _texture(t) {}
+        
+        void assertIsBound() {
+            if (!isBound()) {
+                throw TextureNotBoundException();
+            }
+        }
     public:
         Texture() {
             glGenTextures(1, &_texture);
@@ -114,32 +127,38 @@ namespace wglfw {
         }
         
         Texture2D * wrapS(int v) {
+            assertIsBound();
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, v);
             return this;
         }
         
         Texture2D * wrapT(int v) {
+            assertIsBound();
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, v);
             return this;
         }
         
         Texture2D * minFilter(int v) {
+            assertIsBound();
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, v);
             return this;
         }
         
         Texture2D * magFilter(int v) {
+            assertIsBound();
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, v);
             return this;
         }
         
         Texture2D * loadImage(TextureImage * loader) {
+            assertIsBound();
             glTexImage2D(GL_TEXTURE_2D, loader->_level, loader->_format, loader->width, loader->height,
                          0, loader->_format, GL_UNSIGNED_BYTE, loader->data);
             return this;
         }
         
         Texture2D * generateMipmap() {
+            assertIsBound();
             glGenerateMipmap(GL_TEXTURE_2D);
             return this;
         }

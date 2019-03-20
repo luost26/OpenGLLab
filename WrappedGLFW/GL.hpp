@@ -9,7 +9,7 @@
 
 #include "support.hpp"
 #include "Program.hpp"
-#include <glm/vec4.hpp>
+#include <glm/glm.hpp>
 
 namespace wglfw {
     
@@ -43,11 +43,12 @@ namespace wglfw {
             glViewport(x, y, width, height);
         }
         
-        static void drawElements(GLenum mode,
-                                 GLsizei count,
-                                 GLenum type,
-                                 const GLvoid * indices) {
+        static void drawElements(GLenum mode, GLsizei count, GLenum type, const GLvoid * indices) {
             glDrawElements(mode, count, type, indices);
+        }
+        
+        static void setPolygonMode(GLenum face, GLenum mode) {
+            glPolygonMode(face, mode);
         }
     };
     

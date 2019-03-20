@@ -10,8 +10,8 @@
 #include "support.hpp"
 #include "Shader.hpp"
 
-#include <glm/vec3.hpp>
-#include <glm/vec4.hpp>
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 namespace wglfw {
     
@@ -81,6 +81,14 @@ namespace wglfw {
         
         void setVec3(const char * name, glm::vec3 value) {
             glUniform3f(getUniformLocation(name), value.x, value.y, value.z);
+        }
+        
+        void setMatrix4(const char * name, glm::mat4 mat) {
+            glUniformMatrix4fv(getUniformLocation(name), 1, false, glm::value_ptr(mat));
+        }
+        
+        void setTexture(const char * name, int value) {
+            return setInt(name, value);
         }
         
     };

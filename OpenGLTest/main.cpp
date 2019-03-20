@@ -3,6 +3,8 @@
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 #include <glm/vec4.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 #include <iostream>
 #include <cmath>
@@ -126,11 +128,13 @@ int main()
     VB->unbind();
     VA->unbind();
     
-    prog->setInt("texture0", GL_TEXTURE0);
+    prog->setTexture("texture0", GL_TEXTURE0);
     
     // uncomment this call to draw in wireframe polygons.
 //    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
+    glm::mat4 trans(1.0f);
+    
     while (!window->shouldClose())
     {
         processInput(window);
@@ -141,7 +145,20 @@ int main()
         
         prog->use();
         
-        prog->setFloat("alpha", sin(GLFW::getTime())/2.0f + 0.5f );
+        glm::mat4 model_mat = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
+        model_mat = glm::rotate(model_mat, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        
+        glm::mat4 view_mat = glm::mat4(1.0f);
+        view_mat = glm::translate(view_mat, glm::vec3(0.0f, 0.0f, -3.0f));
+        
+        glm::mat4 proj_mat = glm::mat4(1.0f);
+        proj_mat = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+        
+        glm::mat4 transform = proj_mat * view_mat * model_mat;
+        
+//        prog->setFloat("alpha", sin(GLFW::getTime())/3.0f + 0.5f );
+        prog->setFloat("alpha", 1.0);
+        prog->setMatrix4("transform", transform);
         
         VA->bind();
         
