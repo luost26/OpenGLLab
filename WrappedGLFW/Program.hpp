@@ -53,8 +53,9 @@ namespace wglfw {
             }
         }
         
-        void use() {
+        Program * use() {
             glUseProgram(_program);
+            return this;
         }
         
         bool isUsing() {
@@ -67,27 +68,32 @@ namespace wglfw {
             return glGetUniformLocation(_program, name);
         }
         
-        void setFloat(const char * name, float value) {
+        Program * setFloat(const char * name, float value) {
             glUniform1f(getUniformLocation(name), value);
+            return this;
         }
         
-        void setInt(const char * name, int value) {
+        Program * setInt(const char * name, int value) {
             glUniform1i(getUniformLocation(name), value);
+            return this;
         }
         
-        void setVec4(const char * name, glm::vec4 value) {
+        Program * setVec4(const char * name, glm::vec4 value) {
             glUniform4f(getUniformLocation(name), value.x, value.y, value.z, value.w);
+            return this;
         }
         
-        void setVec3(const char * name, glm::vec3 value) {
+        Program * setVec3(const char * name, glm::vec3 value) {
             glUniform3f(getUniformLocation(name), value.x, value.y, value.z);
+            return this;
         }
         
-        void setMatrix4(const char * name, glm::mat4 mat) {
+        Program * setMatrix4(const char * name, glm::mat4 mat) {
             glUniformMatrix4fv(getUniformLocation(name), 1, false, glm::value_ptr(mat));
+            return this;
         }
         
-        void setTexture(const char * name, int value) {
+        Program * setTexture(const char * name, int value) {
             return setInt(name, value);
         }
         

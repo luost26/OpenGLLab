@@ -44,6 +44,13 @@
 		8912EF5E2240983C0040AE27 /* Texture.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Texture.hpp; sourceTree = "<group>"; };
 		8912EF602240A9D20040AE27 /* wall.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = wall.jpg; sourceTree = "<group>"; };
 		8912EF6122471E6C0040AE27 /* Camera.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Camera.hpp; sourceTree = "<group>"; };
+		8912EF67224769BD0040AE27 /* playground.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = playground.hpp; sourceTree = "<group>"; };
+		8912EF6822476AB00040AE27 /* basic.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = basic.hpp; sourceTree = "<group>"; };
+		8912EF6B22476D5C0040AE27 /* basic_lighting.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = basic_lighting.hpp; sourceTree = "<group>"; };
+		8912EF6C22476D870040AE27 /* base.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = base.hpp; sourceTree = "<group>"; };
+		8912EF6E22476F320040AE27 /* basic.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = basic.vert; sourceTree = "<group>"; };
+		8912EF6F224770220040AE27 /* lamp.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = lamp.frag; sourceTree = "<group>"; };
+		8912EF702247707E0040AE27 /* object.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = object.frag; sourceTree = "<group>"; };
 		893BEB82223FB1D100C92EA1 /* OpenGLTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = OpenGLTest; sourceTree = BUILT_PRODUCTS_DIR; };
 		893BEB85223FB1D100C92EA1 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		893BEB8D223FB28200C92EA1 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
@@ -88,6 +95,36 @@
 			path = Textures;
 			sourceTree = "<group>";
 		};
+		8912EF63224769120040AE27 /* Playground */ = {
+			isa = PBXGroup;
+			children = (
+				8912EF6C22476D870040AE27 /* base.hpp */,
+				8912EF6822476AB00040AE27 /* basic.hpp */,
+				8912EF6B22476D5C0040AE27 /* basic_lighting.hpp */,
+				8912EF67224769BD0040AE27 /* playground.hpp */,
+			);
+			path = Playground;
+			sourceTree = "<group>";
+		};
+		8912EF6922476B9F0040AE27 /* basic */ = {
+			isa = PBXGroup;
+			children = (
+				893BEB9A223FB64200C92EA1 /* simple.vert */,
+				8912EF582240809C0040AE27 /* simple.frag */,
+			);
+			path = basic;
+			sourceTree = "<group>";
+		};
+		8912EF6D22476E820040AE27 /* basic_lighting */ = {
+			isa = PBXGroup;
+			children = (
+				8912EF6E22476F320040AE27 /* basic.vert */,
+				8912EF6F224770220040AE27 /* lamp.frag */,
+				8912EF702247707E0040AE27 /* object.frag */,
+			);
+			path = basic_lighting;
+			sourceTree = "<group>";
+		};
 		893BEB79223FB1D100C92EA1 = {
 			isa = PBXGroup;
 			children = (
@@ -111,6 +148,7 @@
 		893BEB84223FB1D100C92EA1 /* OpenGLTest */ = {
 			isa = PBXGroup;
 			children = (
+				8912EF63224769120040AE27 /* Playground */,
 				893BEB85223FB1D100C92EA1 /* main.cpp */,
 				893BEB97223FB31900C92EA1 /* glad.c */,
 			);
@@ -132,8 +170,8 @@
 		893BEB99223FB62D00C92EA1 /* Shaders */ = {
 			isa = PBXGroup;
 			children = (
-				893BEB9A223FB64200C92EA1 /* simple.vert */,
-				8912EF582240809C0040AE27 /* simple.frag */,
+				8912EF6D22476E820040AE27 /* basic_lighting */,
+				8912EF6922476B9F0040AE27 /* basic */,
 			);
 			path = Shaders;
 			sourceTree = "<group>";

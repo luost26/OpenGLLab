@@ -5,9 +5,10 @@ in vec2 texCoord;
 
 uniform float alpha;
 uniform sampler2D texture0;
+uniform vec4 lightColor;
 
 void main() {
 //    FragColor = texture(texture0, texCoord) * vec4(alpha, ourColor);
-    FragColor = texture(texture0, texCoord);
+    FragColor = texture(texture0, texCoord) * lightColor;
 
 }
