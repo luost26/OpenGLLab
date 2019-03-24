@@ -7,6 +7,7 @@
 #ifndef loader_hpp
 #define loader_hpp
 
+/******    Core    ******/
 #include "GLFW.hpp"
 #include "Window.hpp"
 #include "GL.hpp"
@@ -16,6 +17,7 @@
 #include "ArrayBuffer.hpp"
 #include "Texture.hpp"
 
-#include "Utilities/Triangle.hpp"
+/****** Utilities ******/
+#include "Utilities/Camera.hpp"
 
 #endif /* loader_hpp */

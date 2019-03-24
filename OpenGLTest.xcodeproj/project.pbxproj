@@ -40,10 +40,10 @@
 		8912EF562240048F0040AE27 /* VertexArray.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = VertexArray.hpp; sourceTree = "<group>"; };
 		8912EF57224009C70040AE27 /* ArrayBuffer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ArrayBuffer.hpp; sourceTree = "<group>"; };
 		8912EF582240809C0040AE27 /* simple.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = simple.frag; sourceTree = "<group>"; };
-		8912EF5A224086BE0040AE27 /* Triangle.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Triangle.hpp; sourceTree = "<group>"; };
 		8912EF5D224094430040AE27 /* mipmaps.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mipmaps.png; sourceTree = "<group>"; };
 		8912EF5E2240983C0040AE27 /* Texture.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Texture.hpp; sourceTree = "<group>"; };
 		8912EF602240A9D20040AE27 /* wall.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = wall.jpg; sourceTree = "<group>"; };
+		8912EF6122471E6C0040AE27 /* Camera.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Camera.hpp; sourceTree = "<group>"; };
 		893BEB82223FB1D100C92EA1 /* OpenGLTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = OpenGLTest; sourceTree = BUILT_PRODUCTS_DIR; };
 		893BEB85223FB1D100C92EA1 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		893BEB8D223FB28200C92EA1 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
@@ -74,7 +74,7 @@
 		8912EF592240869F0040AE27 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				8912EF5A224086BE0040AE27 /* Triangle.hpp */,
+				8912EF6122471E6C0040AE27 /* Camera.hpp */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
