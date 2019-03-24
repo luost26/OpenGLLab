@@ -96,47 +96,47 @@ namespace playground {
                 ->link();
             
             float vertices[] = {
-                -0.5f, -0.5f, -0.5f,
-                0.5f, -0.5f, -0.5f,
-                0.5f,  0.5f, -0.5f,
-                0.5f,  0.5f, -0.5f,
-                -0.5f,  0.5f, -0.5f,
-                -0.5f, -0.5f, -0.5f,
+                -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+                0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+                0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+                0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+                -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+                -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
                 
-                -0.5f, -0.5f,  0.5f,
-                0.5f, -0.5f,  0.5f,
-                0.5f,  0.5f,  0.5f,
-                0.5f,  0.5f,  0.5f,
-                -0.5f,  0.5f,  0.5f,
-                -0.5f, -0.5f,  0.5f,
+                -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+                0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+                0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+                0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+                -0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+                -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
                 
-                -0.5f,  0.5f,  0.5f,
-                -0.5f,  0.5f, -0.5f,
-                -0.5f, -0.5f, -0.5f,
-                -0.5f, -0.5f, -0.5f,
-                -0.5f, -0.5f,  0.5f,
-                -0.5f,  0.5f,  0.5f,
+                -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+                -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+                -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+                -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+                -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+                -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
                 
-                0.5f,  0.5f,  0.5f,
-                0.5f,  0.5f, -0.5f,
-                0.5f, -0.5f, -0.5f,
-                0.5f, -0.5f, -0.5f,
-                0.5f, -0.5f,  0.5f,
-                0.5f,  0.5f,  0.5f,
+                0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+                0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+                0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+                0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+                0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+                0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
                 
-                -0.5f, -0.5f, -0.5f,
-                0.5f, -0.5f, -0.5f,
-                0.5f, -0.5f,  0.5f,
-                0.5f, -0.5f,  0.5f,
-                -0.5f, -0.5f,  0.5f,
-                -0.5f, -0.5f, -0.5f,
+                -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+                0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+                0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+                0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+                -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+                -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
                 
-                -0.5f,  0.5f, -0.5f,
-                0.5f,  0.5f, -0.5f,
-                0.5f,  0.5f,  0.5f,
-                0.5f,  0.5f,  0.5f,
-                -0.5f,  0.5f,  0.5f,
-                -0.5f,  0.5f, -0.5f,
+                -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+                0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+                0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+                0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+                -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+                -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
             };
             
             VertexArray * cubeVAO = new VertexArray();
@@ -149,9 +149,17 @@ namespace playground {
                                           ->size(3)
                                           ->type(GL_FLOAT)
                                           ->normalized(GL_FALSE)
-                                          ->stride(3*sizeof(float))
+                                          ->stride(6*sizeof(float))
                                           ->pointer(0)
                                           )->enable();
+            VBO->getVertexAttributePointer(VertexAttributePointerConfiguration::make()
+                                           ->index(1)
+                                           ->size(3)
+                                           ->type(GL_FLOAT)
+                                           ->normalized(GL_FALSE)
+                                           ->stride(6*sizeof(float))
+                                           ->pointer((void *)(3*sizeof(float)))
+                                           )->enable();
             
             VertexArray * lampVAO = new VertexArray();
             lampVAO->bind();
@@ -160,7 +168,7 @@ namespace playground {
                                            ->size(3)
                                            ->type(GL_FLOAT)
                                            ->normalized(GL_FALSE)
-                                           ->stride(3*sizeof(float))
+                                           ->stride(6*sizeof(float))
                                            ->pointer(0)
                                            )->enable();
             
@@ -169,15 +177,17 @@ namespace playground {
                     ->add(new DepthBufferCleaner());
             
             glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-            cam = new Camera(glm::vec3(0.2, 10.0, 10.0), glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 1.0, 0.0));
+            
+            cam = new Camera(glm::vec3(0, 3.0, 3.0), glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 1.0, 0.0));
             
             glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
             glm::vec3 objectColor(1.0f, 0.5f, 0.31f);
             
+            glm::vec3 lampPos(1.2f, 1.0f, 1.0f);
             glm::mat4 lampModel = glm::mat4(1.0f);
-            lampModel = glm::translate(lampModel, glm::vec3(1.2f, 1.0f, 2.0f));
+            lampModel = glm::translate(lampModel, lampPos);
             lampModel = glm::scale(lampModel, glm::vec3(0.2f));
-            
+
             while (!window->shouldClose()) {
                 float currentFrame = glfwGetTime();
                 deltaTime = currentFrame - lastFrame;
@@ -187,12 +197,23 @@ namespace playground {
                 
                 GL::clear(cleaners);
                 
+                lightColor.x = sin(glfwGetTime() * 2.0f);
+                lightColor.y = sin(glfwGetTime() * 0.7f);
+                lightColor.z = sin(glfwGetTime() * 1.3f);
+                
                 objectProgram->use()
-                            ->setVec3("lightColor", lightColor)
-                            ->setVec3("objectColor", objectColor)
+                            ->setVec3("light.ambient", glm::vec3(0.1) * lightColor)
+                            ->setVec3("light.diffuse", glm::vec3(0.8) * lightColor)
+                            ->setVec3("light.specular", glm::vec3(0.5) * lightColor)
+                            ->setVec3("light.position", lampPos)
+                            ->setFloat("material.shininess", 8)
+                            ->setVec3("material.ambient", objectColor)
+                            ->setVec3("material.diffuse", objectColor)
+                            ->setVec3("material.specular", objectColor)
                             ->setMatrix4("projection", projection)
                             ->setMatrix4("view", *cam)
-                            ->setMatrix4("model", glm::mat4(1.0f));
+                            ->setMatrix4("model", glm::mat4(1.0f))
+                            ->setVec3("viewPos", cam->position());
                 cubeVAO->bind();
                 GL::drawArrays(GL_TRIANGLES, 0, 36);
                 

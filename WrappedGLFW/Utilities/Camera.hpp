@@ -68,6 +68,10 @@ namespace wglfw {
             return viewMatrix();
         }
         
+        glm::vec3 position() {
+            return _position;
+        }
+        
         inline void moveUp(const float & speed) {
             _position += speed * _up;
         }
