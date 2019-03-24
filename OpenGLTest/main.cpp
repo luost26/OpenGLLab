@@ -13,11 +13,37 @@
 using namespace wglfw;
 using namespace glm;
 
+Camera * cam;
+float deltaTime = 0.0f;    // time between current frame and last frame
+float lastFrame = 0.0f;
+
 void processInput(Window *window)
 {
     if (window->getKey(GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         window->setShouldClose(true);
     }
+    
+    if (!cam)
+        return;
+    float speed = 2.5 * deltaTime;
+    if (window->getKey(GLFW_KEY_W) == GLFW_PRESS)
+        cam->moveAhead(speed);
+    if (window->getKey(GLFW_KEY_S) == GLFW_PRESS)
+        cam->moveBack(speed);
+    if (window->getKey(GLFW_KEY_A) == GLFW_PRESS)
+        cam->moveLeft(speed);
+    if (window->getKey(GLFW_KEY_D) == GLFW_PRESS)
+        cam->moveRight(speed);
+    
+    float degspeed = 1 * deltaTime;
+    if (window->getKey(GLFW_KEY_Q) == GLFW_PRESS)
+        cam->lookLeft(degspeed);
+    if (window->getKey(GLFW_KEY_E) == GLFW_PRESS)
+        cam->lookRight(degspeed);
+    if (window->getKey(GLFW_KEY_R) == GLFW_PRESS)
+        cam->lookUp(degspeed);
+    if (window->getKey(GLFW_KEY_F) == GLFW_PRESS)
+        cam->lookDown(degspeed);
 }
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
@@ -151,8 +177,20 @@ int main()
     CleanerCollection * cleaner = new CleanerCollection;
     cleaner->add(new ColorBufferCleaner(glm::vec4(0.2f, 0.3f, 0.3f, 1.0f)))->add(new DepthBufferCleaner);
     
+//    glm::vec3 cameraPos = glm::vec3(0.0f, 1.0f, 3.0f);
+//    glm::vec3 cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
+//    glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
+//
+//    glm::mat4 view = glm::lookAt(cameraPos, cameraTarget, up);
+    
+    cam = new Camera(glm::vec3(0.2, 10.0, 10.0), glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 1.0, 0.0));
+    
     while (!window->shouldClose())
     {
+        float currentFrame = glfwGetTime();
+        deltaTime = currentFrame - lastFrame;
+        lastFrame = currentFrame;
+        
         processInput(window);
         
         GL::clear(cleaner);
@@ -162,19 +200,21 @@ int main()
         prog->use();
         
         glm::mat4 model_mat = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-        model_mat = glm::rotate(model_mat, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        model_mat = glm::rotate(model_mat, GLFW::getTime(), glm::vec3(1.0f, 1.0f, 0.0f));
         
-        glm::mat4 view_mat = glm::mat4(1.0f);
-        view_mat = glm::translate(view_mat, glm::vec3(0.0f, 0.0f, -3.0f));
+//        float radius = 10.0f;
+//        float camX = sin(glfwGetTime()) * radius;
+//        float camZ = cos(glfwGetTime()) * radius;
         
         glm::mat4 proj_mat = glm::mat4(1.0f);
         proj_mat = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
         
-        glm::mat4 transform = proj_mat * view_mat * model_mat;
-        
 //        prog->setFloat("alpha", sin(GLFW::getTime())/3.0f + 0.5f );
         prog->setFloat("alpha", 1.0);
-        prog->setMatrix4("transform", transform);
+        prog->setMatrix4("model", model_mat);
+        prog->setMatrix4("view", *cam);
+        prog->setMatrix4("proj", proj_mat);
+
         
         VA->bind();
         

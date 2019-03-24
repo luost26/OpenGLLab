@@ -1,9 +1,7 @@
 //
 //  Window.hpp
-//  OpenGLTest
 //
 //  Created by 罗 世通 on 2019/3/18.
-//  Copyright © 2019 罗 世通. All rights reserved.
 //
 
 #ifndef Window_hpp
