@@ -165,7 +165,7 @@ namespace playground {
             VB->unbind();
             VA->unbind();
             
-            prog->setTexture("texture0", GL_TEXTURE0);
+            prog->setTexture("texture0", TextureUnit::get(0));
             
             glm::mat4 trans(1.0f);
             
@@ -184,7 +184,7 @@ namespace playground {
                 
                 GL::clear(cleaner);
                 
-                texture->bindToTextureUnit(GL_TEXTURE0);
+                texture->bindToTextureUnit(TextureUnit::get(0));
                 
                 prog->use();
                 

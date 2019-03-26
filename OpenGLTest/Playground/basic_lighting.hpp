@@ -79,64 +79,73 @@ namespace playground {
             Program * lampProgram = new Program();
             Program * objectProgram = new Program();
             
-            lampProgram->attach(VertexShader::make()
-                            ->source(ShaderSource::fromFile("/Users/tommyluo/workspace/Project/OpenGLTest/Shaders/basic_lighting/basic.vert"))
-                            ->compile())
-                ->attach(FragmentShader::make()
-                            ->source(ShaderSource::fromFile("/Users/tommyluo/workspace/Project/OpenGLTest/Shaders/basic_lighting/lamp.frag"))
-                            ->compile())
-                ->link();
-            
-            objectProgram->attach(VertexShader::make()
-                                  ->source(ShaderSource::fromFile("/Users/tommyluo/workspace/Project/OpenGLTest/Shaders/basic_lighting/basic.vert"))
-                                  ->compile())
-                ->attach(FragmentShader::make()
-                            ->source(ShaderSource::fromFile("/Users/tommyluo/workspace/Project/OpenGLTest/Shaders/basic_lighting/object.frag"))
-                            ->compile())
-                ->link();
+            try {
+                lampProgram->attach(VertexShader::make()
+                                ->source(ShaderSource::fromFile("/Users/tommyluo/workspace/Project/OpenGLTest/Shaders/basic_lighting/basic.vert"))
+                                ->compile())
+                    ->attach(FragmentShader::make()
+                                ->source(ShaderSource::fromFile("/Users/tommyluo/workspace/Project/OpenGLTest/Shaders/basic_lighting/lamp.frag"))
+                                ->compile())
+                    ->link();
+                
+                objectProgram->attach(VertexShader::make()
+                                      ->source(ShaderSource::fromFile("/Users/tommyluo/workspace/Project/OpenGLTest/Shaders/basic_lighting/basic.vert"))
+                                      ->compile())
+                    ->attach(FragmentShader::make()
+                                ->source(ShaderSource::fromFile("/Users/tommyluo/workspace/Project/OpenGLTest/Shaders/basic_lighting/object.frag"))
+                                ->compile())
+                    ->link();
+            } catch (ShaderCompilationException e) {
+                std::cerr << e.what() << std::endl;
+                return -1;
+            } catch (ProgramLinkException e) {
+                std::cerr << e.what() << std::endl;
+                return -1;
+            }
             
             float vertices[] = {
-                -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-                0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-                0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-                0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-                -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-                -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+                // positions          // normals           // texture coords
+                -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
+                0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  0.0f,
+                0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
+                0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
+                -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  1.0f,
+                -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
                 
-                -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-                0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-                0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-                0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-                -0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-                -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+                -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,
+                0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  0.0f,
+                0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
+                0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
+                -0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  1.0f,
+                -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,
                 
-                -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-                -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-                -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-                -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-                -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-                -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+                -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+                -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
+                -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+                -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+                -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
+                -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
                 
-                0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-                0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-                0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-                0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-                0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-                0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+                0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+                0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
+                0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+                0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+                0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
+                0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
                 
-                -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-                0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-                0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-                0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-                -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-                -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+                -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
+                0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  1.0f,
+                0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  0.0f,
+                0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  0.0f,
+                -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  0.0f,
+                -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
                 
-                -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-                0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-                0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-                0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-                -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-                -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
+                -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f,
+                0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  1.0f,
+                0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
+                0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
+                -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  0.0f,
+                -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f
             };
             
             VertexArray * cubeVAO = new VertexArray();
@@ -149,7 +158,7 @@ namespace playground {
                                           ->size(3)
                                           ->type(GL_FLOAT)
                                           ->normalized(GL_FALSE)
-                                          ->stride(6*sizeof(float))
+                                          ->stride(8*sizeof(float))
                                           ->pointer(0)
                                           )->enable();
             VBO->getVertexAttributePointer(VertexAttributePointerConfiguration::make()
@@ -157,8 +166,16 @@ namespace playground {
                                            ->size(3)
                                            ->type(GL_FLOAT)
                                            ->normalized(GL_FALSE)
-                                           ->stride(6*sizeof(float))
+                                           ->stride(8*sizeof(float))
                                            ->pointer((void *)(3*sizeof(float)))
+                                           )->enable();
+            VBO->getVertexAttributePointer(VertexAttributePointerConfiguration::make()
+                                           ->index(2)
+                                           ->size(2)
+                                           ->type(GL_FLOAT)
+                                           ->normalized(GL_FALSE)
+                                           ->stride(8*sizeof(float))
+                                           ->pointer((void *)(6*sizeof(float)))
                                            )->enable();
             
             VertexArray * lampVAO = new VertexArray();
@@ -168,7 +185,7 @@ namespace playground {
                                            ->size(3)
                                            ->type(GL_FLOAT)
                                            ->normalized(GL_FALSE)
-                                           ->stride(6*sizeof(float))
+                                           ->stride(8*sizeof(float))
                                            ->pointer(0)
                                            )->enable();
             
@@ -183,11 +200,35 @@ namespace playground {
             glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
             glm::vec3 objectColor(1.0f, 0.5f, 0.31f);
             
-            glm::vec3 lampPos(1.2f, 1.0f, 1.0f);
+            glm::vec3 lampPos(1.2f, 0.0f, 0.0f);
             glm::mat4 lampModel = glm::mat4(1.0f);
             lampModel = glm::translate(lampModel, lampPos);
             lampModel = glm::scale(lampModel, glm::vec3(0.2f));
+            
 
+            Texture2D * texture = new Texture2D();
+            TextureImage * timg = TextureImage::fromPath("/Users/tommyluo/workspace/Project/OpenGLTest/Textures/container2.png");
+            texture->bind()->wrapS(GL_REPEAT)->wrapT(GL_REPEAT)
+                    ->minFilter(GL_LINEAR)->magFilter(GL_LINEAR)
+                    ->loadImage(timg)->generateMipmap();
+            delete timg;
+            
+            Texture2D * specTexture = new Texture2D();
+            TextureImage * spectimg = TextureImage::fromPath("/Users/tommyluo/workspace/Project/OpenGLTest/Textures/lighting_maps_specular_color.png");
+            specTexture->bind()->wrapS(GL_REPEAT)->wrapT(GL_REPEAT)
+                ->minFilter(GL_LINEAR)->magFilter(GL_LINEAR)
+                ->loadImage(spectimg)->generateMipmap();
+            delete spectimg;
+            
+            Texture2D * emisTexture = new Texture2D();
+            TextureImage * emistimg = TextureImage::fromPath("/Users/tommyluo/workspace/Project/OpenGLTest/Textures/matrix.jpg");
+            emisTexture->bind()->wrapS(GL_REPEAT)->wrapT(GL_REPEAT)
+                ->minFilter(GL_LINEAR)->magFilter(GL_LINEAR)
+                ->loadImage(emistimg)->generateMipmap();
+            delete emistimg;
+            
+            
+            
             while (!window->shouldClose()) {
                 float currentFrame = glfwGetTime();
                 deltaTime = currentFrame - lastFrame;
@@ -197,19 +238,24 @@ namespace playground {
                 
                 GL::clear(cleaners);
                 
-                lightColor.x = sin(glfwGetTime() * 2.0f);
-                lightColor.y = sin(glfwGetTime() * 0.7f);
-                lightColor.z = sin(glfwGetTime() * 1.3f);
+//                lightColor.x = sin(glfwGetTime() * 2.0f);
+//                lightColor.y = sin(glfwGetTime() * 0.7f);
+//                lightColor.z = sin(glfwGetTime() * 1.3f);
+                
+                texture->bindToTextureUnit(TextureUnit::get(0));
+                specTexture->bindToTextureUnit(TextureUnit::get(1));
+                emisTexture->bindToTextureUnit(TextureUnit::get(2));
+                
                 
                 objectProgram->use()
                             ->setVec3("light.ambient", glm::vec3(0.1) * lightColor)
                             ->setVec3("light.diffuse", glm::vec3(0.8) * lightColor)
-                            ->setVec3("light.specular", glm::vec3(0.5) * lightColor)
+                            ->setVec3("light.specular", glm::vec3(1.0) * lightColor)
                             ->setVec3("light.position", lampPos)
-                            ->setFloat("material.shininess", 8)
-                            ->setVec3("material.ambient", objectColor)
-                            ->setVec3("material.diffuse", objectColor)
-                            ->setVec3("material.specular", objectColor)
+                            ->setFloat("material.shininess", 32)
+                            ->setTexture("material.diffuse", TextureUnit::get(0))
+                            ->setTexture("material.specular", TextureUnit::get(1))
+                            ->setTexture("material.emission", TextureUnit::get(2))
                             ->setMatrix4("projection", projection)
                             ->setMatrix4("view", *cam)
                             ->setMatrix4("model", glm::mat4(1.0f))

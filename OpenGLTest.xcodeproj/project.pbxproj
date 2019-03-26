@@ -60,6 +60,10 @@
 		893BEB95223FB2A000C92EA1 /* libglfw.3.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libglfw.3.2.dylib; path = ../../../../../usr/local/Cellar/glfw/3.2.1/lib/libglfw.3.2.dylib; sourceTree = "<group>"; };
 		893BEB97223FB31900C92EA1 /* glad.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = glad.c; path = glad/src/glad.c; sourceTree = SOURCE_ROOT; };
 		893BEB9A223FB64200C92EA1 /* simple.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = simple.vert; sourceTree = "<group>"; };
+		89DA8E962248B539002CC19D /* lighting_maps_specular_color.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lighting_maps_specular_color.png; sourceTree = "<group>"; };
+		89DA8E972248B5B6002CC19D /* matrix.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = matrix.jpg; sourceTree = "<group>"; };
+		89EF76BD224873EC00A809E5 /* container2_specular.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = container2_specular.png; sourceTree = "<group>"; };
+		89EF76BE224873EC00A809E5 /* container2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = container2.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +93,10 @@
 		8912EF5C224092570040AE27 /* Textures */ = {
 			isa = PBXGroup;
 			children = (
+				89DA8E972248B5B6002CC19D /* matrix.jpg */,
+				89DA8E962248B539002CC19D /* lighting_maps_specular_color.png */,
+				89EF76BD224873EC00A809E5 /* container2_specular.png */,
+				89EF76BE224873EC00A809E5 /* container2.png */,
 				8912EF602240A9D20040AE27 /* wall.jpg */,
 				8912EF5D224094430040AE27 /* mipmaps.png */,
 			);
