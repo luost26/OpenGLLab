@@ -21,6 +21,82 @@ namespace wglfw {
         }
     };
     
+    class TextureImageNotOpenedException : Exception {
+        const char * what () const throw () {
+            return "Texture image cannot be opened.";
+        }
+    };
+    
+    class TextureUnit {
+    private:
+        const static GLenum units[32];
+        static TextureUnit * instances[32];
+        
+        int _unit;
+        
+        TextureUnit(int u) {
+            _unit = u;
+        }
+    public:
+        static TextureUnit * get(int u) {
+            if (u < 0 || u >= 32) {
+                return NULL;
+            }
+            if (!instances[u])
+                instances[u] = new TextureUnit(u);
+            return instances[u];
+        }
+        
+        GLenum getGLenumValue() {
+            return units[_unit];
+        }
+        
+        int getUnitNumber() {
+            return _unit;
+        }
+    };
+    
+    const GLenum TextureUnit::units[32] = {
+        GL_TEXTURE0,
+        GL_TEXTURE1,
+        GL_TEXTURE2,
+        GL_TEXTURE3,
+        GL_TEXTURE4,
+        GL_TEXTURE5,
+        GL_TEXTURE6,
+        GL_TEXTURE7,
+        GL_TEXTURE8,
+        GL_TEXTURE9,
+        GL_TEXTURE10,
+        GL_TEXTURE11,
+        GL_TEXTURE12,
+        GL_TEXTURE13,
+        GL_TEXTURE14,
+        GL_TEXTURE15,
+        GL_TEXTURE16,
+        GL_TEXTURE17,
+        GL_TEXTURE18,
+        GL_TEXTURE19,
+        GL_TEXTURE20,
+        GL_TEXTURE21,
+        GL_TEXTURE22,
+        GL_TEXTURE23,
+        GL_TEXTURE24,
+        GL_TEXTURE25,
+        GL_TEXTURE26,
+        GL_TEXTURE27,
+        GL_TEXTURE28,
+        GL_TEXTURE29,
+        GL_TEXTURE30,
+        GL_TEXTURE31
+    };
+    
+    TextureUnit * TextureUnit::instances[32] = {
+        NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+        NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+        NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+        NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL
+    };
     
     class TextureImage {
     private:
@@ -33,8 +109,13 @@ namespace wglfw {
             TextureImage * instance = new TextureImage;
             stbi_set_flip_vertically_on_load(true);
             instance->data = stbi_load(path, &instance->width, &instance->height, &instance->channels, 0);
+            if (!instance->data)
+                throw TextureImageNotOpenedException();
             instance->_level = 0;
             switch (instance->channels) {
+                case 1:
+                    instance->_format = GL_RED;
+                    break;
                 case 3:
                     instance->_format = GL_RGB;
                     break;
@@ -104,8 +185,8 @@ namespace wglfw {
     public:
         Texture2D() : Texture() {}
         
-        Texture2D * active(int unit) {
-            glActiveTexture(unit);
+        Texture2D * active(TextureUnit * unit) {
+            glActiveTexture(unit->getGLenumValue());
             return this;
         }
         
@@ -114,7 +195,7 @@ namespace wglfw {
             return this;
         }
         
-        Texture2D * bindToTextureUnit(int unit) {
+        Texture2D * bindToTextureUnit(TextureUnit * unit) {
             active(unit);
             bind();
             return this;

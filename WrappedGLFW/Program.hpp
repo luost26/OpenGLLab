@@ -9,6 +9,7 @@
 
 #include "support.hpp"
 #include "Shader.hpp"
+#include "Texture.hpp"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -93,8 +94,8 @@ namespace wglfw {
             return this;
         }
         
-        Program * setTexture(const char * name, int value) {
-            return setInt(name, value);
+        Program * setTexture(const char * name, TextureUnit * unit) {
+            return setInt(name, unit->getUnitNumber());
         }
         
     };
