@@ -72,6 +72,10 @@ namespace wglfw {
             return _position;
         }
         
+        glm::vec3 front() {
+            return _front;
+        }
+        
         inline void moveUp(const float & speed) {
             _position += speed * _up;
         }

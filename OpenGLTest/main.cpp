@@ -3,5 +3,5 @@
 using namespace playground;
 
 int main() {
-    return BasicLighting::main();
+    return Model::main();
 }

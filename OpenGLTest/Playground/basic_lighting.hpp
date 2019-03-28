@@ -148,6 +148,14 @@ namespace playground {
                 -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f
             };
             
+            glm::vec3 cubePositions[] = {
+                glm::vec3(0.0f, 0.0f, 0.0f),
+                glm::vec3(-1.0f, 0.5f, 0.3f),
+                glm::vec3(-2.0f, 0.8f, 1.3f),
+                glm::vec3(-1.3f, -0.5f, -0.7f),
+                glm::vec3(-1.0f, 1.2f, -0.7f),
+            };
+            
             VertexArray * cubeVAO = new VertexArray();
             cubeVAO->bind();
             
@@ -206,6 +214,8 @@ namespace playground {
             lampModel = glm::scale(lampModel, glm::vec3(0.2f));
             
 
+            glm::vec3 flashlightPos(-1.5f, -1.5f, -1.5f);
+            
             Texture2D * texture = new Texture2D();
             TextureImage * timg = TextureImage::fromPath("/Users/tommyluo/workspace/Project/OpenGLTest/Textures/container2.png");
             texture->bind()->wrapS(GL_REPEAT)->wrapT(GL_REPEAT)
@@ -238,20 +248,38 @@ namespace playground {
                 
                 GL::clear(cleaners);
                 
-//                lightColor.x = sin(glfwGetTime() * 2.0f);
-//                lightColor.y = sin(glfwGetTime() * 0.7f);
-//                lightColor.z = sin(glfwGetTime() * 1.3f);
-                
                 texture->bindToTextureUnit(TextureUnit::get(0));
                 specTexture->bindToTextureUnit(TextureUnit::get(1));
                 emisTexture->bindToTextureUnit(TextureUnit::get(2));
                 
+                glm::vec3 lampPos(1.2f + glm::sin(GLFW::getTime()) + 1.0f, 0.0f, 0.0f);
+                lampModel = glm::mat4(1.0f);
+                lampModel = glm::translate(lampModel, lampPos);
+                lampModel = glm::scale(lampModel, glm::vec3(0.2f));
                 
                 objectProgram->use()
                             ->setVec3("light.ambient", glm::vec3(0.1) * lightColor)
                             ->setVec3("light.diffuse", glm::vec3(0.8) * lightColor)
                             ->setVec3("light.specular", glm::vec3(1.0) * lightColor)
                             ->setVec3("light.position", lampPos)
+                            ->setFloat("light.constant", 1.0f)
+                            ->setFloat("light.linear", 0.09f)
+                            ->setFloat("light.quadratic", 0.032f)
+                
+                            ->setVec3("dirLight.diffuse", glm::vec3(0.0) * lightColor)
+                            ->setVec3("dirLight.direction", glm::vec3(1.0f, glm::sin(GLFW::getTime()), -1.0f))
+                
+                            ->setVec3("fLight.ambient", glm::vec3(0.0) * lightColor)
+                            ->setVec3("fLight.diffuse", glm::vec3(1.0) * lightColor)
+                            ->setVec3("fLight.specular", glm::vec3(1.0) * lightColor)
+                            ->setVec3("fLight.position", cam->position())
+                            ->setVec3("fLight.direction", cam->front())
+                            ->setFloat("fLight.constant", 1.0f)
+                            ->setFloat("fLight.linear", 0.09f)
+                            ->setFloat("fLight.quadratic", 0.032f)
+                            ->setFloat("fLight.cosphi", glm::cos(glm::radians(4.0f)))
+                            ->setFloat("fLight.outercosphi", glm::cos(glm::radians(6.0f)))
+                
                             ->setFloat("material.shininess", 32)
                             ->setTexture("material.diffuse", TextureUnit::get(0))
                             ->setTexture("material.specular", TextureUnit::get(1))
@@ -261,7 +289,16 @@ namespace playground {
                             ->setMatrix4("model", glm::mat4(1.0f))
                             ->setVec3("viewPos", cam->position());
                 cubeVAO->bind();
-                GL::drawArrays(GL_TRIANGLES, 0, 36);
+                
+                for (int i = 0; i < 5; ++ i) {
+                    glm::mat4 model(1.0f);
+                    model = glm::translate(model, cubePositions[i]);
+                    float angle = 20.0f * i;
+                    model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+                    objectProgram->setMatrix4("model", model);
+                    GL::drawArrays(GL_TRIANGLES, 0, 36);
+                }
+                
                 
                 lampProgram->use()
                             ->setVec3("lightColor", lightColor)

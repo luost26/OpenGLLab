@@ -9,5 +9,6 @@
 
 #include "base.hpp"
 #include "basic_lighting.hpp"
+#include "model.hpp"
 
 #endif /* playground_hpp */
