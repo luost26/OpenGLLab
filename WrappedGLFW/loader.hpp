@@ -19,5 +19,6 @@
 
 /****** Utilities ******/
 #include "Utilities/Camera.hpp"
+#include "Utilities/Mesh.hpp"
 
 #endif /* loader_hpp */
