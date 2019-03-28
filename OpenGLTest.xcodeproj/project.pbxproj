@@ -14,16 +14,18 @@
 		893BEB94223FB29500C92EA1 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 893BEB93223FB29500C92EA1 /* CoreVideo.framework */; };
 		893BEB96223FB2A000C92EA1 /* libglfw.3.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 893BEB95223FB2A000C92EA1 /* libglfw.3.2.dylib */; };
 		893BEB98223FB31900C92EA1 /* glad.c in Sources */ = {isa = PBXBuildFile; fileRef = 893BEB97223FB31900C92EA1 /* glad.c */; };
+		894C67AB224C6906001FEB32 /* libassimp.4.1.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 894C67AA224C6906001FEB32 /* libassimp.4.1.0.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		893BEB80223FB1D100C92EA1 /* CopyFiles */ = {
+		893BEB80223FB1D100C92EA1 /* Copy Files */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = /usr/share/man/man1/;
 			dstSubfolderSpec = 0;
 			files = (
 			);
+			name = "Copy Files";
 			runOnlyForDeploymentPostprocessing = 1;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -61,6 +63,7 @@
 		893BEB97223FB31900C92EA1 /* glad.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = glad.c; path = glad/src/glad.c; sourceTree = SOURCE_ROOT; };
 		893BEB9A223FB64200C92EA1 /* simple.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = simple.vert; sourceTree = "<group>"; };
 		894C67A9224C6404001FEB32 /* model.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = model.hpp; sourceTree = "<group>"; };
+		894C67AA224C6906001FEB32 /* libassimp.4.1.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libassimp.4.1.0.dylib; path = ../../../../../usr/local/Cellar/assimp/4.1.0/lib/libassimp.4.1.0.dylib; sourceTree = "<group>"; };
 		89DA8E962248B539002CC19D /* lighting_maps_specular_color.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lighting_maps_specular_color.png; sourceTree = "<group>"; };
 		89DA8E972248B5B6002CC19D /* matrix.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = matrix.jpg; sourceTree = "<group>"; };
 		89EF76BD224873EC00A809E5 /* container2_specular.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = container2_specular.png; sourceTree = "<group>"; };
@@ -72,6 +75,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				894C67AB224C6906001FEB32 /* libassimp.4.1.0.dylib in Frameworks */,
 				893BEB96223FB2A000C92EA1 /* libglfw.3.2.dylib in Frameworks */,
 				893BEB94223FB29500C92EA1 /* CoreVideo.framework in Frameworks */,
 				893BEB92223FB28E00C92EA1 /* OpenGL.framework in Frameworks */,
@@ -168,6 +172,7 @@
 		893BEB8C223FB28200C92EA1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				894C67AA224C6906001FEB32 /* libassimp.4.1.0.dylib */,
 				893BEB95223FB2A000C92EA1 /* libglfw.3.2.dylib */,
 				893BEB93223FB29500C92EA1 /* CoreVideo.framework */,
 				893BEB91223FB28E00C92EA1 /* OpenGL.framework */,
@@ -214,7 +219,7 @@
 			buildPhases = (
 				893BEB7E223FB1D100C92EA1 /* Sources */,
 				893BEB7F223FB1D100C92EA1 /* Frameworks */,
-				893BEB80223FB1D100C92EA1 /* CopyFiles */,
+				893BEB80223FB1D100C92EA1 /* Copy Files */,
 			);
 			buildRules = (
 			);
@@ -393,6 +398,7 @@
 					"$(inherited)",
 					/usr/local/Cellar/glfw/3.2.1/lib,
 					/usr/local/lib/,
+					/usr/local/Cellar/assimp/4.1.0/lib,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -411,6 +417,7 @@
 					"$(inherited)",
 					/usr/local/Cellar/glfw/3.2.1/lib,
 					/usr/local/lib/,
+					/usr/local/Cellar/assimp/4.1.0/lib,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
