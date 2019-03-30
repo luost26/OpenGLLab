@@ -18,7 +18,9 @@
 #include "Texture.hpp"
 
 /****** Utilities ******/
+#include "Utilities/helper.hpp"
 #include "Utilities/Camera.hpp"
 #include "Utilities/Mesh.hpp"
+#include "Utilities/AssimpModel.hpp"
 
 #endif /* loader_hpp */
