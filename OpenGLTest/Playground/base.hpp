@@ -32,7 +32,7 @@ namespace playground {
         
         static Camera * getCamera() {
             if (cam == NULL) {
-                cam = new Camera(glm::vec3(0, 3.0, 3.0), glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 1.0, 0.0));
+                cam = new Camera(glm::vec3(0, 0.0, 3.0), glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 1.0, 0.0));
             }
             return cam;
         }
@@ -104,6 +104,13 @@ namespace playground {
             GLFW::loadOpenGLUsingGLAD();
             
             return window;
+        }
+        
+        static inline void setProjectionViewMatrixOfProgram(Program * prog, const std::string & proj_name = "projection", const std::string & view_name = "view") {
+            glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)getDefaultScreenWidth() / (float)getDefaultScreenHeight(), 0.1f, 100.0f);
+            glm::mat4 view = getCamera()->viewMatrix();
+            prog->setMatrix4(proj_name.c_str(), projection);
+            prog->setMatrix4(view_name.c_str(), view);
         }
         
     };
