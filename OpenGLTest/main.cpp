@@ -3,5 +3,5 @@
 using namespace playground;
 
 int main() {
-    return Model::main();
+    return DepthStencilTest::main();
 }

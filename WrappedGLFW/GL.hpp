@@ -42,6 +42,13 @@ namespace wglfw {
         }
     };
     
+    class StencilBufferCleaner : public Cleaner {
+    public:
+        unsigned int option() {
+            return GL_STENCIL_BUFFER_BIT;
+        }
+    };
+    
     
     class CleanerCollection {
     private:

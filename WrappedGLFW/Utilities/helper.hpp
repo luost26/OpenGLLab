@@ -10,6 +10,7 @@
 #include <string>
 #include "../Shader.hpp"
 #include "../Program.hpp"
+#include "../Texture.hpp"
 
 namespace wglfw {
     Program * simple_shader_program(const std::string & vpath, const std::string & fpath) {
@@ -29,6 +30,16 @@ namespace wglfw {
             exit(-1);
         }
         return program;
+    }
+    
+    Texture * simple_texture(const std::string & path) {
+        Texture2D * texture = new Texture2D();
+        TextureImage * img = TextureImage::fromPath(path.c_str());
+        texture->bind()->wrapS(GL_REPEAT)->wrapT(GL_REPEAT)
+                    ->minFilter(GL_LINEAR_MIPMAP_LINEAR)->magFilter(GL_LINEAR)
+                    ->loadImage(img)->generateMipmap();
+        delete img;
+        return texture;
     }
 }
 

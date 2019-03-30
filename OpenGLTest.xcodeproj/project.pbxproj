@@ -65,6 +65,14 @@
 		894C67A9224C6404001FEB32 /* model.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = model.hpp; sourceTree = "<group>"; };
 		894C67AA224C6906001FEB32 /* libassimp.4.1.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libassimp.4.1.0.dylib; path = ../../../../../usr/local/Cellar/assimp/4.1.0/lib/libassimp.4.1.0.dylib; sourceTree = "<group>"; };
 		894C67AC224C6BBF001FEB32 /* Mesh.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Mesh.hpp; sourceTree = "<group>"; };
+		8991FBAB224F7ED400240AC0 /* Box.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Box.hpp; sourceTree = "<group>"; };
+		8991FBAC224F833E00240AC0 /* PointLight.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = PointLight.hpp; sourceTree = "<group>"; };
+		8991FBAD224F8B5500240AC0 /* depth_stencil_test.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = depth_stencil_test.hpp; sourceTree = "<group>"; };
+		8991FBAF224F8BCC00240AC0 /* box.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = box.vert; sourceTree = "<group>"; };
+		8991FBB0224F8C1A00240AC0 /* box.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = box.frag; sourceTree = "<group>"; };
+		8991FBB1224F973800240AC0 /* Floor.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Floor.hpp; sourceTree = "<group>"; };
+		8991FBB2224F981300240AC0 /* depth_test.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = depth_test.frag; sourceTree = "<group>"; };
+		8991FBB3224FC18C00240AC0 /* single_color.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = single_color.frag; sourceTree = "<group>"; };
 		899BF9DD224F3B4100630C0E /* AssimpModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = AssimpModel.hpp; sourceTree = "<group>"; };
 		899BF9DF224F60A500630C0E /* model.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = model.vert; sourceTree = "<group>"; };
 		899BF9E0224F60B500630C0E /* model.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = model.frag; sourceTree = "<group>"; };
@@ -142,10 +150,12 @@
 		8912EF63224769120040AE27 /* Playground */ = {
 			isa = PBXGroup;
 			children = (
+				8991FBAA224F7EB600240AC0 /* Objects */,
 				8912EF6C22476D870040AE27 /* base.hpp */,
 				8912EF6822476AB00040AE27 /* basic.hpp */,
 				8912EF6B22476D5C0040AE27 /* basic_lighting.hpp */,
 				894C67A9224C6404001FEB32 /* model.hpp */,
+				8991FBAD224F8B5500240AC0 /* depth_stencil_test.hpp */,
 				8912EF67224769BD0040AE27 /* playground.hpp */,
 			);
 			path = Playground;
@@ -217,6 +227,7 @@
 		893BEB99223FB62D00C92EA1 /* Shaders */ = {
 			isa = PBXGroup;
 			children = (
+				8991FBAE224F8BC100240AC0 /* box */,
 				899BF9DE224F608800630C0E /* model */,
 				8912EF6D22476E820040AE27 /* basic_lighting */,
 				8912EF6922476B9F0040AE27 /* basic */,
@@ -241,6 +252,27 @@
 				8912EF49223FD0A80040AE27 /* loader.hpp */,
 			);
 			path = WrappedGLFW;
+			sourceTree = "<group>";
+		};
+		8991FBAA224F7EB600240AC0 /* Objects */ = {
+			isa = PBXGroup;
+			children = (
+				8991FBAC224F833E00240AC0 /* PointLight.hpp */,
+				8991FBAB224F7ED400240AC0 /* Box.hpp */,
+				8991FBB1224F973800240AC0 /* Floor.hpp */,
+			);
+			path = Objects;
+			sourceTree = "<group>";
+		};
+		8991FBAE224F8BC100240AC0 /* box */ = {
+			isa = PBXGroup;
+			children = (
+				8991FBAF224F8BCC00240AC0 /* box.vert */,
+				8991FBB0224F8C1A00240AC0 /* box.frag */,
+				8991FBB2224F981300240AC0 /* depth_test.frag */,
+				8991FBB3224FC18C00240AC0 /* single_color.frag */,
+			);
+			path = box;
 			sourceTree = "<group>";
 		};
 		899BF9DE224F608800630C0E /* model */ = {

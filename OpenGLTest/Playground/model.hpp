@@ -13,13 +13,7 @@ using namespace wglfw;
 
 
 namespace playground {
-    
-    struct Vertex {
-        glm::vec3 Position;
-        glm::vec3 Normal;
-        glm::vec2 TexCoords;
-    };
-    
+
     class Model : public Base {
     public:
         static int main() {
@@ -30,6 +24,9 @@ namespace playground {
             
             Window * window = initializeEnvAndCreateWindow();
             GL::enableDepthTest();
+            
+            glEnable(GL_CULL_FACE);
+            glCullFace(GL_BACK);
             
             Program * prog = simple_shader_program(vshader_path, fshader_path);
             

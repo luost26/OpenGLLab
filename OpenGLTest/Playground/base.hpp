@@ -23,6 +23,7 @@ namespace playground {
     public:
         
         static Camera * cam;
+        static CleanerCollection * cleanerCollection;
         static float deltaTime;
         static float lastFrame;
         
@@ -108,14 +109,23 @@ namespace playground {
         
         static inline void setProjectionViewMatrixOfProgram(Program * prog, const std::string & proj_name = "projection", const std::string & view_name = "view") {
             glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)getDefaultScreenWidth() / (float)getDefaultScreenHeight(), 0.1f, 100.0f);
-            glm::mat4 view = getCamera()->viewMatrix();
             prog->setMatrix4(proj_name.c_str(), projection);
-            prog->setMatrix4(view_name.c_str(), view);
+            prog->setMatrix4(view_name.c_str(), *getCamera());
+        }
+        
+        static inline CleanerCollection * getDefaultCleanerCollection() {
+            if (cleanerCollection == NULL) {
+                cleanerCollection = new CleanerCollection;
+                cleanerCollection->add(new ColorBufferCleaner(glm::vec4(0.1f, 0.1f, 0.1f, 1.0f)))
+                                ->add(new DepthBufferCleaner);
+            }
+            return cleanerCollection;
         }
         
     };
     
     Camera * Base::cam = NULL;
+    CleanerCollection * Base::cleanerCollection = NULL;
     float Base::deltaTime = 0;
     float Base::lastFrame = 0;
 }
