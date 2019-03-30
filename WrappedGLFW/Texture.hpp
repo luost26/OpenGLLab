@@ -8,6 +8,7 @@
 #define Texture_hpp
 
 #include "support.hpp"
+#include "Exception.hpp"
 #include <vector>
 
 #define STB_IMAGE_IMPLEMENTATION
@@ -172,11 +173,28 @@ namespace wglfw {
             return _texture;
         }
         
+        static void activateTextureUnit(TextureUnit * unit) {
+            glActiveTexture(unit->getGLenumValue());
+        }
+        
+        Texture * activate(TextureUnit * unit) {
+            activateTextureUnit(unit);
+            return this;
+        }
+        
         virtual Texture * bind() {
+            throw MethodNotImplementException();
+            return this;
+        }
+        
+        virtual Texture * bindToTextureUnit(TextureUnit * unit) {
+            activate(unit);
+            bind();
             return this;
         }
         
         virtual bool isBound() {
+            throw MethodNotImplementException();
             return false;
         }
     };
@@ -185,19 +203,8 @@ namespace wglfw {
     public:
         Texture2D() : Texture() {}
         
-        Texture2D * active(TextureUnit * unit) {
-            glActiveTexture(unit->getGLenumValue());
-            return this;
-        }
-        
         Texture2D * bind() {
             glBindTexture(GL_TEXTURE_2D, _texture);
-            return this;
-        }
-        
-        Texture2D * bindToTextureUnit(TextureUnit * unit) {
-            active(unit);
-            bind();
             return this;
         }
         

@@ -16,6 +16,13 @@ namespace wglfw {
             return "WrappedGLFW Exception";
         }
     };
+    
+    struct MethodNotImplementException : public Exception
+    {
+        const char * what () const throw () {
+            return "MethodNotImplementException";
+        }
+    };
 }
 
 #endif /* Exception_hpp */

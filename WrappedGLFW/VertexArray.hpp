@@ -22,6 +22,8 @@ namespace wglfw {
     private:
         unsigned int _VAO;
         VertexArray(unsigned int i): _VAO(i) {}
+        static VertexArray * currentBinding;
+        static VertexArray * previousBinding;
     public:
         VertexArray() {
             glGenVertexArrays(1, &_VAO);
@@ -39,6 +41,16 @@ namespace wglfw {
             return arrays;
         }
         
+        static VertexArray * resumePreviousBinding() {
+            VertexArray * prev = previousBinding;
+            if (prev) {
+                prev->bind();
+                previousBinding = NULL;
+                return prev;
+            }
+            return NULL;
+        }
+        
         bool isBound() {
             int bound;
             glGetIntegerv(GL_VERTEX_ARRAY_BINDING, &bound);
@@ -46,12 +58,15 @@ namespace wglfw {
         }
         
         VertexArray * bind() {
+            previousBinding = currentBinding;
+            
             glBindVertexArray(_VAO);
             return this;
         }
         
         VertexArray * unbind() {
             if (isBound()) {
+                currentBinding = NULL;
                 glBindVertexArray(0);
             }
             return this;
@@ -62,9 +77,15 @@ namespace wglfw {
         }
         
         ~VertexArray() {
+            if (previousBinding == this) previousBinding = NULL;
+            if (currentBinding == this) currentBinding = NULL;
+            
             glDeleteVertexArrays(1, &_VAO);
         }
     };
+    
+    VertexArray * VertexArray::currentBinding = NULL;
+    VertexArray * VertexArray::previousBinding = NULL;
     
 }
 
