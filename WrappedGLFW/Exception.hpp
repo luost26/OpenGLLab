@@ -17,7 +17,7 @@ namespace wglfw {
         }
     };
     
-    struct MethodNotImplementException : public Exception
+    struct MethodNotImplementedException : public Exception
     {
         const char * what () const throw () {
             return "MethodNotImplementException";

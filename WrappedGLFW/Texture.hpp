@@ -183,7 +183,7 @@ namespace wglfw {
         }
         
         virtual Texture * bind() {
-            throw MethodNotImplementException();
+            throw MethodNotImplementedException();
             return this;
         }
         
@@ -194,7 +194,7 @@ namespace wglfw {
         }
         
         virtual bool isBound() {
-            throw MethodNotImplementException();
+            throw MethodNotImplementedException();
             return false;
         }
     };

@@ -78,13 +78,13 @@ namespace wglfw {
             return _shader;
         }
         
-        Shader * source(ShaderSource * source) {
+        virtual Shader * source(ShaderSource * source) {
             char * src = source->source();
             glShaderSource(_shader, 1, &src, NULL);
             return this;
         }
         
-        Shader * compile() {
+        virtual Shader * compile() {
             glCompileShader(_shader);
             int success;
             glGetShaderiv(_shader, GL_COMPILE_STATUS, &success);
@@ -105,6 +105,16 @@ namespace wglfw {
             return new VertexShader();
         }
         
+        VertexShader * source(ShaderSource * source) {
+            Shader::source(source);
+            return this;
+        }
+        
+        VertexShader * compile() {
+            Shader::compile();
+            return this;
+        }
+        
         VertexShader(): Shader(GL_VERTEX_SHADER) {}
     };
     
@@ -112,6 +122,16 @@ namespace wglfw {
     public:
         static FragmentShader * make() {
             return new FragmentShader();
+        }
+        
+        FragmentShader * source(ShaderSource * source) {
+            Shader::source(source);
+            return this;
+        }
+        
+        FragmentShader * compile() {
+            Shader::compile();
+            return this;
         }
         
         FragmentShader(): Shader(GL_FRAGMENT_SHADER) {}
