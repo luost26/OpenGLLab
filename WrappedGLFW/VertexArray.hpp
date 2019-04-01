@@ -29,18 +29,6 @@ namespace wglfw {
             glGenVertexArrays(1, &_VAO);
         }
         
-        static std::vector<VertexArray*> createMany(int n) {
-            unsigned int * VAOs = new unsigned int[n+1];
-            glGenVertexArrays(n, VAOs);
-            std::vector<VertexArray*> arrays;
-            while (n > 0) {
-                arrays.push_back(new VertexArray(*VAOs));
-                ++ VAOs; -- n;
-            }
-            delete [] VAOs;
-            return arrays;
-        }
-        
         static VertexArray * resumePreviousBinding() {
             VertexArray * prev = previousBinding;
             if (prev) {

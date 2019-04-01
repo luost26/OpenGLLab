@@ -26,18 +26,6 @@ namespace wglfw {
             glGenBuffers(1, &_buffer);
         }
         
-        static std::vector<Buffer*> createMany(int n) {
-            unsigned int * _bs = new unsigned int[n+1];
-            glGenBuffers(n, _bs);
-            std::vector<Buffer*> vec;
-            while (n > 0) {
-                vec.push_back(new Buffer(*_bs));
-                ++ _bs; -- n;
-            }
-            delete [] _bs;
-            return vec;
-        }
-        
         unsigned int buffer() {
             return _buffer;
         }
