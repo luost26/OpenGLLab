@@ -11,8 +11,7 @@
 #include "basic_lighting.hpp"
 #include "model.hpp"
 #include "depth_stencil_test.hpp"
-
-#include "Objects/PointLight.hpp"
-#include "Objects/Box.hpp"
+#include "blending.hpp"
+#include "framebuffer.hpp"
 
 #endif /* playground_hpp */

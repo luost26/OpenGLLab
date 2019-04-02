@@ -3,5 +3,5 @@
 using namespace playground;
 
 int main() {
-    return DepthStencilTest::main();
+    return Framebuffer::main();
 }

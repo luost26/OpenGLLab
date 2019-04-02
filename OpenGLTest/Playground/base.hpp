@@ -13,12 +13,25 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include <iostream>
-#include <cmath>
-#include <cstdlib>
+#include <math.h>
+#include <stdlib.h>
+#include <string>
 
 using namespace wglfw;
 
 namespace playground {
+    
+    const std::string SHADER_DIRECTORY = "/Users/tommyluo/workspace/Project/OpenGLTest/Shaders";
+    const std::string TEXTURE_DIRECTORY = "/Users/tommyluo/workspace/Project/OpenGLTest/Textures";
+    
+    std::string shader_path(const char * fn) {
+        return SHADER_DIRECTORY + "/" + fn;
+    }
+    
+    std::string texture_path(const char * fn) {
+        return TEXTURE_DIRECTORY + "/" + fn;
+    }
+    
     class Base {
     public:
         
@@ -50,6 +63,13 @@ namespace playground {
         
         static unsigned int getDefaultScreenHeight() {
             return 600;
+        }
+        
+        static unsigned int realScreenSize(unsigned s) {
+#ifdef __APPLE__
+            return 2*s;
+#endif
+            return s;
         }
         
         static void processInput(Window *window) {
