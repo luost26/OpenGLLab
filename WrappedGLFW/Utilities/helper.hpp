@@ -32,10 +32,10 @@ namespace wglfw {
         return program;
     }
     
-    Texture * simple_texture(const std::string & path) {
+    Texture2D * simple_texture(const std::string & path, GLenum wrap = GL_REPEAT) {
         Texture2D * texture = new Texture2D();
         TextureImage * img = TextureImage::fromPath(path.c_str());
-        texture->bind()->wrapS(GL_REPEAT)->wrapT(GL_REPEAT)
+        texture->bind()->wrapS(wrap)->wrapT(wrap)
                     ->minFilter(GL_LINEAR_MIPMAP_LINEAR)->magFilter(GL_LINEAR)
                     ->loadImage(img)->generateMipmap();
         delete img;

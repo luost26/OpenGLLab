@@ -16,6 +16,8 @@
 #include "VertexArray.hpp"
 #include "ArrayBuffer.hpp"
 #include "Texture.hpp"
+#include "FrameBuffer.hpp"
+#include "RenderBuffer.hpp"
 
 /****** Utilities ******/
 #include "Utilities/helper.hpp"

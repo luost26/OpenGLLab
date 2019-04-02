@@ -238,6 +238,12 @@ namespace wglfw {
             return this;
         }
         
+        Texture2D * empty(unsigned int width, unsigned int height, GLenum format) {
+            assertIsBound();
+            glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, NULL);
+            return this;
+        }
+        
         Texture2D * loadImage(TextureImage * loader) {
             assertIsBound();
             glTexImage2D(GL_TEXTURE_2D, loader->_level, loader->_format, loader->width, loader->height,
