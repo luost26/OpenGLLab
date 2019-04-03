@@ -53,7 +53,7 @@
 		8912EF6E22476F320040AE27 /* basic.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = basic.vert; sourceTree = "<group>"; };
 		8912EF6F224770220040AE27 /* lamp.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = lamp.frag; sourceTree = "<group>"; };
 		8912EF702247707E0040AE27 /* object.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = object.frag; sourceTree = "<group>"; };
-		893BEB82223FB1D100C92EA1 /* OpenGLTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = OpenGLTest; sourceTree = BUILT_PRODUCTS_DIR; };
+		893BEB82223FB1D100C92EA1 /* OpenGLLab */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = OpenGLLab; sourceTree = BUILT_PRODUCTS_DIR; };
 		893BEB85223FB1D100C92EA1 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		893BEB8D223FB28200C92EA1 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		893BEB8F223FB28800C92EA1 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
@@ -253,7 +253,7 @@
 				899BF9E1224F613F00630C0E /* Models */,
 				8912EF5C224092570040AE27 /* Textures */,
 				893BEB99223FB62D00C92EA1 /* Shaders */,
-				893BEB84223FB1D100C92EA1 /* OpenGLTest */,
+				893BEB84223FB1D100C92EA1 /* OpenGLLab */,
 				893BEB83223FB1D100C92EA1 /* Products */,
 				893BEB8C223FB28200C92EA1 /* Frameworks */,
 			);
@@ -262,19 +262,19 @@
 		893BEB83223FB1D100C92EA1 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				893BEB82223FB1D100C92EA1 /* OpenGLTest */,
+				893BEB82223FB1D100C92EA1 /* OpenGLLab */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		893BEB84223FB1D100C92EA1 /* OpenGLTest */ = {
+		893BEB84223FB1D100C92EA1 /* OpenGLLab */ = {
 			isa = PBXGroup;
 			children = (
 				8912EF63224769120040AE27 /* Playground */,
 				893BEB85223FB1D100C92EA1 /* main.cpp */,
 				893BEB97223FB31900C92EA1 /* glad.c */,
 			);
-			path = OpenGLTest;
+			path = OpenGLLab;
 			sourceTree = "<group>";
 		};
 		893BEB8C223FB28200C92EA1 /* Frameworks */ = {
@@ -509,9 +509,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		893BEB81223FB1D100C92EA1 /* OpenGLTest */ = {
+		893BEB81223FB1D100C92EA1 /* OpenGLLab */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 893BEB89223FB1D100C92EA1 /* Build configuration list for PBXNativeTarget "OpenGLTest" */;
+			buildConfigurationList = 893BEB89223FB1D100C92EA1 /* Build configuration list for PBXNativeTarget "OpenGLLab" */;
 			buildPhases = (
 				893BEB7E223FB1D100C92EA1 /* Sources */,
 				893BEB7F223FB1D100C92EA1 /* Frameworks */,
@@ -521,9 +521,9 @@
 			);
 			dependencies = (
 			);
-			name = OpenGLTest;
+			name = OpenGLLab;
 			productName = OpenGLTest;
-			productReference = 893BEB82223FB1D100C92EA1 /* OpenGLTest */;
+			productReference = 893BEB82223FB1D100C92EA1 /* OpenGLLab */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -540,7 +540,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 893BEB7D223FB1D100C92EA1 /* Build configuration list for PBXProject "OpenGLTest" */;
+			buildConfigurationList = 893BEB7D223FB1D100C92EA1 /* Build configuration list for PBXProject "OpenGLLab" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -552,7 +552,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				893BEB81223FB1D100C92EA1 /* OpenGLTest */,
+				893BEB81223FB1D100C92EA1 /* OpenGLLab */,
 			);
 		};
 /* End PBXProject section */
@@ -722,7 +722,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		893BEB7D223FB1D100C92EA1 /* Build configuration list for PBXProject "OpenGLTest" */ = {
+		893BEB7D223FB1D100C92EA1 /* Build configuration list for PBXProject "OpenGLLab" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				893BEB87223FB1D100C92EA1 /* Debug */,
@@ -731,7 +731,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		893BEB89223FB1D100C92EA1 /* Build configuration list for PBXNativeTarget "OpenGLTest" */ = {
+		893BEB89223FB1D100C92EA1 /* Build configuration list for PBXNativeTarget "OpenGLLab" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				893BEB8A223FB1D100C92EA1 /* Debug */,

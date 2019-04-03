@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:OpenGLTest.xcodeproj">
+      location = "self:/Users/tommyluo/workspace/Project/OpenGLLab/OpenGLLab.xcodeproj">
    </FileRef>
 </Workspace>

@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "893BEB81223FB1D100C92EA1"
-               BuildableName = "OpenGLTest"
-               BlueprintName = "OpenGLTest"
-               ReferencedContainer = "container:OpenGLTest.xcodeproj">
+               BuildableName = "OpenGLLab"
+               BlueprintName = "OpenGLLab"
+               ReferencedContainer = "container:OpenGLLab.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "893BEB81223FB1D100C92EA1"
-            BuildableName = "OpenGLTest"
-            BlueprintName = "OpenGLTest"
-            ReferencedContainer = "container:OpenGLTest.xcodeproj">
+            BuildableName = "OpenGLLab"
+            BlueprintName = "OpenGLLab"
+            ReferencedContainer = "container:OpenGLLab.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -56,9 +56,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "893BEB81223FB1D100C92EA1"
-            BuildableName = "OpenGLTest"
-            BlueprintName = "OpenGLTest"
-            ReferencedContainer = "container:OpenGLTest.xcodeproj">
+            BuildableName = "OpenGLLab"
+            BlueprintName = "OpenGLLab"
+            ReferencedContainer = "container:OpenGLLab.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -75,9 +75,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "893BEB81223FB1D100C92EA1"
-            BuildableName = "OpenGLTest"
-            BlueprintName = "OpenGLTest"
-            ReferencedContainer = "container:OpenGLTest.xcodeproj">
+            BuildableName = "OpenGLLab"
+            BlueprintName = "OpenGLLab"
+            ReferencedContainer = "container:OpenGLLab.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
