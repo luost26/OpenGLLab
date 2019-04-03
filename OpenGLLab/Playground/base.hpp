@@ -21,8 +21,8 @@ using namespace wglfw;
 
 namespace playground {
     
-    const std::string SHADER_DIRECTORY = "/Users/tommyluo/workspace/Project/OpenGLTest/Shaders";
-    const std::string TEXTURE_DIRECTORY = "/Users/tommyluo/workspace/Project/OpenGLTest/Textures";
+    const std::string SHADER_DIRECTORY = "/Users/tommyluo/workspace/Project/OpenGLLab/Shaders";
+    const std::string TEXTURE_DIRECTORY = "/Users/tommyluo/workspace/Project/OpenGLLab/Textures";
     
     std::string shader_path(const char * fn) {
         return SHADER_DIRECTORY + "/" + fn;
