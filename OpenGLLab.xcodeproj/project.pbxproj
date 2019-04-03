@@ -130,6 +130,7 @@
 		8991FBF32253DEB900240AC0 /* alps_bk.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = alps_bk.tga; sourceTree = "<group>"; };
 		8991FBF42253DEB900240AC0 /* hw_alps.shader */ = {isa = PBXFileReference; lastKnownFileType = text; path = hw_alps.shader; sourceTree = "<group>"; };
 		8991FBF52253DEB900240AC0 /* license.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = license.txt; sourceTree = "<group>"; };
+		8991FBF62254A77D00240AC0 /* wglfw.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = wglfw.hpp; sourceTree = "<group>"; };
 		899BF9DD224F3B4100630C0E /* AssimpModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = AssimpModel.hpp; sourceTree = "<group>"; };
 		899BF9DF224F60A500630C0E /* model.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = model.vert; sourceTree = "<group>"; };
 		899BF9E0224F60B500630C0E /* model.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = model.frag; sourceTree = "<group>"; };
@@ -321,6 +322,7 @@
 				8991FBC42252288C00240AC0 /* RenderBuffer.hpp */,
 				8912EF4A223FD1ED0040AE27 /* support.hpp */,
 				8912EF49223FD0A80040AE27 /* loader.hpp */,
+				8991FBF62254A77D00240AC0 /* wglfw.hpp */,
 			);
 			path = WrappedGLFW;
 			sourceTree = "<group>";
