@@ -259,6 +259,67 @@ namespace wglfw {
         
     };
     
+    class TextureCubeMap : public Texture {
+    public:
+        TextureCubeMap() : Texture() {}
+        
+        TextureCubeMap * bind() {
+            glBindTexture(GL_TEXTURE_CUBE_MAP, _texture);
+            return this;
+        }
+        
+        bool isBound() {
+            int b;
+            glGetIntegerv(GL_TEXTURE_BINDING_CUBE_MAP, &b);
+            return b == _texture;
+        }
+        
+        TextureCubeMap * loadImage(GLenum target, TextureImage * loader) {
+            assertIsBound();
+            glTexImage2D(target, loader->_level, loader->_format, loader->width, loader->height,
+                         0, loader->_format, GL_UNSIGNED_BYTE, loader->data);
+            return this;
+        }
+        
+        TextureCubeMap * loadImages(std::vector<TextureImage*> imgs) {
+            for (int i = 0; i < imgs.size(); ++ i) {
+                loadImage(GL_TEXTURE_CUBE_MAP_POSITIVE_X+i, imgs[i]);
+            }
+            return this;
+        }
+        
+        TextureCubeMap * wrapS(int v) {
+            assertIsBound();
+            glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, v);
+            return this;
+        }
+        
+        TextureCubeMap * wrapT(int v) {
+            assertIsBound();
+            glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, v);
+            return this;
+        }
+        
+        TextureCubeMap * wrapR(int v) {
+            assertIsBound();
+            glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, v);
+            return this;
+        }
+        
+        TextureCubeMap * minFilter(int v) {
+            assertIsBound();
+            glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, v);
+            return this;
+        }
+        
+        TextureCubeMap * magFilter(int v) {
+            assertIsBound();
+            glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, v);
+            return this;
+        }
+        
+    };
+    
 }
 
 #endif /* Texture_hpp */

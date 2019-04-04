@@ -41,6 +41,21 @@ namespace wglfw {
         delete img;
         return texture;
     }
+    
+    TextureCubeMap * simple_cube_map(std::vector<std::string> & paths) {
+        TextureCubeMap * cube_map = new TextureCubeMap();
+        std::vector<TextureImage *> imgs;
+        for (std::string path : paths) {
+            imgs.push_back(TextureImage::fromPath(path.c_str()));
+        }
+        cube_map->bind()->loadImages(imgs)
+            ->wrapS(GL_CLAMP_TO_EDGE)->wrapT(GL_CLAMP_TO_EDGE)->wrapR(GL_CLAMP_TO_EDGE)
+            ->minFilter(GL_LINEAR)->magFilter(GL_LINEAR);
+        for (TextureImage * img : imgs) {
+            delete img;
+        }
+        return cube_map;
+    }
 }
 
 #endif /* helper_hpp */
