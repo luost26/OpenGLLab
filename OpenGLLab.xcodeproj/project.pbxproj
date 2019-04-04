@@ -61,6 +61,8 @@
 		893BEB93223FB29500C92EA1 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		893BEB95223FB2A000C92EA1 /* libglfw.3.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libglfw.3.2.dylib; path = ../../../../../usr/local/Cellar/glfw/3.2.1/lib/libglfw.3.2.dylib; sourceTree = "<group>"; };
 		893BEB9A223FB64200C92EA1 /* simple.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = simple.vert; sourceTree = "<group>"; };
+		8941CBA422567F2D0028FC72 /* Skybox.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Skybox.hpp; sourceTree = "<group>"; };
+		8941CBA5225681F60028FC72 /* skybox.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = skybox.hpp; sourceTree = "<group>"; };
 		894C67A9224C6404001FEB32 /* model.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = model.hpp; sourceTree = "<group>"; };
 		894C67AA224C6906001FEB32 /* libassimp.4.1.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libassimp.4.1.0.dylib; path = ../../../../../usr/local/Cellar/assimp/4.1.0/lib/libassimp.4.1.0.dylib; sourceTree = "<group>"; };
 		894C67AC224C6BBF001FEB32 /* Mesh.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Mesh.hpp; sourceTree = "<group>"; };
@@ -225,6 +227,7 @@
 				8991FBAD224F8B5500240AC0 /* depth_stencil_test.hpp */,
 				8991FBB42251A92200240AC0 /* blending.hpp */,
 				8991FBC522522B9200240AC0 /* framebuffer.hpp */,
+				8941CBA5225681F60028FC72 /* skybox.hpp */,
 				8912EF67224769BD0040AE27 /* playground.hpp */,
 			);
 			path = Playground;
@@ -336,6 +339,7 @@
 				8991FBAB224F7ED400240AC0 /* Box.hpp */,
 				8991FBB1224F973800240AC0 /* Floor.hpp */,
 				8991FBBF2251BB1500240AC0 /* Grass.hpp */,
+				8941CBA422567F2D0028FC72 /* Skybox.hpp */,
 			);
 			path = Objects;
 			sourceTree = "<group>";
