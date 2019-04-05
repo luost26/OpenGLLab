@@ -51,7 +51,7 @@ namespace wglfw {
         }
         
     public:
-        Camera(const glm::vec3 & eye, const glm::vec3 & center, const glm::vec3 & top, const glm::vec3 & worldtop, unsigned int & width, unsigned int & height, const float & fov=45.0, const float & fov_near=0.1, const float & fov_far=100.0) {
+        Camera(const glm::vec3 & eye, const glm::vec3 & center, const glm::vec3 & top, const glm::vec3 & worldtop, const unsigned int & width, const unsigned int & height, const float & fov=45.0, const float & fov_near=0.1, const float & fov_far=100.0) {
             _position = eye;
             _front = glm::normalize(center - eye);
             _up = glm::normalize(top);
@@ -66,7 +66,7 @@ namespace wglfw {
             updateProjectionMatrix();
         }
         
-        Camera(const glm::vec3 & eye, const float yaw, const float pitch, const glm::vec3 & worldtop, unsigned int & width, unsigned int & height, const float & fov=45.0, const float & fov_near=0.1, const float & fov_far=100.0) {
+        Camera(const glm::vec3 & eye, const float yaw, const float pitch, const glm::vec3 & worldtop, const unsigned int & width, const unsigned int & height, const float & fov=45.0, const float & fov_near=0.1, const float & fov_far=100.0) {
             _position = eye;
             _worldUp = worldtop;
             _viewportWidth = width;
@@ -78,7 +78,7 @@ namespace wglfw {
             updateProjectionMatrix();
         }
         
-        Camera(const glm::vec3 & eye, const glm::vec3 & center, const glm::vec3 & top, unsigned int & width, unsigned int & height, const float & fov=45.0, const float & fov_near=0.1, const float & fov_far=100.0): Camera(eye, center, top, top, width, height, fov, fov_near, fov_far) {}
+        Camera(const glm::vec3 & eye, const glm::vec3 & center, const glm::vec3 & top, const unsigned int & width, const unsigned int & height, const float & fov=45.0, const float & fov_near=0.1, const float & fov_far=100.0): Camera(eye, center, top, top, width, height, fov, fov_near, fov_far) {}
         
         inline const glm::mat4 viewMatrix() const {
             return glm::lookAt(_position, _position+_front, _up);
