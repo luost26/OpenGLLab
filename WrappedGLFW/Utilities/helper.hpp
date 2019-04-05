@@ -42,7 +42,7 @@ namespace wglfw {
         return texture;
     }
     
-    TextureCubeMap * simple_cube_map(std::vector<std::string> & paths) {
+    TextureCubeMap * simple_cube_map(const std::vector<std::string> & paths) {
         TextureCubeMap * cube_map = new TextureCubeMap();
         std::vector<TextureImage *> imgs;
         for (std::string path : paths) {
