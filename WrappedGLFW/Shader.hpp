@@ -105,6 +105,10 @@ namespace wglfw {
             return new VertexShader();
         }
         
+        static VertexShader * create() {
+            return new VertexShader();
+        }
+        
         VertexShader * source(ShaderSource * source) {
             Shader::source(source);
             return this;
@@ -121,6 +125,10 @@ namespace wglfw {
     class FragmentShader : public Shader {
     public:
         static FragmentShader * make() {
+            return new FragmentShader();
+        }
+        
+        static FragmentShader * create() {
             return new FragmentShader();
         }
         

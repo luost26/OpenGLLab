@@ -63,6 +63,12 @@
 		893BEB9A223FB64200C92EA1 /* simple.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = simple.vert; sourceTree = "<group>"; };
 		8941CBA422567F2D0028FC72 /* Skybox.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Skybox.hpp; sourceTree = "<group>"; };
 		8941CBA5225681F60028FC72 /* skybox.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = skybox.hpp; sourceTree = "<group>"; };
+		8941CBA72257C8090028FC72 /* bottom.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bottom.jpg; sourceTree = "<group>"; };
+		8941CBA82257C8090028FC72 /* left.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = left.jpg; sourceTree = "<group>"; };
+		8941CBA92257C8090028FC72 /* top.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = top.jpg; sourceTree = "<group>"; };
+		8941CBAA2257C8090028FC72 /* back.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = back.jpg; sourceTree = "<group>"; };
+		8941CBAB2257C8090028FC72 /* right.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = right.jpg; sourceTree = "<group>"; };
+		8941CBAC2257C8090028FC72 /* front.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = front.jpg; sourceTree = "<group>"; };
 		894C67A9224C6404001FEB32 /* model.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = model.hpp; sourceTree = "<group>"; };
 		894C67AA224C6906001FEB32 /* libassimp.4.1.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libassimp.4.1.0.dylib; path = ../../../../../usr/local/Cellar/assimp/4.1.0/lib/libassimp.4.1.0.dylib; sourceTree = "<group>"; };
 		894C67AC224C6BBF001FEB32 /* Mesh.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Mesh.hpp; sourceTree = "<group>"; };
@@ -199,6 +205,7 @@
 		8912EF5C224092570040AE27 /* Textures */ = {
 			isa = PBXGroup;
 			children = (
+				8941CBA62257C8090028FC72 /* skybox */,
 				8991FBC92253DEB800240AC0 /* ely_cloudtop */,
 				8991FBED2253DEB900240AC0 /* hw_alps */,
 				8991FBE42253DEB900240AC0 /* hw_morning */,
@@ -330,6 +337,19 @@
 				8991FBF62254A77D00240AC0 /* wglfw.hpp */,
 			);
 			path = WrappedGLFW;
+			sourceTree = "<group>";
+		};
+		8941CBA62257C8090028FC72 /* skybox */ = {
+			isa = PBXGroup;
+			children = (
+				8941CBA72257C8090028FC72 /* bottom.jpg */,
+				8941CBA82257C8090028FC72 /* left.jpg */,
+				8941CBA92257C8090028FC72 /* top.jpg */,
+				8941CBAA2257C8090028FC72 /* back.jpg */,
+				8941CBAB2257C8090028FC72 /* right.jpg */,
+				8941CBAC2257C8090028FC72 /* front.jpg */,
+			);
+			path = skybox;
 			sourceTree = "<group>";
 		};
 		8991FBAA224F7EB600240AC0 /* Objects */ = {

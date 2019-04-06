@@ -13,5 +13,6 @@
 #include "depth_stencil_test.hpp"
 #include "blending.hpp"
 #include "framebuffer.hpp"
+#include "skybox.hpp"
 
 #endif /* playground_hpp */

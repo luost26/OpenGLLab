@@ -97,7 +97,7 @@ namespace wglfw {
         Program * setTexture(const char * name, TextureUnit * unit) {
             return setInt(name, unit->getUnitNumber());
         }
-        
+                
     };
     
 }

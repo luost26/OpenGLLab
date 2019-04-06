@@ -38,7 +38,8 @@ namespace playground {
 "uniform samplerCube skybox; \n"
     
 "void main() { \n"
-"    FragColor = texture(skybox, TexCoords); \n"
+/* https://stackoverflow.com/questions/11685608/convention-of-faces-in-opengl-cubemapping */
+"    FragColor = texture(skybox, vec3(TexCoords.x, -TexCoords.y, TexCoords.z)); \n"
 "}";
     
     const float SKYBOX_VERTICES[] = {
@@ -97,32 +98,37 @@ namespace playground {
     public:
         SkyboxCubeMap() {};
         
-        SkyboxCubeMap * right(std::string & path) {
+        static SkyboxCubeMap * create() {
+            SkyboxCubeMap * inst = new SkyboxCubeMap;
+            return inst;
+        }
+        
+        SkyboxCubeMap * right(const std::string & path) {
             _right = path;
             return this;
         }
         
-        SkyboxCubeMap * left(std::string & path) {
+        SkyboxCubeMap * left(const std::string & path) {
             _left = path;
             return this;
         }
         
-        SkyboxCubeMap * top(std::string & path) {
+        SkyboxCubeMap * top(const std::string & path) {
             _top = path;
             return this;
         }
         
-        SkyboxCubeMap * bottom(std::string & path) {
+        SkyboxCubeMap * bottom(const std::string & path) {
             _bottom = path;
             return this;
         }
         
-        SkyboxCubeMap * front(std::string & path) {
+        SkyboxCubeMap * front(const std::string & path) {
             _front = path;
             return this;
         }
         
-        SkyboxCubeMap * back(std::string & path) {
+        SkyboxCubeMap * back(const std::string & path) {
             _back = path;
             return this;
         }
@@ -139,7 +145,7 @@ namespace playground {
         
         std::vector<std::string> compose() {
             std::vector<std::string> vec{
-                _right, _left, _top, _bottom, _front, _back
+                _right, _left, _bottom, _top, _front, _back
             };
             return vec;
         }
@@ -171,12 +177,45 @@ namespace playground {
         void initVertexArray() {
             _VAO = new VertexArray();
             _VBO = new ArrayBuffer();
+            _VAO->bind();
+            _VBO->bind();
             
+            _VBO->load(sizeof(SKYBOX_VERTICES), SKYBOX_VERTICES, GL_STATIC_DRAW);
+            _VBO->getVertexAttributePointer(VertexAttributePointerConfiguration::make()
+                                            ->index(0)
+                                            ->size(3)
+                                            ->type(GL_FLOAT)
+                                            ->normalized(GL_FALSE)
+                                            ->stride(3*sizeof(float))
+                                            ->pointer(0)
+                                            )->enable();
+            
+            VertexArray::resumePreviousBinding();
+        }
+        
+        void initTextures(SkyboxCubeMap * maps) {
+            _cubemap = simple_cube_map(maps->compose());
         }
         
     public:
         Skybox(SkyboxCubeMap * maps) {
+            initShaderProgram();
+            initVertexArray();
+            initTextures(maps);
+        }
+        
+        void draw(Camera * camera) {
+            _program->use();
+            _VAO->bind();
             
+            _program->setMatrix4("projection", camera->projectionMatrix());
+            _program->setMatrix4("view", glm::mat4(glm::mat3(camera->viewMatrix())));
+            _cubemap->bindToTextureUnit(TextureUnit::get(0));
+            _program->setTexture("skybox", TextureUnit::get(0));
+            
+            GL::drawArrays(GL_TRIANGLES, 0, 36);
+            
+            VertexArray::resumePreviousBinding();
         }
     };
 

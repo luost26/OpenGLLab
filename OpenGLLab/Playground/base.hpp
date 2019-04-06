@@ -46,7 +46,7 @@ namespace playground {
         
         static Camera * getCamera() {
             if (cam == NULL) {
-                cam = new Camera(glm::vec3(0, 0.0, 3.0), glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 1.0, 0.0));
+                cam = new Camera(glm::vec3(0, 0.0, 3.0), glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 1.0, 0.0), getDefaultScreenWidth(), getDefaultScreenHeight());
             }
             return cam;
         }
@@ -102,10 +102,17 @@ namespace playground {
             cam->lookUp(degspeed);
             if (window->getKey(GLFW_KEY_F) == GLFW_PRESS)
             cam->lookDown(degspeed);
+            
+            if (window->getKey(GLFW_KEY_EQUAL) == GLFW_PRESS)
+                cam->zoomIn(5*degspeed);
+            if (window->getKey(GLFW_KEY_MINUS) == GLFW_PRESS)
+                cam->zoomOut(5*degspeed);
         }
         
         static void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
             GL::setViewport(0, 0, width, height);
+            getCamera()->setViewportWidth(width);
+            getCamera()->setViewportHeight(height);
         }
         
         static Window * initializeEnvAndCreateWindow() {

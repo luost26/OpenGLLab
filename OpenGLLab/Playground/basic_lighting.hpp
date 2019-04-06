@@ -203,7 +203,7 @@ namespace playground {
             
             glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
             
-            cam = new Camera(glm::vec3(0, 3.0, 3.0), glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 1.0, 0.0));
+            cam = new Camera(glm::vec3(0, 3.0, 3.0), glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 1.0, 0.0), 800, 600);
             
             glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
             glm::vec3 objectColor(1.0f, 0.5f, 0.31f);
