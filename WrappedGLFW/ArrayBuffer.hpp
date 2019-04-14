@@ -8,46 +8,10 @@
 #define ArrayBuffer_hpp
 
 #include "support.hpp"
+#include "Buffer.hpp"
 
 namespace wglfw {
-    
-    class BufferNotBoundException : Exception {
-        const char * what () const throw () {
-            return "The given buffer is not bound.";
-        }
-    };
-    
-    class Buffer {
-    protected:
-        unsigned int _buffer;
-        Buffer(unsigned int i): _buffer(i) {}
-    public:
-        Buffer() {
-            glGenBuffers(1, &_buffer);
-        }
-        
-        unsigned int buffer() {
-            return _buffer;
-        }
-        
-        virtual Buffer * bind() {
-            return this;
-        }
-        virtual Buffer * unbind() {
-            return this;
-        }
-        virtual bool isBound() {
-            return false;
-        }
-        virtual Buffer * load(GLsizeiptr size, const GLvoid * data, GLenum usage) {
-            return this;
-        }
-        
-        virtual ~Buffer() {
-            glDeleteBuffers(1, &_buffer);
-        }
-    };
-    
+
     class VertexAttributePointer {        
     public:
         unsigned int index;

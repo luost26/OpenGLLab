@@ -11,9 +11,6 @@
 #include "Shader.hpp"
 #include "Texture.hpp"
 
-#include <glm/glm.hpp>
-#include <glm/gtc/type_ptr.hpp>
-
 namespace wglfw {
     
     class ProgramLinkException {
@@ -67,6 +64,15 @@ namespace wglfw {
         
         int getUniformLocation(const char * name) {
             return glGetUniformLocation(_program, name);
+        }
+        
+        int getUniformBlockIndex(const char * name) {
+            return glGetUniformBlockIndex(_program, name);
+        }
+        
+        Program * setUniformBlockBinding(const char * name, unsigned int binding_point) {
+            glUniformBlockBinding(_program, getUniformBlockIndex(name), binding_point);
+            return this;
         }
         
         Program * setFloat(const char * name, float value) {
