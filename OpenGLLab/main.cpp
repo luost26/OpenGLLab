@@ -1,10 +1,8 @@
 #include "Playground/playground.hpp"
 
-using namespace playground;
-
 int main() {
     try {
-        return Framebuffer::main();
+        return playground::GeometryShader::main();
     } catch (ShaderCompilationException e) {
         std::cerr << e.what() << std::endl;
         return -1;

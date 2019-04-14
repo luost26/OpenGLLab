@@ -70,12 +70,18 @@ namespace playground {
                 prog->use();
             }
             
-            textureDiffuse->bindToTextureUnit(TextureUnit::get(0));
-            textureSpecular->bindToTextureUnit(TextureUnit::get(1));
-            prog->setTexture("material.texture_diffuse0", TextureUnit::get(0))
-                ->setTexture("material.texture_specular0", TextureUnit::get(1))
-                ->setFloat("material.shininess", 32)
-                ->setMatrix4("model", model);
+            if (textureDiffuse) {
+                textureDiffuse->bindToTextureUnit(TextureUnit::get(0));
+                prog->setTexture("material.texture_diffuse0", TextureUnit::get(0));
+            }
+            
+            if (textureSpecular) {
+                textureSpecular->bindToTextureUnit(TextureUnit::get(1));
+                prog->setTexture("material.texture_specular0", TextureUnit::get(1))
+                ->setFloat("material.shininess", 32);
+            }
+                        
+            prog->setMatrix4("model", model);
             
             VAO->bind();
             

@@ -23,13 +23,18 @@ namespace playground {
     
     const std::string SHADER_DIRECTORY = "/Users/tommyluo/workspace/Project/OpenGLLab/Shaders";
     const std::string TEXTURE_DIRECTORY = "/Users/tommyluo/workspace/Project/OpenGLLab/Textures";
-    
+    const std::string MODEL_DIRECTORY = "/Users/tommyluo/workspace/Project/OpenGLLab/Models";
+
     std::string shader_path(const char * fn) {
         return SHADER_DIRECTORY + "/" + fn;
     }
     
     std::string texture_path(const char * fn) {
         return TEXTURE_DIRECTORY + "/" + fn;
+    }
+    
+    std::string model_path(const char * fn) {
+        return MODEL_DIRECTORY + "/" + fn;
     }
     
     class Base {
@@ -104,9 +109,9 @@ namespace playground {
             cam->lookDown(degspeed);
             
             if (window->getKey(GLFW_KEY_EQUAL) == GLFW_PRESS)
-                cam->zoomIn(5*degspeed);
+                cam->zoomIn(10*degspeed);
             if (window->getKey(GLFW_KEY_MINUS) == GLFW_PRESS)
-                cam->zoomOut(5*degspeed);
+                cam->zoomOut(10*degspeed);
         }
         
         static void framebuffer_size_callback(GLFWwindow* window, int width, int height) {

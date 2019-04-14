@@ -14,5 +14,7 @@
 #include "blending.hpp"
 #include "framebuffer.hpp"
 #include "skybox.hpp"
+#include "advanced_glsl.hpp"
+#include "geometry_shader.hpp"
 
 #endif /* playground_hpp */
