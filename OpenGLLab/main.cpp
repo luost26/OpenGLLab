@@ -2,7 +2,7 @@
 
 int main() {
     try {
-        return playground::AdvancedLighting::main();
+        return playground::Shadow::main();
     } catch (ShaderCompilationException e) {
         std::cerr << e.what() << std::endl;
         return -1;

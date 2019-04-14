@@ -6,8 +6,6 @@ set(CMAKE_CXX_STANDARD 14)
 include_directories(/usr/local/include)
 include_directories(glad/include)
 include_directories(include)
-include_directories(WrappedGLFW)
-include_directories(OpenGLLab/Playground)
 
 add_executable(OpenGLLab
         glad/src/glad.c
