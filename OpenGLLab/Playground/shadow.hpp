@@ -25,6 +25,8 @@ namespace playground {
                 GLFW::swapBuffers(window);
                 GLFW::pollEvents();
             }
+            
+            return 0;
         }
     };
     
