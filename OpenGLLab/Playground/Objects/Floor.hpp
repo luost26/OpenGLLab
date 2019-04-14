@@ -22,6 +22,10 @@ namespace playground {
         Texture *colorTex, *normTex, *occTex, *roughTex;
     public:
         Floor(float ts = 1.0f) {
+            colorTex = NULL;
+            normTex = NULL;
+            occTex = NULL;
+            roughTex = NULL;
             float v[6*5] = {
                 1.0f, 0.0f, 1.0f, ts, 0.0f,
                 -1.0f, 0.0f, -1.0f, 0.0f, ts,
@@ -80,10 +84,10 @@ namespace playground {
                 prog->use();
             }
             
-            colorTex->bindToTextureUnit(TextureUnit::get(0));
-            normTex->bindToTextureUnit(TextureUnit::get(1));
-            occTex->bindToTextureUnit(TextureUnit::get(2));
-            roughTex->bindToTextureUnit(TextureUnit::get(3));
+            if (colorTex) colorTex->bindToTextureUnit(TextureUnit::get(0));
+            if (normTex)  normTex->bindToTextureUnit(TextureUnit::get(1));
+            if (occTex)   occTex->bindToTextureUnit(TextureUnit::get(2));
+            if (roughTex) roughTex->bindToTextureUnit(TextureUnit::get(3));
             
             prog->setMatrix4("model", model)
                 ->setTexture("color_texture", TextureUnit::get(0))

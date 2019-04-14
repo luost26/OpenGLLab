@@ -84,6 +84,11 @@
 		8941CBBD226052B80028FC72 /* normal.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = normal.frag; sourceTree = "<group>"; };
 		8941CBBE226373DC0028FC72 /* model.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = model.vert; sourceTree = "<group>"; };
 		8941CBBF226373E40028FC72 /* model.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = model.frag; sourceTree = "<group>"; };
+		8941CBC122637A590028FC72 /* advanced_lighting.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = advanced_lighting.hpp; sourceTree = "<group>"; };
+		8941CBC322637C0E0028FC72 /* floor.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = floor.vert; sourceTree = "<group>"; };
+		8941CBC422637C170028FC72 /* floor.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = floor.frag; sourceTree = "<group>"; };
+		8941CBC52263901C0028FC72 /* wood.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wood.png; sourceTree = "<group>"; };
+		8941CBC6226399BC0028FC72 /* shadow.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = shadow.hpp; sourceTree = "<group>"; };
 		894C67A9224C6404001FEB32 /* model.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = model.hpp; sourceTree = "<group>"; };
 		894C67AA224C6906001FEB32 /* libassimp.4.1.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libassimp.4.1.0.dylib; path = ../../../../../usr/local/Cellar/assimp/4.1.0/lib/libassimp.4.1.0.dylib; sourceTree = "<group>"; };
 		894C67AC224C6BBF001FEB32 /* Mesh.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Mesh.hpp; sourceTree = "<group>"; };
@@ -220,6 +225,7 @@
 		8912EF5C224092570040AE27 /* Textures */ = {
 			isa = PBXGroup;
 			children = (
+				8941CBC52263901C0028FC72 /* wood.png */,
 				8941CBA62257C8090028FC72 /* skybox */,
 				8991FBC92253DEB800240AC0 /* ely_cloudtop */,
 				8991FBED2253DEB900240AC0 /* hw_alps */,
@@ -252,6 +258,8 @@
 				8941CBA5225681F60028FC72 /* skybox.hpp */,
 				8941CBAD225EDF290028FC72 /* advanced_glsl.hpp */,
 				8941CBB7225F271F0028FC72 /* geometry_shader.hpp */,
+				8941CBC122637A590028FC72 /* advanced_lighting.hpp */,
+				8941CBC6226399BC0028FC72 /* shadow.hpp */,
 				8912EF67224769BD0040AE27 /* playground.hpp */,
 			);
 			path = Playground;
@@ -323,6 +331,7 @@
 		893BEB99223FB62D00C92EA1 /* Shaders */ = {
 			isa = PBXGroup;
 			children = (
+				8941CBC222637BBC0028FC72 /* advanced_lighting */,
 				8941CBB6225EFFCC0028FC72 /* gshader */,
 				8941CBAE225EDFFD0028FC72 /* advanced */,
 				8991FBC62252346500240AC0 /* framebuffer */,
@@ -396,6 +405,15 @@
 				8941CBBF226373E40028FC72 /* model.frag */,
 			);
 			path = gshader;
+			sourceTree = "<group>";
+		};
+		8941CBC222637BBC0028FC72 /* advanced_lighting */ = {
+			isa = PBXGroup;
+			children = (
+				8941CBC322637C0E0028FC72 /* floor.vert */,
+				8941CBC422637C170028FC72 /* floor.frag */,
+			);
+			path = advanced_lighting;
 			sourceTree = "<group>";
 		};
 		8991FBAA224F7EB600240AC0 /* Objects */ = {

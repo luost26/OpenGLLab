@@ -16,5 +16,7 @@
 #include "skybox.hpp"
 #include "advanced_glsl.hpp"
 #include "geometry_shader.hpp"
+#include "advanced_lighting.hpp"
+#include "shadow.hpp"
 
 #endif /* playground_hpp */
