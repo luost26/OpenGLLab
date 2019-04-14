@@ -82,6 +82,8 @@
 		8941CBBB226051C70028FC72 /* normal.geom */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = normal.geom; sourceTree = "<group>"; };
 		8941CBBC2260529B0028FC72 /* normal.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = normal.vert; sourceTree = "<group>"; };
 		8941CBBD226052B80028FC72 /* normal.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = normal.frag; sourceTree = "<group>"; };
+		8941CBBE226373DC0028FC72 /* model.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = model.vert; sourceTree = "<group>"; };
+		8941CBBF226373E40028FC72 /* model.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = model.frag; sourceTree = "<group>"; };
 		894C67A9224C6404001FEB32 /* model.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = model.hpp; sourceTree = "<group>"; };
 		894C67AA224C6906001FEB32 /* libassimp.4.1.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libassimp.4.1.0.dylib; path = ../../../../../usr/local/Cellar/assimp/4.1.0/lib/libassimp.4.1.0.dylib; sourceTree = "<group>"; };
 		894C67AC224C6BBF001FEB32 /* Mesh.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Mesh.hpp; sourceTree = "<group>"; };
@@ -390,6 +392,8 @@
 				8941CBBC2260529B0028FC72 /* normal.vert */,
 				8941CBBB226051C70028FC72 /* normal.geom */,
 				8941CBBD226052B80028FC72 /* normal.frag */,
+				8941CBBE226373DC0028FC72 /* model.vert */,
+				8941CBBF226373E40028FC72 /* model.frag */,
 			);
 			path = gshader;
 			sourceTree = "<group>";

@@ -120,15 +120,21 @@ namespace playground {
             getCamera()->setViewportHeight(height);
         }
         
-        static Window * initializeEnvAndCreateWindow() {
+        static Window * initializeEnvAndCreateWindow(WindowHintList * hints=NULL) {
             GLFW::initialize();
             
-            GLFW::setWindowHints(WindowHintList::create()
-                                 ->contextVersionMajor(4)
-                                 ->contextVersionMinor(1)
-                                 ->openGLProfile(GLFW_OPENGL_CORE_PROFILE)
-                                 ->openGLForwardCompatability(GL_TRUE)
-                                 );
+            if (hints == NULL) {
+                hints = WindowHintList::create()
+                        ->contextVersionMajor(4)
+                        ->contextVersionMinor(1)
+                        ->openGLProfile(GLFW_OPENGL_CORE_PROFILE)
+                        ->openGLForwardCompatability(GL_TRUE);
+                GLFW::setWindowHints(hints);
+                delete hints;
+            } else {
+                GLFW::setWindowHints(hints);
+            }
+            
             
             Window * window = new Window(new WindowConfiguration(getDefaultScreenWidth(), getDefaultScreenHeight(), "Playground"));
             GLFW::makeContextCurrent(window);

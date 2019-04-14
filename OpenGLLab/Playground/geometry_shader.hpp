@@ -52,26 +52,32 @@ namespace playground {
             DefaultMeshTextureNameGeneratorFactory * name_gen_factory = new DefaultMeshTextureNameGeneratorFactory();
             AssimpModel * model = AssimpModel::fromFile(model_path("nanosuit/nanosuit.obj").c_str(), name_gen_factory);
             
-            Program * prog = simple_shader_program(shader_path("gshader/gshader.vert"), shader_path("gshader/gshader.frag"), shader_path("gshader/gshader.geom"));
+            UniformBuffer * cameraUBO = new UniformBuffer();
+            cameraUBO->bind()->load(2*sizeof(glm::mat4), NULL, GL_STATIC_DRAW)->bindRange(0)->unbind();
             
-            Program * model_prog = simple_shader_program(shader_path("model/model.vert"), shader_path("model/model.frag"));
+            Program * house_prog = simple_shader_program(shader_path("gshader/gshader.vert"), shader_path("gshader/gshader.frag"), shader_path("gshader/gshader.geom"));
+            Program * model_prog = simple_shader_program(shader_path("gshader/model.vert"), shader_path("gshader/model.frag"));
+            Program * normal_prog = simple_shader_program(shader_path("gshader/normal.vert"), shader_path("gshader/normal.frag"), shader_path("gshader/normal.geom"));
+            
+            model_prog->setUniformBlockBinding("Camera", 0);
+            normal_prog->setUniformBlockBinding("Camera", 0);
             
             while (!window->shouldClose()) {
                 stopwatch();
                 processInput(window);
                 GL::clear(getDefaultCleanerCollection());
                 
-                prog->use();
+                house_prog->use();
                 VAO->bind();
                 GL::drawArrays(GL_POINTS, 0, 4);
                 
-                model_prog->use()
-                    ->setMatrix4("projection", getCamera()->projectionMatrix())
-                    ->setMatrix4("view", getCamera()->viewMatrix())
-                ->setMatrix4("model", glm::scale(glm::mat4(1.0f), glm::vec3(0.1f, 0.1f, 0.1f)));
+                cameraUBO->bind()->loadSub(0, sizeof(glm::mat4), glm::value_ptr(getCamera()->projectionMatrix()))->loadSub(sizeof(glm::mat4), sizeof(glm::mat4), glm::value_ptr(getCamera()->viewMatrix()))->unbind();
                 
+                model_prog->use()->setMatrix4("model", glm::scale(glm::mat4(1.0f), glm::vec3(0.1f, 0.1f, 0.1f)));
                 model->draw(model_prog);
                 
+                normal_prog->use()->setMatrix4("model", glm::scale(glm::mat4(1.0f), glm::vec3(0.1f, 0.1f, 0.1f)));
+                model->draw(normal_prog);
                 
                 GLFW::swapBuffers(window);
                 GLFW::pollEvents();
