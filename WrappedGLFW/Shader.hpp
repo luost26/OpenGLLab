@@ -8,12 +8,6 @@
 #define Shader_hpp
 
 #include "support.hpp"
-#include <string>
-#include <cstring>
-#include <fstream>
-#include <sstream>
-#include <iostream>
-#include <memory>
 
 namespace wglfw {
     
@@ -101,6 +95,8 @@ namespace wglfw {
     
     class VertexShader : public Shader {
     public:
+        VertexShader(): Shader(GL_VERTEX_SHADER) {}
+
         static VertexShader * make() {
             return new VertexShader();
         }
@@ -118,12 +114,12 @@ namespace wglfw {
             Shader::compile();
             return this;
         }
-        
-        VertexShader(): Shader(GL_VERTEX_SHADER) {}
     };
     
     class FragmentShader : public Shader {
     public:
+        FragmentShader(): Shader(GL_FRAGMENT_SHADER) {}
+        
         static FragmentShader * make() {
             return new FragmentShader();
         }
@@ -141,8 +137,29 @@ namespace wglfw {
             Shader::compile();
             return this;
         }
+    };
+    
+    class GeometryShader : public Shader {
+    public:
+        GeometryShader(): Shader(GL_GEOMETRY_SHADER) {}
         
-        FragmentShader(): Shader(GL_FRAGMENT_SHADER) {}
+        static GeometryShader * make() {
+            return new GeometryShader();
+        }
+        
+        static GeometryShader * create() {
+            return new GeometryShader();
+        }
+        
+        GeometryShader * source(ShaderSource * source) {
+            Shader::source(source);
+            return this;
+        }
+        
+        GeometryShader * compile() {
+            Shader::compile();
+            return this;
+        }
     };
 }
 
