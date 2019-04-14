@@ -9,7 +9,6 @@
 
 #include "support.hpp"
 #include "Exception.hpp"
-#include <string>
 
 namespace wglfw {
     

@@ -7,7 +7,7 @@
 #ifndef Camera_hpp
 #define Camera_hpp
 
-#include <glm/glm.hpp>
+#include "../support.hpp"
 
 namespace wglfw {
     

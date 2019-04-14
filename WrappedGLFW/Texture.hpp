@@ -9,10 +9,6 @@
 
 #include "support.hpp"
 #include "Exception.hpp"
-#include <vector>
-
-#define STB_IMAGE_IMPLEMENTATION
-#include <stb/stb_image.h>
 
 namespace wglfw {
     

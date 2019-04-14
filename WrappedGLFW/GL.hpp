@@ -9,8 +9,6 @@
 
 #include "support.hpp"
 #include "Program.hpp"
-#include <glm/glm.hpp>
-#include <vector>
 
 namespace wglfw {
     

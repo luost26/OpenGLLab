@@ -7,19 +7,11 @@
 #ifndef AssimpModel_hpp
 #define AssimpModel_hpp
 
-#include <vector>
-#include <string>
-#include <map>
-#include "Mesh.hpp"
-#include "MeshTextureNameGenerator.hpp"
+#include "../support.hpp"
 #include "../Exception.hpp"
 #include "../Program.hpp"
-
-#include <glm/glm.hpp>
-
-#include <assimp/Importer.hpp>
-#include <assimp/scene.h>
-#include <assimp/postprocess.h>
+#include "Mesh.hpp"
+#include "MeshTextureNameGenerator.hpp"
 
 namespace wglfw {
     class AssimpModelNotLoadException : public Exception {

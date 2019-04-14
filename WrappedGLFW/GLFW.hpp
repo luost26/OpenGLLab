@@ -9,7 +9,6 @@
 
 #include "support.hpp"
 #include "Window.hpp"
-#include <map>
 
 namespace wglfw {
     

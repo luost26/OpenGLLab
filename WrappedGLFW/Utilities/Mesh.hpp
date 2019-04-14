@@ -7,10 +7,7 @@
 #ifndef Mesh_hpp
 #define Mesh_hpp
 
-#include <vector>
-#include <string>
-#include <glm/glm.hpp>
-#include <cstddef>
+#include "../support.hpp"
 #include "../VertexArray.hpp"
 #include "../Texture.hpp"
 #include "../GL.hpp"

@@ -7,7 +7,7 @@
 #ifndef helper_hpp
 #define helper_hpp
 
-#include <string>
+#include "../support.hpp"
 #include "../Shader.hpp"
 #include "../Program.hpp"
 #include "../Texture.hpp"
@@ -16,11 +16,51 @@ namespace wglfw {
     Program * simple_shader_program(const std::string & vpath, const std::string & fpath) {
         Program * program = new Program();
         try {
-            VertexShader * vshader = VertexShader::make()->source(ShaderSource::fromFile(vpath.c_str()))->compile();
-            FragmentShader * fshader = FragmentShader::make()->source(ShaderSource::fromFile(fpath.c_str()))->compile();
+            ShaderSource * source;
+            
+            source = ShaderSource::fromFile(vpath.c_str());
+            VertexShader * vshader = VertexShader::make()->source(source)->compile();
+            delete source;
+            
+            source = ShaderSource::fromFile(fpath.c_str());
+            FragmentShader * fshader = FragmentShader::make()->source(source)->compile();
+            delete source;
+            
             program->attach(vshader)->attach(fshader)->link();
             delete vshader;
             delete fshader;
+            
+        } catch (ShaderCompilationException e) {
+            std::cerr << e.what() << std::endl;
+            exit(-1);
+        } catch (ProgramLinkException e) {
+            std::cerr << e.what() << std::endl;
+            exit(-1);
+        }
+        return program;
+    }
+    
+    Program * simple_shader_program(const std::string & vpath, const std::string & fpath, const std::string & gpath) {
+        Program * program = new Program();
+        try {
+            ShaderSource * source;
+            
+            source = ShaderSource::fromFile(vpath.c_str());
+            VertexShader * vshader = VertexShader::make()->source(source)->compile();
+            delete source;
+            
+            source = ShaderSource::fromFile(fpath.c_str());
+            FragmentShader * fshader = FragmentShader::make()->source(source)->compile();
+            delete source;
+            
+            source = ShaderSource::fromFile(gpath.c_str());
+            GeometryShader * gshader = GeometryShader::make()->source(source)->compile();
+            delete source;
+            
+            program->attach(vshader)->attach(fshader)->attach(gshader)->link();
+            delete vshader;
+            delete fshader;
+            delete gshader;
             
         } catch (ShaderCompilationException e) {
             std::cerr << e.what() << std::endl;

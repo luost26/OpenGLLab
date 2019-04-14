@@ -15,6 +15,7 @@
 #include "Program.hpp"
 #include "VertexArray.hpp"
 #include "ArrayBuffer.hpp"
+#include "UniformBuffer.hpp"
 #include "Texture.hpp"
 #include "FrameBuffer.hpp"
 #include "RenderBuffer.hpp"

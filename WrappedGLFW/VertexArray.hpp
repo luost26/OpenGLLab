@@ -8,7 +8,6 @@
 #define VertexArray_hpp
 
 #include "support.hpp"
-#include <vector>
 
 namespace wglfw {
     
