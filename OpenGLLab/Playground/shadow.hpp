@@ -28,7 +28,8 @@ namespace playground {
             Floor * floor = new Floor(10.0f);floor->colorTexture(simple_texture(texture_path("wood.png")));
             Box * box = new Box(simple_texture(texture_path("container2.png")), simple_texture(texture_path("container2_specular.png")));
 
-            PointLight * light = PointLight::create()->position(glm::vec3(0.0, 3.0, 0.0))->color(glm::vec3(1.0, 1.0, 1.0), 0.05, 1.0, 0.3);
+            PointLight * light = PointLight::create()->position(glm::vec3(0.0, 3.0, 0.0))
+                    ->color(glm::vec3(1.0, 1.0, 1.0), 0.05, 1.0, 0.3)->attenuation(1.0, 0.022, 0.0019);
 
             getCamera()->moveUp(1.0f);
 
@@ -49,6 +50,8 @@ namespace playground {
                 box_prog->use();
                 light->apply(box_prog, getCamera()->position(), "light", "viewPos");
                 box->draw(box_prog, glm::translate(glm::mat4(1.0f), glm::vec3(-2.0f, 0.8f, 2.0f)));
+                box->draw(box_prog, glm::translate(glm::mat4(1.0f), glm::vec3(-4.0f, 1.2f, 1.5f)));
+
 
                 GLFW::swapBuffers(window);
                 GLFW::pollEvents();

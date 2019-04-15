@@ -26,6 +26,8 @@ vec3 CalculatePointLight() {
 
     vec3 normal = vec3(0.0, 1.0, 0.0);
     vec3 color = texture(color_texture, TexCoord).rgb;
+    float dist = length(light.position - FragPos);
+    float attenuation = 1.0 / (light.constant + light.linear * dist + light.quadratic * dist * dist);
 
     /* Ambient */
     vec3 ambient = light.ambient * color;
@@ -37,11 +39,15 @@ vec3 CalculatePointLight() {
 
     /* Specular */
     vec3 view_dir = normalize(FragPos - viewPos);
-    vec3 reflect_dir = reflect(light_dir, normal);
-    float spec = pow(max(dot(-view_dir, reflect_dir), 0.0), 1.0);
+    // Blinn-Phong
+    vec3 halfway_dir = normalize(-view_dir + -light_dir);
+    float spec = pow(max(dot(normal, halfway_dir), 0.0), 32.0);
+    // Phong
+    //vec3 reflect_dir = reflect(light_dir, normal);
+    //float spec = pow(max(dot(-view_dir, reflect_dir), 0.0), 1.0);
     vec3 specular = light.specular * spec;
 
-    return ambient + diffuse + specular;
+    return (ambient + diffuse + specular) * attenuation;
 }
 
 void main() {
