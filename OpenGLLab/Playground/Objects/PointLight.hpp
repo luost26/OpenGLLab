@@ -35,6 +35,10 @@ namespace playground {
             _position = v;
             return this;
         }
+
+        glm::vec3 getPosition() {
+            return _position;
+        }
         
         PointLight * ambient(glm::vec3 v) {
             _ambient = v;
