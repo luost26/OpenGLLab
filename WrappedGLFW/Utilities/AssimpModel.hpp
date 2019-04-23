@@ -14,11 +14,11 @@
 #include "MeshTextureNameGenerator.hpp"
 
 namespace wglfw {
-    class AssimpModelNotLoadException : public Exception {
+    class AssimpModelLoadFailureException : public Exception {
     private:
         std::string info;
     public:
-        AssimpModelNotLoadException(const std::string & i): info(i) {}
+        AssimpModelLoadFailureException(const std::string & i): info(i) {}
         const char * what() throw () {
             return info.c_str();
         }
@@ -42,7 +42,7 @@ namespace wglfw {
             const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
         
             if(!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
-                throw AssimpModelNotLoadException(importer.GetErrorString());
+                throw AssimpModelLoadFailureException(importer.GetErrorString());
             }
             
             textureDirectory = path.substr(0, path.find_last_of('/'));
@@ -120,15 +120,15 @@ namespace wglfw {
             // 1. diffuse maps
             std::vector<MeshTexture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, name_gen->forType(MeshTextureNameGenerator::DIFFUSE));
             textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
-            
+
             // 2. specular maps
             std::vector<MeshTexture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, name_gen->forType(MeshTextureNameGenerator::SPECULAR));
             textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
-            
+
             // 3. normal maps
             std::vector<MeshTexture> normalMaps = loadMaterialTextures(material, aiTextureType_HEIGHT, name_gen->forType(MeshTextureNameGenerator::NORMAL));
             textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
-            
+
             // 4. height maps
             std::vector<MeshTexture> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, name_gen->forType(MeshTextureNameGenerator::HEIGHT));
             textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
