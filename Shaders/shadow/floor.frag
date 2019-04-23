@@ -2,10 +2,12 @@
 
 in vec3 FragPos;
 in vec2 TexCoord;
+in vec4 FragPosLightSpace;
 
 out vec4 FragColor;
 
 uniform sampler2D color_texture;
+uniform sampler2D shadowMap;
 
 struct PointLight {
     vec3 position;
@@ -21,6 +23,17 @@ struct PointLight {
 
 uniform PointLight light;
 uniform vec3 viewPos;
+
+float ShadowCalculation(vec4 fragPosLightSpace, vec3 normal, vec3 lightDir) {
+    vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
+    projCoords = projCoords * 0.5 + 0.5;
+
+    float closestDepth = texture(shadowMap, projCoords.xy).r;
+    float currentDepth = projCoords.z;
+    float bias = max(0.05 * (1.0 - dot(normal, lightDir)), 0.005);
+    float shadow = currentDepth - bias > closestDepth  ? 1.0 : 0.0;
+    return shadow;
+}
 
 vec3 CalculatePointLight() {
 
@@ -47,7 +60,7 @@ vec3 CalculatePointLight() {
     //float spec = pow(max(dot(-view_dir, reflect_dir), 0.0), 1.0);
     vec3 specular = light.specular * spec;
 
-    return (ambient + diffuse + specular) * attenuation;
+    return (ambient + (1.0-ShadowCalculation(FragPosLightSpace, normal, light_dir)) * (diffuse + specular) ) * attenuation;
 }
 
 void main() {
