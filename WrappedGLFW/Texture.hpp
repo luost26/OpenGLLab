@@ -182,6 +182,11 @@ namespace wglfw {
             throw MethodNotImplementedException();
             return this;
         }
+
+        virtual Texture * unbind() {
+            throw MethodNotImplementedException();
+            return this;
+        }
         
         virtual Texture * bindToTextureUnit(TextureUnit * unit) {
             activate(unit);
@@ -201,6 +206,12 @@ namespace wglfw {
         
         Texture2D * bind() {
             glBindTexture(GL_TEXTURE_2D, _texture);
+            return this;
+        }
+
+        Texture2D * unbind() {
+            assertIsBound();
+            glBindTexture(GL_TEXTURE_2D, 0);
             return this;
         }
         
@@ -234,9 +245,9 @@ namespace wglfw {
             return this;
         }
         
-        Texture2D * empty(unsigned int width, unsigned int height, GLenum format) {
+        Texture2D * empty(unsigned int width, unsigned int height, GLenum format, GLenum type=GL_UNSIGNED_BYTE) {
             assertIsBound();
-            glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, NULL);
+            glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, type, NULL);
             return this;
         }
         
@@ -261,6 +272,12 @@ namespace wglfw {
         
         TextureCubeMap * bind() {
             glBindTexture(GL_TEXTURE_CUBE_MAP, _texture);
+            return this;
+        }
+
+        TextureCubeMap * unbind() {
+            assertIsBound();
+            glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
             return this;
         }
         
