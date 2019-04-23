@@ -10,7 +10,7 @@ include_directories(include)
 add_executable(OpenGLLab
         glad/src/glad.c
         OpenGLLab/main.cpp
-)
+        OpenGLLab/Playground/Objects/ScreenQuad.hpp)
 
 target_link_libraries(OpenGLLab
         /usr/local/Cellar/assimp/4.1.0/lib/libassimp.4.1.0.dylib
