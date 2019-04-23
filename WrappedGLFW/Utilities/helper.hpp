@@ -13,6 +13,14 @@
 #include "../Texture.hpp"
 
 namespace wglfw {
+
+    FragmentShader * load_fragment_shader(const std::string & path) {
+        ShaderSource * source = ShaderSource::fromFile(path.c_str());
+        FragmentShader * shader = FragmentShader::make()->source(source)->compile();
+        delete source;
+        return shader;
+    }
+
     Program * simple_shader_program(const std::string & vpath, const std::string & fpath) {
         Program * program = new Program();
         try {
