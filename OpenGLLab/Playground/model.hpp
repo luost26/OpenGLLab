@@ -17,21 +17,17 @@ namespace playground {
     class Model : public Base {
     public:
         static int main() {
-            
-            std::string vshader_path = "/Users/tommyluo/workspace/Project/OpenGLTest/Shaders/model/model.vert";
-            std::string fshader_path = "/Users/tommyluo/workspace/Project/OpenGLTest/Shaders/model/model.frag";
-            std::string model_path = "/Users/tommyluo/workspace/Project/OpenGLTest/Models/nanosuit/nanosuit.obj";
-            
+
             Window * window = initializeEnvAndCreateWindow();
             GL::enableDepthTest();
             
             glEnable(GL_CULL_FACE);
             glCullFace(GL_BACK);
             
-            Program * prog = simple_shader_program(vshader_path, fshader_path);
+            Program * prog = simple_shader_program(shader_path("model/model.vert"), shader_path("model/model.frag"));
             
             DefaultMeshTextureNameGeneratorFactory * name_gen_factory = new DefaultMeshTextureNameGeneratorFactory();
-            AssimpModel * model = AssimpModel::fromFile(model_path.c_str(), name_gen_factory);
+            AssimpModel * model = AssimpModel::fromFile(model_path("85-cottage_obj/cottage_obj.obj").c_str(), name_gen_factory);
             
             CleanerCollection * cleaner = new CleanerCollection;
             cleaner->add(new ColorBufferCleaner(glm::vec4(0.2f, 0.3f, 0.3f, 1.0f)))->add(new DepthBufferCleaner);

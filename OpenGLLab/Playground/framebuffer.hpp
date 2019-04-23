@@ -59,7 +59,7 @@ namespace playground {
             Texture2D * frame_tex = new Texture2D();
             frame_tex->bind()->empty(realScreenSize(800), realScreenSize(600), GL_RGB)
                 ->minFilter(GL_LINEAR)->magFilter(GL_LINEAR);
-            FBO->attachTexture2D(frame_tex);
+            FBO->attachTexture2D(frame_tex, GL_COLOR_ATTACHMENT0);
 
             RenderBuffer * RBO = new RenderBuffer();
             RBO->bind()->storage(realScreenSize(800), realScreenSize(600));
