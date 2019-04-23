@@ -77,9 +77,9 @@ namespace wglfw {
             return this;
         }
         
-        FrameBuffer * attachTexture2D(Texture2D * tex) {
+        FrameBuffer * attachTexture2D(Texture2D * tex, GLenum attachment) {
             assertIsBound();
-            glFramebufferTexture2D(_boundTo, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, tex->texture(), 0);
+            glFramebufferTexture2D(_boundTo, attachment, GL_TEXTURE_2D, tex->texture(), 0);
             return this;
         }
         
@@ -88,7 +88,19 @@ namespace wglfw {
             glFramebufferRenderbuffer(GL_FRAMEBUFFER, attach, GL_RENDERBUFFER, rb->RBO());
             return this;
         }
-        
+
+        FrameBuffer * setDrawBuffer(GLenum buf) {
+            assertIsBound();
+            glDrawBuffer(buf);
+            return this;
+        }
+
+        FrameBuffer * setReadBuffer(GLenum buf) {
+            assertIsBound();
+            glReadBuffer(buf);
+            return this;
+        }
+
         unsigned int FBO() const {
             return _FBO;
         }
