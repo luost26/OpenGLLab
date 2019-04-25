@@ -93,15 +93,15 @@ namespace wglfw {
                     vertex.textureCoordinate = glm::vec2(0.0f, 0.0f);
                 }
                 // tangent
-                vector.x = mesh->mTangents[i].x;
-                vector.y = mesh->mTangents[i].y;
-                vector.z = mesh->mTangents[i].z;
-                vertex.tangent = vector;
-                // bitangent
-                vector.x = mesh->mBitangents[i].x;
-                vector.y = mesh->mBitangents[i].y;
-                vector.z = mesh->mBitangents[i].z;
-                vertex.bitangent = vector;
+//                vector.x = mesh->mTangents[i].x;
+//                vector.y = mesh->mTangents[i].y;
+//                vector.z = mesh->mTangents[i].z;
+//                vertex.tangent = vector;
+//                // bitangent
+//                vector.x = mesh->mBitangents[i].x;
+//                vector.y = mesh->mBitangents[i].y;
+//                vector.z = mesh->mBitangents[i].z;
+//                vertex.bitangent = vector;
                 vertices.push_back(vertex);
             }
 
@@ -116,7 +116,7 @@ namespace wglfw {
 
             
             MeshTextureNameGenerator * name_gen = textureNameGeneratorFactory->generator();
-            
+
             // 1. diffuse maps
             std::vector<MeshTexture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, name_gen->forType(MeshTextureNameGenerator::DIFFUSE));
             textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
@@ -132,7 +132,7 @@ namespace wglfw {
             // 4. height maps
             std::vector<MeshTexture> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, name_gen->forType(MeshTextureNameGenerator::HEIGHT));
             textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
-            
+
             delete name_gen;
                         
             return new Mesh(vertices, indices, textures);
