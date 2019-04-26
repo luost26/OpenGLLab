@@ -20,6 +20,14 @@ add_definitions(
 	)
 
 if (APPLE)
+	set(VIEWPORT_SCALE_FACTOR 2)
+else()
+	set(VIEWPORT_SCALE_FACTOR 1)
+endif()
+
+add_definitions(-DVIEWPORT_SCALE_FACTOR=${VIEWPORT_SCALE_FACTOR})
+
+if (APPLE)
     include_directories(/usr/local/include)
     target_link_libraries(OpenGLLab
             /usr/local/Cellar/assimp/4.1.0/lib/libassimp.4.1.0.dylib

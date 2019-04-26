@@ -53,7 +53,7 @@ namespace playground {
             box->draw(shadow_mapping_prog, glm::translate(glm::mat4(1.0f), glm::vec3(-2.0f, 0.5f, -2.0f)));
 
             depthMapFBO->unbind();
-            GL::setViewport(0, 0, getDefaultScreenWidth()*2, getDefaultScreenHeight()*2);
+            GL::setViewport(0, 0, getDefaultScreenWidth(), getDefaultScreenHeight(), VIEWPORT_SCALE_FACTOR);
 
         }
 

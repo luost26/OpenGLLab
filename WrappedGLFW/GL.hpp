@@ -83,8 +83,8 @@ namespace wglfw {
             glClear(c->option());
         }
         
-        static void setViewport(GLint x, GLint y, GLsizei width, GLsizei height) {
-            glViewport(x, y, width, height);
+        static void setViewport(GLint x, GLint y, GLsizei width, GLsizei height, GLuint scale=1) {
+            glViewport(x, y, width*scale, height*scale);
         }
         
         static void drawElements(GLenum mode, GLsizei count, GLenum type, const GLvoid * indices) {
