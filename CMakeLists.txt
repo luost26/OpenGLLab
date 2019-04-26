@@ -47,7 +47,7 @@ elseif(WIN32)
 		"C:/Users/luost/workspace/Libraries/glfw-3.3.bin.WIN64/lib-vc2017/glfw3.lib"
 		"C:/Program Files/Assimp/lib/x64/assimp-vc140-mt.lib"
 	)
-	add_custom_command(TARGET OpenGLLab POST_BUILD
+	add_custom_command(TARGET OpenGLLab PRE_BUILD
 		COMMAND ${CMAKE_COMMAND} -E copy_if_different 
 		"C:/Program Files/Assimp/bin/x64/assimp-vc140-mt.dll"
 		$<TARGET_FILE_DIR:OpenGLLab>
