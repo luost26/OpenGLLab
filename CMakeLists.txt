@@ -3,7 +3,6 @@ project(OpenGLLab)
 
 set(CMAKE_CXX_STANDARD 14)
 
-include_directories(/usr/local/include)
 include_directories(glad/include)
 include_directories(include)
 
@@ -12,11 +11,16 @@ add_executable(OpenGLLab
         OpenGLLab/main.cpp
 )
 
-target_link_libraries(OpenGLLab
-        /usr/local/Cellar/assimp/4.1.0/lib/libassimp.4.1.0.dylib
-        /usr/local/Cellar/glfw/3.2.1/lib/libglfw.3.2.dylib
-        "-framework CoreVideo"
-        "-framework OpenGL"
-        "-framework Cocoa"
-        "-framework IOKit"
-        )
+if (APPLE)
+    include_directories(/usr/local/include)
+    target_link_libraries(OpenGLLab
+            /usr/local/Cellar/assimp/4.1.0/lib/libassimp.4.1.0.dylib
+            /usr/local/Cellar/glfw/3.2.1/lib/libglfw.3.2.dylib
+            "-framework CoreVideo"
+            "-framework OpenGL"
+            "-framework Cocoa"
+            "-framework IOKit"
+            )
+elseif(WIN32)
+
+endif()
