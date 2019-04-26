@@ -4,19 +4,6 @@
 //  Created by 罗 世通 on 2019/3/24.
 //
 
-#ifndef SHADER_DIR
-#define SHADER_DIR ""
-#endif // !SHADER_DIR
-
-#ifndef TEXTURE_DIR
-#define TEXTURE_DIR ""
-#endif // !TEXTURE_DIR
-
-#ifndef MODEL_DIR
-#define MODEL_DIR ""
-#endif // !MODEL_DIR
-
-
 #ifndef base_hpp
 #define base_hpp
 
@@ -34,20 +21,19 @@ using namespace wglfw;
 
 namespace playground {
     
-    const std::string SHADER_DIRECTORY = SHADER_DIR;
-    const std::string TEXTURE_DIRECTORY = TEXTURE_DIR;
-    const std::string MODEL_DIRECTORY = MODEL_DIR;
-
     std::string shader_path(const char * fn) {
-        return SHADER_DIRECTORY + "/" + fn;
+		std::string base = SHADER_DIR;
+        return base + "/" + fn;
     }
     
     std::string texture_path(const char * fn) {
-        return TEXTURE_DIRECTORY + "/" + fn;
+		std::string base = TEXTURE_DIR;
+		return base + "/" + fn;
     }
     
     std::string model_path(const char * fn) {
-        return MODEL_DIRECTORY + "/" + fn;
+		std::string base = MODEL_DIR;
+		return base + "/" + fn;
     }
     
     class Base {
