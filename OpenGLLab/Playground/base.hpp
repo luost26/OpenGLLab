@@ -4,6 +4,19 @@
 //  Created by 罗 世通 on 2019/3/24.
 //
 
+#ifndef SHADER_DIR
+#define SHADER_DIR ""
+#endif // !SHADER_DIR
+
+#ifndef TEXTURE_DIR
+#define TEXTURE_DIR ""
+#endif // !TEXTURE_DIR
+
+#ifndef MODEL_DIR
+#define MODEL_DIR ""
+#endif // !MODEL_DIR
+
+
 #ifndef base_hpp
 #define base_hpp
 
@@ -21,9 +34,9 @@ using namespace wglfw;
 
 namespace playground {
     
-    const std::string SHADER_DIRECTORY = "/Users/tommyluo/workspace/Project/OpenGLLab/Shaders";
-    const std::string TEXTURE_DIRECTORY = "/Users/tommyluo/workspace/Project/OpenGLLab/Textures";
-    const std::string MODEL_DIRECTORY = "/Users/tommyluo/workspace/Project/OpenGLLab/Models";
+    const std::string SHADER_DIRECTORY = SHADER_DIR;
+    const std::string TEXTURE_DIRECTORY = TEXTURE_DIR;
+    const std::string MODEL_DIRECTORY = MODEL_DIR;
 
     std::string shader_path(const char * fn) {
         return SHADER_DIRECTORY + "/" + fn;
@@ -84,7 +97,7 @@ namespace playground {
             
             if (!cam)
             return;
-            float speed = 2.5 * deltaTime;
+            float speed = 2.5f * deltaTime;
             if (window->getKey(GLFW_KEY_W) == GLFW_PRESS)
             cam->moveAhead(speed);
             if (window->getKey(GLFW_KEY_S) == GLFW_PRESS)
