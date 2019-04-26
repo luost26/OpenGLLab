@@ -11,7 +11,7 @@
 
 namespace wglfw {
     
-    const float EPSILON = 0.001;
+    const float EPSILON = 0.001f;
     
     class Camera {
     private:
