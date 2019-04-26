@@ -29,11 +29,13 @@ namespace playground {
             light->apply(box_prog, getCamera()->position(), "light", "viewPos");
             box->draw(box_prog, glm::translate(glm::mat4(1.0f), glm::vec3(-2.0f, 0.8f, 2.0f)));
             box->draw(box_prog, glm::translate(glm::mat4(1.0f), glm::vec3(-3.2f, 1.0f, 1.5f)));
+            box->draw(box_prog, glm::translate(glm::mat4(1.0f), glm::vec3(-2.0f, 0.5f, -2.0f)));
         }
 
         inline static void generateDepthMap(PointLight * light, FrameBuffer * depthMapFBO, Program * shadow_mapping_prog,
                 Floor * floor, Box * box, glm::mat4 & lightSpaceMatrix) {
             /* Generate depth map */
+
             glm::mat4 lightProjection, lightView;
             GLfloat near_plane = 1.0f, far_plane = 7.5f;
             lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
@@ -48,9 +50,11 @@ namespace playground {
             floor->draw(shadow_mapping_prog, glm::scale(glm::mat4(1.0f), glm::vec3(10, 10, 10)));
             box->draw(shadow_mapping_prog, glm::translate(glm::mat4(1.0f), glm::vec3(-2.0f, 0.8f, 2.0f)));
             box->draw(shadow_mapping_prog, glm::translate(glm::mat4(1.0f), glm::vec3(-3.2f, 1.0f, 1.5f)));
+            box->draw(shadow_mapping_prog, glm::translate(glm::mat4(1.0f), glm::vec3(-2.0f, 0.5f, -2.0f)));
 
             depthMapFBO->unbind();
             GL::setViewport(0, 0, getDefaultScreenWidth()*2, getDefaultScreenHeight()*2);
+
         }
 
         static int main() {
