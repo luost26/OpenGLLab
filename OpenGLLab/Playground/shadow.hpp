@@ -82,10 +82,10 @@ namespace playground {
             Window * window = initializeEnvAndCreateWindow();
             GL::enableDepthTest();
 
-            /* Set up frame buffer for depth map */
             UniformBuffer * cameraUBO = new UniformBuffer();
             cameraUBO->bind()->load(2*sizeof(glm::mat4), NULL, GL_STATIC_DRAW)->bindRange(0)->unbind();
 
+            /* Set up frame buffer for depth map */
             FrameBuffer * depthMapFBO = new FrameBuffer();
             depthMapFBO->bind();
 

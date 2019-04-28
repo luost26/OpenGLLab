@@ -18,5 +18,6 @@
 #include "geometry_shader.hpp"
 #include "advanced_lighting.hpp"
 #include "shadow.hpp"
+#include "shadow2.hpp"
 
 #endif /* playground_hpp */
