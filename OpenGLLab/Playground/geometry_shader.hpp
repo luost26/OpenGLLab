@@ -49,8 +49,7 @@ namespace playground {
             
             VAO->unbind();
             
-            DefaultMeshTextureNameGeneratorFactory * name_gen_factory = new DefaultMeshTextureNameGeneratorFactory();
-            AssimpModel * model = AssimpModel::fromFile(model_path("nanosuit/nanosuit.obj").c_str(), name_gen_factory);
+            AssimpModel * model = AssimpModel::fromFile(model_path("nanosuit/nanosuit.obj").c_str());
             
             UniformBuffer * cameraUBO = new UniformBuffer();
             cameraUBO->bind()->load(2*sizeof(glm::mat4), NULL, GL_STATIC_DRAW)->bindRange(0)->unbind();
