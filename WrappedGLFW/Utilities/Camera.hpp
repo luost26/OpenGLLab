@@ -119,6 +119,10 @@ namespace wglfw {
         inline const float viewportAspectRatio() const {
             return (float)_viewportWidth / (float)_viewportHeight;
         }
+
+        inline void setPosition(const glm::vec3 & pos) {
+            _position = pos;
+        }
         
         inline void moveUp(const float & speed) {
             _position += speed * _up;
