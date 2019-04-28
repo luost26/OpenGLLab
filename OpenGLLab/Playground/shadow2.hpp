@@ -13,7 +13,7 @@ namespace playground {
         PointLight * light;
 
         Shadow2Scene() {
-            model = AssimpModel::fromFile(model_path("kitchen/kitchen.obj").c_str());
+            model = AssimpModel::fromFile(model_path("gym/gym.obj").c_str());
             light = PointLight::create()->position(glm::vec3(5.25f, 1.85f, -1.6f))
                     ->color(glm::vec3(1.0, 1.0, 1.0), 0.3, 1.0, 0.3)->attenuation(1.0, 0.022, 0.0019);
         }
@@ -59,6 +59,7 @@ namespace playground {
                 common_program->use();
                 common_program->setUniformBlockBinding("Camera", 0);
 
+				scene->light->position(getCamera()->position());
                 scene->light->apply(common_program, getCamera()->position(), "light", "viewPos");
                 scene->draw(common_program);
 
