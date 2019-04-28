@@ -12,8 +12,23 @@
 
 namespace playground {
     
+    const int SHADOW_MAP_SIZE = 4096;
+    
     class Shadow : public Base {
     public:
+
+        static int mode;
+
+        static void processInput(Window *window) {
+            Base::processInput(window);
+            if (window->getKey(GLFW_KEY_1) == GLFW_PRESS) {
+                mode = 1;
+            }
+            if (window->getKey(GLFW_KEY_0) == GLFW_PRESS) {
+                mode = 0;
+            }
+        }
+
         inline static void drawScene(Program * floor_prog, Program * box_prog, Floor * floor, Box * box, PointLight * light,
                 glm::mat4 & lightSpaceMatrix, Texture2D * shadowMap) {
             /* Draw the floor */
@@ -36,6 +51,9 @@ namespace playground {
                 Floor * floor, Box * box, glm::mat4 & lightSpaceMatrix) {
             /* Generate depth map */
 
+//            glEnable(GL_CULL_FACE);
+//            glCullFace(GL_FRONT);
+
             glm::mat4 lightProjection, lightView;
             GLfloat near_plane = 1.0f, far_plane = 7.5f;
             lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
@@ -43,7 +61,7 @@ namespace playground {
             lightSpaceMatrix = lightProjection * lightView;
             shadow_mapping_prog->use()->setMatrix4("lightSpaceMatrix", lightSpaceMatrix);
 
-            GL::setViewport(0, 0, 2048, 2048);
+            GL::setViewport(0, 0, SHADOW_MAP_SIZE, SHADOW_MAP_SIZE);
             depthMapFBO->bind();
             glClear(GL_DEPTH_BUFFER_BIT);
 
@@ -54,6 +72,9 @@ namespace playground {
 
             depthMapFBO->unbind();
             GL::setViewport(0, 0, getDefaultScreenWidth(), getDefaultScreenHeight(), VIEWPORT_SCALE_FACTOR);
+
+//            glCullFace(GL_BACK);
+//            glDisable(GL_CULL_FACE);
 
         }
 
@@ -69,8 +90,9 @@ namespace playground {
             depthMapFBO->bind();
 
             Texture2D * depthMap = new Texture2D();
-            depthMap->bind()->empty(2048, 2048, GL_DEPTH_COMPONENT, GL_FLOAT)
-                    ->minFilter(GL_NEAREST)->magFilter(GL_NEAREST)->wrapS(GL_REPEAT)->wrapT(GL_REPEAT);
+            depthMap->bind()->empty(SHADOW_MAP_SIZE, SHADOW_MAP_SIZE, GL_DEPTH_COMPONENT, GL_FLOAT)
+                    ->minFilter(GL_NEAREST)->magFilter(GL_NEAREST)->wrapS(GL_CLAMP_TO_EDGE)->wrapT(GL_CLAMP_TO_EDGE)
+                    ->borderColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 
             depthMapFBO->attachTexture2D(depthMap, GL_DEPTH_ATTACHMENT)->setDrawBuffer(GL_NONE)->setReadBuffer(GL_NONE)->unbind();
 
@@ -88,7 +110,7 @@ namespace playground {
             Box * box = new Box(simple_texture(texture_path("container2.png")), simple_texture(texture_path("container2_specular.png")));
             glm::vec3 light_pos = glm::vec3(0.0, 5.0, 0.0);
             PointLight * light = PointLight::create()->position(light_pos)
-                    ->color(glm::vec3(1.0, 1.0, 1.0), 0.05, 1.0, 0.3)->attenuation(1.0, 0.022, 0.0019);
+                    ->color(glm::vec3(1.0, 1.0, 1.0), 0.3, 1.0, 0.3)->attenuation(1.0, 0.022, 0.0019);
 
 
             /* Set the initial view */
@@ -115,8 +137,10 @@ namespace playground {
                 drawScene(floor_prog, box_prog, floor, box, light, lightSpaceMatrix, depthMap);
 
                 /* Show depth map */
-//                GL::clear(getDefaultCleanerCollection());
-//                quad->draw(depthMap);
+                if (mode == 1) {
+                    GL::clear(getDefaultCleanerCollection());
+                    quad->draw(depthMap);
+                }
 
                 GLFW::swapBuffers(window);
                 GLFW::pollEvents();
@@ -125,6 +149,8 @@ namespace playground {
             return 0;
         }
     };
+
+    int Shadow::mode = 0;
     
 }
 

@@ -143,7 +143,7 @@ namespace wglfw {
         unsigned int _texture;
         Texture(unsigned int t): _texture(t) {}
         
-        void assertIsBound() {
+        inline void assertIsBound() {
             if (!isBound()) {
                 throw TextureNotBoundException();
             }
@@ -242,6 +242,12 @@ namespace wglfw {
         Texture2D * magFilter(int v) {
             assertIsBound();
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, v);
+            return this;
+        }
+
+        Texture2D * borderColor(const glm::vec4 & color) {
+            assertIsBound();
+            glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, glm::value_ptr(color));
             return this;
         }
         

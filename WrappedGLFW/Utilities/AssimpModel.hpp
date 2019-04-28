@@ -39,7 +39,9 @@ namespace wglfw {
         
         void loadFromFile(const std::string & path) {
             Assimp::Importer importer;
-            const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
+            const aiScene* scene = importer.ReadFile(path,
+                    aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace | aiProcess_GenNormals
+                    );
         
             if(!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
                 throw AssimpModelLoadFailureException(importer.GetErrorString());
@@ -77,10 +79,12 @@ namespace wglfw {
                 vector.z = mesh->mVertices[i].z;
                 vertex.position = vector;
                 // normals
-                vector.x = mesh->mNormals[i].x;
-                vector.y = mesh->mNormals[i].y;
-                vector.z = mesh->mNormals[i].z;
-                vertex.normal = vector;
+                if (mesh->mNormals) {
+                    vector.x = mesh->mNormals[i].x;
+                    vector.y = mesh->mNormals[i].y;
+                    vector.z = mesh->mNormals[i].z;
+                    vertex.normal = vector;
+                }
                 // texture coordinates
                 if(mesh->mTextureCoords[0]) {
                     glm::vec2 vec;
@@ -89,19 +93,22 @@ namespace wglfw {
                     vec.x = mesh->mTextureCoords[0][i].x;
                     vec.y = mesh->mTextureCoords[0][i].y;
                     vertex.textureCoordinate = vec;
+
+                    // tangent
+                    vector.x = mesh->mTangents[i].x;
+                    vector.y = mesh->mTangents[i].y;
+                    vector.z = mesh->mTangents[i].z;
+                    vertex.tangent = vector;
+                    // bitangent
+                    vector.x = mesh->mBitangents[i].x;
+                    vector.y = mesh->mBitangents[i].y;
+                    vector.z = mesh->mBitangents[i].z;
+                    vertex.bitangent = vector;
+
                 } else {
                     vertex.textureCoordinate = glm::vec2(0.0f, 0.0f);
                 }
-                // tangent
-//                vector.x = mesh->mTangents[i].x;
-//                vector.y = mesh->mTangents[i].y;
-//                vector.z = mesh->mTangents[i].z;
-//                vertex.tangent = vector;
-//                // bitangent
-//                vector.x = mesh->mBitangents[i].x;
-//                vector.y = mesh->mBitangents[i].y;
-//                vector.z = mesh->mBitangents[i].z;
-//                vertex.bitangent = vector;
+
                 vertices.push_back(vertex);
             }
 
