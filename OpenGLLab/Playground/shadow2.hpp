@@ -43,6 +43,8 @@ namespace playground {
 
             Program * common_program = simple_shader_program(shader_path("shadow2/object.vert"), shader_path("shadow2/object.frag"));
 
+            getCamera()->setPosition(glm::vec3(17.3f, 2.2f, -9.5f));
+
             while (!window->shouldClose()) {
                 stopwatch();
                 processInput(window);
