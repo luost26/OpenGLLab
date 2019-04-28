@@ -21,13 +21,13 @@ namespace playground {
             Window * window = initializeEnvAndCreateWindow();
             GL::enableDepthTest();
             
-            glEnable(GL_CULL_FACE);
-            glCullFace(GL_BACK);
+            //glEnable(GL_CULL_FACE);
+            //glCullFace(GL_BACK);
             
             Program * prog = simple_shader_program(shader_path("model/model.vert"), shader_path("model/model.frag"));
             
             DefaultMeshTextureNameGeneratorFactory * name_gen_factory = new DefaultMeshTextureNameGeneratorFactory();
-            AssimpModel * model = AssimpModel::fromFile(model_path("house/house.obj").c_str(), name_gen_factory);
+            AssimpModel * model = AssimpModel::fromFile(model_path("classroom/classroom2.obj").c_str(), name_gen_factory);
             
             CleanerCollection * cleaner = new CleanerCollection;
             cleaner->add(new ColorBufferCleaner(glm::vec4(0.2f, 0.3f, 0.3f, 1.0f)))->add(new DepthBufferCleaner);
