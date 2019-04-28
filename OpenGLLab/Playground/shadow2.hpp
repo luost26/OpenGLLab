@@ -10,12 +10,10 @@ namespace playground {
     class Shadow2Scene {
     public:
         AssimpModel * model;
-        Floor * floor;
         PointLight * light;
 
         Shadow2Scene() {
             model = AssimpModel::fromFile(model_path("kitchen/kitchen.obj").c_str());
-            floor = new Floor(10.0f);floor->colorTexture(simple_texture(texture_path("wood.png")));
             light = PointLight::create()->position(glm::vec3(5.25f, 1.85f, -1.6f))
                     ->color(glm::vec3(1.0, 1.0, 1.0), 0.3, 1.0, 0.3)->attenuation(1.0, 0.022, 0.0019);
         }
