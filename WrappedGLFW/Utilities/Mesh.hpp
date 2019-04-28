@@ -12,6 +12,7 @@
 #include "../Texture.hpp"
 #include "../GL.hpp"
 #include "../Exception.hpp"
+#include "Material.hpp"
 
 namespace wglfw {
     
@@ -28,13 +29,7 @@ namespace wglfw {
         glm::vec3 tangent;
         glm::vec3 bitangent;
     };
-    
-    struct MeshTexture {
-        std::string name;
-        Texture * texture;
-        MeshTexture(const std::string & n, Texture * t): name(n), texture(t) {}
-    };
-    
+
     class Mesh {
     private:
         VertexArray * VAO;
@@ -44,9 +39,9 @@ namespace wglfw {
     public:
         std::vector<MeshVertex> vertices;
         std::vector<unsigned int> indices;
-        std::vector<MeshTexture> textures;
-        
-        Mesh(std::vector<MeshVertex> & v, std::vector<unsigned int> & i, std::vector<MeshTexture> & t): vertices(v), indices(i), textures(t) {
+        Material * material;
+
+        Mesh(std::vector<MeshVertex> & v, std::vector<unsigned int> & i, Material * m): vertices(v), indices(i), material(m) {
             VAO = NULL;
             VBO = NULL;
             EBO = NULL;
@@ -148,12 +143,23 @@ namespace wglfw {
             if (!isSetUp) {
                 throw MeshNotSetupException();
             }
-            
-            for (int i = 0; i < textures.size(); ++ i) {
-                (textures[i]).texture->bindToTextureUnit(TextureUnit::get(i));
-                program->setTexture(textures[i].name.c_str(), TextureUnit::get(i));
+
+            int tex_unit = 0;
+            for (auto tex_pair : material->textures) {
+                tex_pair.second->bindToTextureUnit(TextureUnit::get(tex_unit));
+                program->setTexture(tex_pair.first.c_str(), TextureUnit::get(tex_unit));
+                ++ tex_unit;
             }
-            Texture::activateTextureUnit(TextureUnit::get(0));
+            Texture::activateTextureUnit(TextureUnit::get(0)); // reset texture unit activation status
+
+            for (auto color_pair : material->vector3s) {
+                program->setVec3(color_pair.first.c_str(), color_pair.second);
+            }
+
+            for (auto float_pair : material->floats) {
+                program->setFloat(float_pair.first.c_str(), float_pair.second);
+            }
+
             VAO->bind();
             GL::drawElements(GL_TRIANGLES, (int)indices.size(), GL_UNSIGNED_INT, 0);
             VertexArray::resumePreviousBinding();

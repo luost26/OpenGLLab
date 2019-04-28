@@ -24,6 +24,7 @@
 #include "Utilities/helper.hpp"
 #include "Utilities/Camera.hpp"
 #include "Utilities/Mesh.hpp"
+#include "Utilities/Material.hpp"
 #include "Utilities/AssimpModel.hpp"
 
 #endif /* wglfw_hpp */

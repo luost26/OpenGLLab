@@ -12,6 +12,7 @@
 #include "../Program.hpp"
 #include "Mesh.hpp"
 #include "MeshTextureNameGenerator.hpp"
+#include "Material.hpp"
 
 namespace wglfw {
     class AssimpModelLoadFailureException : public Exception {
@@ -30,11 +31,10 @@ namespace wglfw {
     private:
         std::vector<Mesh *> meshes;
         std::string textureDirectory;
-        std::map<std::string, Texture *> texturesLoaded;
-        
-        MeshTextureNameGeneratorFactory * textureNameGeneratorFactory;
-        
+        TexturePool * texturePool;
+
         AssimpModel() {
+            texturePool = new TexturePool();
         }
         
         void loadFromFile(const std::string & path) {
@@ -68,7 +68,6 @@ namespace wglfw {
         Mesh * processMesh(aiMesh *mesh, const aiScene *scene) {
             std::vector<MeshVertex> vertices;
             std::vector<unsigned int> indices;
-            std::vector<MeshTexture> textures;
             
             for(unsigned int i = 0; i < mesh->mNumVertices; i++) {
                 MeshVertex vertex;
@@ -120,62 +119,22 @@ namespace wglfw {
                 }
             }
 
-            aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
+            aiMaterial * assimp_material = scene->mMaterials[mesh->mMaterialIndex];
 
-            
-            MeshTextureNameGenerator * name_gen = textureNameGeneratorFactory->generator();
+            AssimpMaterialLoader * loader = new AssimpMaterialLoader(assimp_material);
+            loader->setTextureDirectory(textureDirectory)->setTexturePool(texturePool);
 
-            // 1. diffuse maps
-            std::vector<MeshTexture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, name_gen->forType(MeshTextureNameGenerator::DIFFUSE));
-            textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
+            Material * material = new Material;
+            material->loadFromAssimpMaterial(loader);
 
-            // 2. specular maps
-            std::vector<MeshTexture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, name_gen->forType(MeshTextureNameGenerator::SPECULAR));
-            textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
-
-            // 3. normal maps
-            std::vector<MeshTexture> normalMaps = loadMaterialTextures(material, aiTextureType_HEIGHT, name_gen->forType(MeshTextureNameGenerator::NORMAL));
-            textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
-
-            // 4. height maps
-            std::vector<MeshTexture> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, name_gen->forType(MeshTextureNameGenerator::HEIGHT));
-            textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
-
-            delete name_gen;
-                        
-            return new Mesh(vertices, indices, textures);
+            return new Mesh(vertices, indices, material);
         }
-        
-        std::vector<MeshTexture> loadMaterialTextures(aiMaterial *mat, aiTextureType type, MeshTextureNameGenerator * name_gen) {
-            
-            std::vector<MeshTexture> textures;
-            for(unsigned int i = 0; i < mat->GetTextureCount(type); i++) {
-                aiString ai_filename;
-                mat->GetTexture(type, i, &ai_filename);
-                std::string filename = ai_filename.C_Str();
-                
-                if (texturesLoaded.count(filename))  {
-                    textures.push_back(MeshTexture(name_gen->generate(), texturesLoaded[filename]));
-                } else {
-                    Texture2D * texture = new Texture2D();
-                    std::string fullpath = textureDirectory + "/" + filename;
-                    TextureImage * timg = TextureImage::fromPath(fullpath.c_str());
-                    texture->bind()->wrapS(GL_REPEAT)->wrapT(GL_REPEAT)
-                            ->minFilter(GL_LINEAR_MIPMAP_LINEAR)->magFilter(GL_LINEAR)
-                            ->loadImage(timg)->generateMipmap();
-                    delete timg;
-                    textures.push_back(MeshTexture(name_gen->generate(), texture));
-                }
-            }
-            
-            return textures;
-        }
+
         
     public:
         
-        static AssimpModel * fromFile(const char * path, MeshTextureNameGeneratorFactory * tex_name_gen_factory) {
+        static AssimpModel * fromFile(const char * path) {
             AssimpModel * instance = new AssimpModel;
-            instance->textureNameGeneratorFactory = tex_name_gen_factory;
             instance->loadFromFile(path);
             return instance;
         }
@@ -184,6 +143,7 @@ namespace wglfw {
             for (Mesh * mesh : meshes) {
                 delete mesh;
             }
+            delete texturePool;
         }
         
         void draw(Program * program) {
