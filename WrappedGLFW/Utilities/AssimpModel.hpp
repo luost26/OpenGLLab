@@ -40,8 +40,9 @@ namespace wglfw {
         void loadFromFile(const std::string & path) {
             Assimp::Importer importer;
             const aiScene* scene = importer.ReadFile(path,
-                    aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace | aiProcess_GenNormals
+                    aiProcess_Triangulate | aiProcess_CalcTangentSpace | aiProcess_GenNormals
                     );
+			// aiProcess_FlipUVs Disabled
         
             if(!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
                 throw AssimpModelLoadFailureException(importer.GetErrorString());
