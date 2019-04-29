@@ -77,9 +77,9 @@ namespace wglfw {
             return this;
         }
         
-        FrameBuffer * attachTexture2D(Texture2D * tex, GLenum attachment) {
+        FrameBuffer * attachTexture2D(Texture * tex, GLenum attachment, GLenum tex_target=GL_TEXTURE_2D, int level=0) {
             assertIsBound();
-            glFramebufferTexture2D(_boundTo, attachment, GL_TEXTURE_2D, tex->texture(), 0);
+            glFramebufferTexture2D(_boundTo, attachment, tex_target, tex->texture(), level);
             return this;
         }
         
