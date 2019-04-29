@@ -71,9 +71,11 @@ namespace wglfw {
             }
         }
         
-        FrameBuffer * unbind() {
+        FrameBuffer * unbind(GLenum target=0) {
             assertIsBound();
-            glBindFramebuffer(_boundTo, 0);
+			if (target == 0)
+				target = _boundTo;
+            glBindFramebuffer(target, 0);
             return this;
         }
         

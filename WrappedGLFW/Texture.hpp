@@ -198,6 +198,11 @@ namespace wglfw {
             throw MethodNotImplementedException();
             return false;
         }
+
+		~Texture() {
+			glDeleteTextures(1, &_texture);
+		}
+
     };
     
     class Texture2D : public Texture {
