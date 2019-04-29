@@ -117,7 +117,7 @@ namespace wglfw {
         }
 
         float loadShininess() {
-            float val = 0.0f;
+            float val;
             assimpMaterial->Get(AI_MATKEY_SHININESS, val);
             return val;
         }

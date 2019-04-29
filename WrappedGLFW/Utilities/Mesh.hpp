@@ -148,6 +148,7 @@ namespace wglfw {
             for (auto tex_pair : material->textures) {
                 tex_pair.second->bindToTextureUnit(TextureUnit::get(tex_unit));
                 program->setTexture(tex_pair.first.c_str(), TextureUnit::get(tex_unit));
+				program->setFloat((tex_pair.first + "_enabled").c_str(), 1.0f);
                 ++ tex_unit;
             }
             Texture::activateTextureUnit(TextureUnit::get(0)); // reset texture unit activation status
