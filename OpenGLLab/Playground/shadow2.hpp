@@ -5,6 +5,9 @@
 #ifndef OPENGLLAB_SHADOW2_HPP
 #define OPENGLLAB_SHADOW2_HPP
 
+#include "base.hpp"
+#include "Objects/ScreenQuad.hpp"
+
 namespace playground {
 
 	struct GymSpotLight {
@@ -18,6 +21,7 @@ namespace playground {
 		glm::aligned_vec3 attenuation;
 		glm::aligned_vec2 cutoff;
 
+		GymSpotLight() {}
 
 		GymSpotLight(const glm::vec3 & pos) {
 			ambient = glm::vec3(0.3f, 0.3f, 0.3f);
@@ -60,7 +64,7 @@ namespace playground {
 		int uboRange;
 
 		GymSpotLightArray() {
-			lights.push_back(GymSpotLight(glm::vec3(20.67f, 10.83f, -9.63f)));
+			lights.push_back(GymSpotLight(glm::vec3(24.092, 10.141, -13.476)));
 		}
 
 		void initUBO(int ubo_range) {
@@ -96,33 +100,95 @@ namespace playground {
 			prog->setInt("numberOfPointLights", lights.size());
 			prog->setUniformBlockBinding("PointLightsBlock", uboRange);
 		}
+
 	};
 
-    class Shadow2Scene {
-    public:
-        AssimpModel * model;
+	class Shadow2Scene {
+	public:
+		AssimpModel * model;
 		GymSpotLightArray * spotLights;
 		GymPointLightArray * pointLights;
 
-        Shadow2Scene() {
-            model = AssimpModel::fromFile(model_path("gym/gym.obj").c_str());
+		Shadow2Scene() {
+			model = AssimpModel::fromFile(model_path("gym/gym.obj").c_str());
 			spotLights = new GymSpotLightArray();
-			spotLights->initUBO(1);
 			pointLights = new GymPointLightArray();
+		}
+
+		void uploadLights() {
+			spotLights->initUBO(1);
 			pointLights->initUBO(2);
-        }
+		}
 
-        void draw(Program * prog) {
+		void draw(Program * prog, bool illum = true) {
 
-			prog->setVec3("viewPos", Base::getCamera()->position());  // Important, dont forget to set viewPos, otherwise specular illumination will not show
-			spotLights->apply(prog);
-			pointLights->apply(prog);
+			prog->use();
 
-            prog->setMatrix4("model", glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f, 1.0f)) );
-            model->draw(prog);
+			if (illum) {
+				prog->setVec3("viewPos", Base::getCamera()->position());  // Important, dont forget to set viewPos, otherwise specular illumination will not show
+				spotLights->apply(prog);
+				pointLights->apply(prog);
+			}
 
-        }
-    };
+			prog->setMatrix4("model", glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f, 1.0f)));
+			model->draw(prog);
+
+		}
+	};
+
+	class GymSpotLightShadowMapper {
+	public:
+		FrameBuffer * FBO;
+		Texture2D * map;
+		GymSpotLight * light;
+		int mapSize;
+
+		GymSpotLightShadowMapper(GymSpotLight * _light) {
+			light = _light;
+		}
+
+		void init(int shadow_map_size=4096) {
+			mapSize = shadow_map_size;
+			FBO = new FrameBuffer();
+			map = new Texture2D();
+			map->bind()->empty(mapSize, mapSize, GL_DEPTH_COMPONENT, GL_FLOAT)
+				->minFilter(GL_NEAREST)->magFilter(GL_NEAREST)
+				->wrapS(GL_CLAMP_TO_EDGE)->wrapT(GL_CLAMP_TO_EDGE)
+				->borderColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+			FBO->bind()->attachTexture2D(map, GL_DEPTH_ATTACHMENT)
+				->setDrawBuffer(GL_NONE)
+				->setReadBuffer(GL_NONE)
+				->unbind();
+		}
+
+
+		void draw(Program * prog, Shadow2Scene * scene) {
+			glm::mat4 light_proj, light_view, light_space;
+			float aspect = 1.0f;
+			float _near = 1.0f;
+			float _far = 25.0f;
+			light_proj = glm::perspective(glm::radians(120.0f), aspect, _near, _far);
+			light_view = glm::lookAt(
+				glm::vec3(light->position.x, light->position.y, light->position.z),
+				glm::vec3(light->position.x, 0.0f, light->position.z),
+				glm::vec3(0.0f,0.0f,-1.0f)
+			);
+			
+			light_space = light_proj * light_view;
+			prog->use()->setMatrix4("lightSpace", light_space);
+
+			GL::setViewport(0, 0, mapSize, mapSize);
+			FBO->bind();
+			glClear(GL_DEPTH_BUFFER_BIT);
+
+			scene->draw(prog, false);
+
+			FBO->unbind();
+
+			GL::setViewport(0, 0, 800, 600, VIEWPORT_SCALE_FACTOR);
+		}
+
+	};
 
     class Shadow2 : public Base {
     public:
@@ -146,8 +212,18 @@ namespace playground {
             Shadow2Scene * scene = new Shadow2Scene();
 
             Program * common_program = simple_shader_program(shader_path("shadow2/object.vert"), shader_path("shadow2/object.frag"));
+			Program * shadow_mapping_program = simple_shader_program(shader_path("shadow2/depth_mapping.vert"), shader_path("shadow2/depth_mapping.frag"));
+			
+			ScreenQuad * debug_quad = new ScreenQuad(NULL, load_fragment_shader(shader_path("shadow2/debug_quad.frag")));
 
-            getCamera()->setPosition(glm::vec3(17.3f, 2.2f, -9.5f));
+			GymSpotLightShadowMapper * shadow_mapper = new GymSpotLightShadowMapper(&scene->spotLights->lights[0]);
+			shadow_mapper->init();
+			shadow_mapper->draw(shadow_mapping_program, scene);
+
+
+			scene->uploadLights();
+
+			getCamera()->setPosition(glm::vec3(17.3f, 2.2f, -9.5f));
 
             while (!window->shouldClose()) {
                 stopwatch();
@@ -162,10 +238,11 @@ namespace playground {
                         ->loadSub(sizeof(glm::mat4), sizeof(glm::mat4), glm::value_ptr(getCamera()->viewMatrix()))
                         ->unbind();
 
-                common_program->use();
-                common_program->setUniformBlockBinding("Camera", 0);
 
-                scene->draw(common_program);
+
+				scene->draw(common_program);
+
+				//debug_quad->draw(shadow_mapper->map);
 
                 GLFW::swapBuffers(window);
                 GLFW::pollEvents();
