@@ -151,11 +151,19 @@ namespace playground {
 	public:
 		FrameBuffer * FBO;
 		Texture2D * map;
+		Texture2D * auxMap;
 		glm::mat4 lightSpace;
 		GymSpotLight * light;
 		int mapSize;
 		int index;
 
+		enum Algorithm {
+			Naive,
+			Moment
+		};
+
+		Algorithm algorithm;
+		
 		const static int shadowMapsLimit = 12;
 		static int countShadowMaps;
 
@@ -165,18 +173,42 @@ namespace playground {
 			return new GymSpotLightShadowMapper(_light);
 		}
 
-		GymSpotLightShadowMapper * init(int shadow_map_size=8192) {
+		GymSpotLightShadowMapper * init(Algorithm algo, int shadow_map_size=2048) {
+			algorithm = algo;
+
 			mapSize = shadow_map_size;
 			FBO = new FrameBuffer();
 			map = new Texture2D();
-			map->bind()->empty(mapSize, mapSize, GL_DEPTH_COMPONENT, GL_FLOAT)
-				->minFilter(GL_NEAREST)->magFilter(GL_NEAREST)
-				->wrapS(GL_CLAMP_TO_EDGE)->wrapT(GL_CLAMP_TO_EDGE)
-				->borderColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-			FBO->bind()->attachTexture2D(map, GL_DEPTH_ATTACHMENT)
-				->setDrawBuffer(GL_NONE)
-				->setReadBuffer(GL_NONE)
-				->unbind();
+
+			if (algorithm == Moment) {
+				/* Moment shadow mapping */
+				auxMap = new Texture2D();
+				auxMap->bind()->empty(mapSize, mapSize, GL_DEPTH_COMPONENT, GL_FLOAT, GL_DEPTH_COMPONENT)
+					->minFilter(GL_NEAREST)->magFilter(GL_NEAREST)
+					->wrapS(GL_CLAMP_TO_EDGE)->wrapT(GL_CLAMP_TO_EDGE)
+					->borderColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+
+				map->bind()->empty(mapSize, mapSize, GL_RGBA, GL_FLOAT, GL_RGBA32F)
+					->minFilter(GL_NEAREST)->magFilter(GL_NEAREST)
+					->wrapS(GL_CLAMP_TO_EDGE)->wrapT(GL_CLAMP_TO_EDGE)
+					->borderColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+
+				FBO->bind()->attachTexture2D(auxMap, GL_DEPTH_ATTACHMENT)
+					->attachTexture2D(map, GL_COLOR_ATTACHMENT0)
+					->unbind();
+
+			} else {
+				/* Naive shadow mapping */
+				map->bind()->empty(mapSize, mapSize, GL_DEPTH_COMPONENT, GL_FLOAT)
+					->minFilter(GL_NEAREST)->magFilter(GL_NEAREST)
+					->wrapS(GL_CLAMP_TO_EDGE)->wrapT(GL_CLAMP_TO_EDGE)
+					->borderColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				FBO->bind()->attachTexture2D(map, GL_DEPTH_ATTACHMENT)
+					->setDrawBuffer(GL_NONE)
+					->setReadBuffer(GL_NONE)
+					->unbind();
+			}
+			
 			return this;
 		}
 
@@ -255,20 +287,20 @@ namespace playground {
 
             Shadow2Scene * scene = new Shadow2Scene();
 
-            Program * common_program = simple_shader_program(shader_path("shadow2/object.vert"), shader_path("shadow2/object.frag"));
-			Program * shadow_mapping_program = simple_shader_program(shader_path("shadow2/depth_mapping.vert"), shader_path("shadow2/depth_mapping.frag"));
-			
+            Program * common_program = simple_shader_program(shader_path("shadow2/object.vert"), shader_path("shadow2/object_msm.frag"));
+			//Program * shadow_mapping_program = simple_shader_program(shader_path("shadow2/depth_mapping.vert"), shader_path("shadow2/depth_mapping.frag"));
+			Program * msm_program = simple_shader_program(shader_path("shadow2/msm.vert"), shader_path("shadow2/msm.frag"));
+
 			ScreenQuad * debug_quad = new ScreenQuad(NULL, load_fragment_shader(shader_path("shadow2/debug_quad.frag")));
 
 			GymSpotLightShadowMapper * shadow_mapper = GymSpotLightShadowMapper::create(&scene->spotLights->lights[0]);
-			shadow_mapper->init()->draw(shadow_mapping_program, scene)
+			shadow_mapper->init(GymSpotLightShadowMapper::Algorithm::Moment)
+				->draw(msm_program, scene)
 				->bind(common_program);
 
 			scene->uploadLights();
 
 			getCamera()->setPosition(glm::vec3(17.3f, 2.2f, -9.5f));
-
-			printf("Offset of shadow_enabled: %d\n", offsetof(GymSpotLight, shadow_enabled));
 
             while (!window->shouldClose()) {
                 stopwatch();
@@ -285,7 +317,7 @@ namespace playground {
 
 				scene->draw(common_program);
 
-				// debug_quad->draw(shadow_mapper->map);
+				//debug_quad->draw(shadow_mapper->map);
 
                 GLFW::swapBuffers(window);
                 GLFW::pollEvents();
