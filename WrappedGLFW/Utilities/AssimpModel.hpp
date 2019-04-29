@@ -40,7 +40,7 @@ namespace wglfw {
         void loadFromFile(const std::string & path) {
             Assimp::Importer importer;
             const aiScene* scene = importer.ReadFile(path,
-                    aiProcess_Triangulate | aiProcess_CalcTangentSpace | aiProcess_GenNormals | aiProcess_OptimizeGraph | aiProcess_OptimizeMeshes
+                    aiProcess_Triangulate | aiProcess_CalcTangentSpace | aiProcess_OptimizeGraph | aiProcess_OptimizeMeshes
                     );
 			// aiProcess_FlipUVs Disabled
         
