@@ -21,13 +21,13 @@ namespace playground {
 
 		GymSpotLight(const glm::vec3 & pos) {
 			ambient = glm::vec3(0.3f, 0.3f, 0.3f);
-			diffuse = glm::vec3(0.8f, 0.8f, 0.8f);
-			specular = glm::vec3(0.3f, 0.3f, 0.3f);
+			diffuse = glm::vec3(0.9f, 0.9f, 0.9f);
+			specular = glm::vec3(1.0f, 1.0f, 1.0f);
 
 			position = pos;
 			direction = glm::vec3(0.0f, -1.0f, 0.0f);
 
-			attenuation = glm::vec3(1.0f, 0.007f, 0.0002f);
+			attenuation = glm::vec3(1.0f, 0.014f, 0.0007f);
 			cutoff = glm::vec2(glm::cos(glm::radians(30.0f)), glm::cos(glm::radians(60.0f)));
 		}
 	};
@@ -114,6 +114,7 @@ namespace playground {
 
         void draw(Program * prog) {
 
+			prog->setVec3("viewPos", Base::getCamera()->position());  // Important, dont forget to set viewPos, otherwise specular illumination will not show
 			spotLights->apply(prog);
 			pointLights->apply(prog);
 
