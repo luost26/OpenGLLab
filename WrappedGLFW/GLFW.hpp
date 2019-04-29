@@ -45,6 +45,10 @@ namespace wglfw {
             return this;
         }
         
+		WindowHintList * samples(int value) {
+			hints[GLFW_SAMPLES] = value;
+			return this;
+		}
     };
     
     class GLFW {
