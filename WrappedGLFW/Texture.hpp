@@ -251,9 +251,11 @@ namespace wglfw {
             return this;
         }
         
-        Texture2D * empty(unsigned int width, unsigned int height, GLenum format, GLenum type=GL_UNSIGNED_BYTE) {
+        Texture2D * empty(unsigned int width, unsigned int height, GLenum format, GLenum type=GL_UNSIGNED_BYTE, GLenum internal_format=0) {
             assertIsBound();
-            glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, type, NULL);
+			if (internal_format == 0) 
+				internal_format = format;
+            glTexImage2D(GL_TEXTURE_2D, 0, internal_format, width, height, 0, format, type, NULL);
             return this;
         }
         
@@ -271,6 +273,64 @@ namespace wglfw {
         }
         
     };
+
+	class Texture2DMultisample : public Texture {
+	public:
+		Texture2DMultisample() : Texture() {}
+
+		Texture2DMultisample * bind() {
+			glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, _texture);
+			return this;
+		}
+
+		Texture2DMultisample * unbind() {
+			assertIsBound();
+			glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, 0);
+			return this;
+		}
+
+		Texture2DMultisample * empty(unsigned int width, unsigned int height, unsigned int samples, GLenum internal_format, bool fixed_sample_loc=true) {
+			assertIsBound();
+			glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, samples, internal_format, width, height, fixed_sample_loc);
+			return this;
+		}
+
+		bool isBound() {
+			int b;
+			glGetIntegerv(GL_TEXTURE_BINDING_2D_MULTISAMPLE, &b);
+			return b == _texture;
+		}
+
+		Texture2DMultisample * wrapS(int v) {
+			assertIsBound();
+			glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_WRAP_S, v);
+			return this;
+		}
+
+		Texture2DMultisample * wrapT(int v) {
+			assertIsBound();
+			glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_WRAP_T, v);
+			return this;
+		}
+
+		Texture2DMultisample * minFilter(int v) {
+			assertIsBound();
+			glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_MIN_FILTER, v);
+			return this;
+		}
+
+		Texture2DMultisample * magFilter(int v) {
+			assertIsBound();
+			glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_MAG_FILTER, v);
+			return this;
+		}
+
+		Texture2DMultisample * borderColor(const glm::vec4 & color) {
+			assertIsBound();
+			glTexParameterfv(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_BORDER_COLOR, glm::value_ptr(color));
+			return this;
+		}
+	};
     
     class TextureCubeMap : public Texture {
     public:
