@@ -32,8 +32,10 @@
 #include <stb/stb_image.h>
 
 /* GLM */
+#define GLM_FORCE_ALIGNED_GENTYPES
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <glm/gtc/type_aligned.hpp>
 
 /* Assimp */
 #include <assimp/Importer.hpp>
