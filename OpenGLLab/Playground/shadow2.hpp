@@ -21,6 +21,9 @@ namespace playground {
 		glm::aligned_vec3 attenuation;
 		glm::aligned_vec2 cutoff;
 
+		bool shadow_enabled;
+		int shadow_map_index;
+
 		GymSpotLight() {}
 
 		GymSpotLight(const glm::vec3 & pos) {
@@ -33,6 +36,8 @@ namespace playground {
 
 			attenuation = glm::vec3(1.0f, 0.014f, 0.0007f);
 			cutoff = glm::vec2(glm::cos(glm::radians(30.0f)), glm::cos(glm::radians(60.0f)));
+
+			shadow_enabled = 0.0f;
 		}
 	};
 
@@ -44,7 +49,6 @@ namespace playground {
 
 		glm::aligned_vec3 attenuation;
 
-
 		GymPointLight(const glm::vec3 & pos) {
 			ambient = glm::vec3(0.3f, 0.3f, 0.3f);
 			diffuse = glm::vec3(1.0f, 1.0f, 1.0f);
@@ -53,7 +57,6 @@ namespace playground {
 			position = pos;
 
 			attenuation = glm::vec3(1.0f, 0.007f, 0.0002f);
-
 		}
 	};
 
@@ -74,6 +77,7 @@ namespace playground {
 		}
 
 		void apply(Program * prog) {
+			prog->use();
 			prog->setInt("numberOfSpotLights", lights.size());
 			prog->setUniformBlockBinding("SpotLightsBlock", uboRange);
 		}
@@ -97,6 +101,7 @@ namespace playground {
 		}
 
 		void apply(Program * prog) {
+			prog->use();
 			prog->setInt("numberOfPointLights", lights.size());
 			prog->setUniformBlockBinding("PointLightsBlock", uboRange);
 		}
@@ -137,17 +142,30 @@ namespace playground {
 	};
 
 	class GymSpotLightShadowMapper {
+	private:
+		GymSpotLightShadowMapper(GymSpotLight * _light) {
+			light = _light;
+			index = countShadowMaps;
+			++countShadowMaps;
+		}
 	public:
 		FrameBuffer * FBO;
 		Texture2D * map;
+		glm::mat4 lightSpace;
 		GymSpotLight * light;
 		int mapSize;
+		int index;
 
-		GymSpotLightShadowMapper(GymSpotLight * _light) {
-			light = _light;
+		const static int shadowMapsLimit = 12;
+		static int countShadowMaps;
+
+		static GymSpotLightShadowMapper * create(GymSpotLight * _light) {
+			if (countShadowMaps >= shadowMapsLimit)
+				return NULL;
+			return new GymSpotLightShadowMapper(_light);
 		}
 
-		void init(int shadow_map_size=4096) {
+		GymSpotLightShadowMapper * init(int shadow_map_size=8192) {
 			mapSize = shadow_map_size;
 			FBO = new FrameBuffer();
 			map = new Texture2D();
@@ -159,10 +177,11 @@ namespace playground {
 				->setDrawBuffer(GL_NONE)
 				->setReadBuffer(GL_NONE)
 				->unbind();
+			return this;
 		}
 
 
-		void draw(Program * prog, Shadow2Scene * scene) {
+		GymSpotLightShadowMapper * draw(Program * prog, Shadow2Scene * scene) {
 			glm::mat4 light_proj, light_view, light_space;
 			float aspect = 1.0f;
 			float _near = 1.0f;
@@ -175,20 +194,45 @@ namespace playground {
 			);
 			
 			light_space = light_proj * light_view;
-			prog->use()->setMatrix4("lightSpace", light_space);
+			lightSpace = light_space;
+
+			glDisable(GL_CULL_FACE);
 
 			GL::setViewport(0, 0, mapSize, mapSize);
 			FBO->bind();
 			glClear(GL_DEPTH_BUFFER_BIT);
 
+			prog->use()->setMatrix4("lightSpace", light_space);  // upload light space matrix to depth map generation shader
 			scene->draw(prog, false);
 
 			FBO->unbind();
 
-			GL::setViewport(0, 0, 800, 600, VIEWPORT_SCALE_FACTOR);
+			GL::setViewport(0, 0, Base::getDefaultScreenWidth(), Base::getDefaultScreenHeight(), VIEWPORT_SCALE_FACTOR);
+
+			glEnable(GL_CULL_FACE);
+
+			return this;
+		}
+
+		GymSpotLightShadowMapper * bind(Program * prog) {
+			light->shadow_enabled = true;
+			light->shadow_map_index = index;
+			
+			int unit = 4 + index;
+			map->bindToTextureUnit(TextureUnit::get(unit));
+			char idxstr[5];
+			itoa(index, idxstr, 10);
+
+			prog->use();  // Notice! Activate the program before uploading data (especially texture)
+			prog->setTexture((std::string("shadowMaps[") + idxstr + "]").c_str(), TextureUnit::get(unit));
+			prog->setMatrix4((std::string("lightSpaces[") + idxstr + "]").c_str(), lightSpace);
+
+			return this;
 		}
 
 	};
+
+	int GymSpotLightShadowMapper::countShadowMaps = 0;
 
     class Shadow2 : public Base {
     public:
@@ -216,14 +260,15 @@ namespace playground {
 			
 			ScreenQuad * debug_quad = new ScreenQuad(NULL, load_fragment_shader(shader_path("shadow2/debug_quad.frag")));
 
-			GymSpotLightShadowMapper * shadow_mapper = new GymSpotLightShadowMapper(&scene->spotLights->lights[0]);
-			shadow_mapper->init();
-			shadow_mapper->draw(shadow_mapping_program, scene);
-
+			GymSpotLightShadowMapper * shadow_mapper = GymSpotLightShadowMapper::create(&scene->spotLights->lights[0]);
+			shadow_mapper->init()->draw(shadow_mapping_program, scene)
+				->bind(common_program);
 
 			scene->uploadLights();
 
 			getCamera()->setPosition(glm::vec3(17.3f, 2.2f, -9.5f));
+
+			printf("Offset of shadow_enabled: %d\n", offsetof(GymSpotLight, shadow_enabled));
 
             while (!window->shouldClose()) {
                 stopwatch();
@@ -238,11 +283,9 @@ namespace playground {
                         ->loadSub(sizeof(glm::mat4), sizeof(glm::mat4), glm::value_ptr(getCamera()->viewMatrix()))
                         ->unbind();
 
-
-
 				scene->draw(common_program);
 
-				//debug_quad->draw(shadow_mapper->map);
+				// debug_quad->draw(shadow_mapper->map);
 
                 GLFW::swapBuffers(window);
                 GLFW::pollEvents();

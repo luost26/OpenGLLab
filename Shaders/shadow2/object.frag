@@ -25,7 +25,9 @@ struct PointLight {
     vec3 ambient;
     vec3 diffuse;
     vec3 specular;
+
     vec3 position;
+
 	vec3 attenuation;
 };
 
@@ -39,7 +41,17 @@ struct SpotLight {
 
 	vec3 attenuation;
 	vec2 cutoff;
+
+	//float _padding1;
+	//float _padding2;
+
+	bool shadow_enabled;
+	int shadow_map_index;
 };
+
+#define MAX_SHADOW_MAPS 12
+uniform sampler2D shadowMaps[MAX_SHADOW_MAPS];
+in vec4 FragPosLightSpaces[MAX_SHADOW_MAPS];
 
 uniform Material material;
 
@@ -72,6 +84,37 @@ vec4 DiffuseColor() {
 vec4 SpecularColor() {
     return texture(material.texture_specular0, TexCoords) * material.texture_specular0_enabled
     + vec4(material.specular, 1.0) * (1 - material.texture_specular0_enabled);
+}
+
+float CalculateShadowOfIndex(int idx, vec3 light_dir) {
+	vec3 proj_coords = FragPosLightSpaces[idx].xyz / FragPosLightSpaces[idx].w;
+	proj_coords = proj_coords * 0.5 + 0.5;
+
+	float current_depth = proj_coords.z;
+
+	float bias = max(0.05 * (1.0 - dot(Normal, -light_dir)), 0.005);
+
+	// 0-1 shadow
+	// if (current_depth-bias > texture(shadowMaps[idx], proj_coords.xy).r ) return 1.0;
+	// else return 0.0;
+
+	vec2 textel_size = 1.0 / textureSize(shadowMaps[idx], 0);
+	float shadow = 0.0;
+	int radius = 2;
+
+	for (int x = -radius; x <= radius; ++ x) {
+        for (int y = -radius; y <= radius; ++ y) {
+            float pcf_depth = texture(shadowMaps[idx], proj_coords.xy + vec2(x,y)*textel_size).r;
+            shadow += current_depth - bias > pcf_depth ? 1.0: 0.0;
+        }
+    }
+
+	shadow /= (2*radius+1)*(2*radius+1);
+
+    if (proj_coords.z > 1.0)
+        shadow = 0.0;
+
+    return shadow;
 }
 
 vec3 CalculatePointLightOfIndex(int idx) {
@@ -144,7 +187,11 @@ vec3 CalculateSpotLightOfIndex(int idx) {
     float epsilon = light.cutoff.x - light.cutoff.y;
     float intensity = clamp((theta - light.cutoff.y) / epsilon, 0.0, 1.0);
 
-    return ambient*attenuation + (diffuse + specular)*attenuation*intensity;
+	float shadow_intensity = 0.0f;
+	if (light.shadow_enabled)
+		shadow_intensity = CalculateShadowOfIndex(light.shadow_map_index, light_dir);
+
+	return ambient*attenuation + (diffuse + specular)*attenuation*intensity*(1.0f-shadow_intensity);
 }
 
 vec3 MergeAllSpotLights() {
@@ -155,7 +202,10 @@ vec3 MergeAllSpotLights() {
 	return result;
 }
 
+in vec4 position;
+
 void main()
 {
     FragColor = vec4(MergeAllPointLights() + MergeAllSpotLights(), 1.0);
+	//FragColor = vec4(texture(shadowMaps[0], position.xy).r);
 }
