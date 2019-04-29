@@ -99,6 +99,11 @@ namespace wglfw {
             glUniformMatrix4fv(getUniformLocation(name), 1, false, glm::value_ptr(mat));
             return this;
         }
+
+		Program * setBool(const char * name, bool value) {
+			setInt(name, value ? 1 : 0);
+			return this;
+		}
         
         Program * setTexture(const char * name, TextureUnit * unit) {
             return setInt(name, unit->getUnitNumber());
