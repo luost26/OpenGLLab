@@ -150,8 +150,14 @@ namespace playground {
 		}
 	public:
 		FrameBuffer * FBO;
+		FrameBuffer * FBOMS;
+
 		Texture2D * map;
 		Texture2D * auxMap;
+
+		Texture2DMultisample * mapMS;
+		Texture2DMultisample * auxMapMS;
+
 		glm::mat4 lightSpace;
 		GymSpotLight * light;
 		int mapSize;
@@ -182,6 +188,17 @@ namespace playground {
 
 			if (algorithm == Moment) {
 				/* Moment shadow mapping */
+				FBOMS = new FrameBuffer();
+				auxMapMS = new Texture2DMultisample();
+				auxMapMS->bind()->empty(mapSize, mapSize, 8, GL_DEPTH_COMPONENT)->unbind();
+				mapMS = new Texture2DMultisample();
+				mapMS->bind()->empty(mapSize, mapSize, 8, GL_RGBA32F)->unbind();
+				FBOMS->bind()
+					->attachTexture2D(auxMapMS, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D_MULTISAMPLE)
+					->attachTexture2D(mapMS, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D_MULTISAMPLE)
+					->unbind();
+
+
 				auxMap = new Texture2D();
 				auxMap->bind()->empty(mapSize, mapSize, GL_DEPTH_COMPONENT, GL_FLOAT, GL_DEPTH_COMPONENT)
 					->minFilter(GL_NEAREST)->magFilter(GL_NEAREST)
@@ -231,13 +248,36 @@ namespace playground {
 			glDisable(GL_CULL_FACE);
 
 			GL::setViewport(0, 0, mapSize, mapSize);
-			FBO->bind();
-			glClear(GL_DEPTH_BUFFER_BIT);
 
-			prog->use()->setMatrix4("lightSpace", light_space);  // upload light space matrix to depth map generation shader
-			scene->draw(prog, false);
+			if (algorithm == Moment) {
 
-			FBO->unbind();
+				FBOMS->bind();
+				glClear(GL_DEPTH_BUFFER_BIT);
+
+				prog->use()->setMatrix4("lightSpace", light_space);  // upload light space matrix to depth map generation shader
+				scene->draw(prog, false);
+
+				FBOMS->bind(GL_READ_FRAMEBUFFER);
+				FBO->bind(GL_DRAW_FRAMEBUFFER);
+				glBlitFramebuffer(0, 0, mapSize, mapSize, 0, 0, mapSize, mapSize, GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT, GL_NEAREST);
+
+
+				FBOMS->unbind(GL_FRAMEBUFFER);
+
+				delete auxMapMS;
+				delete mapMS;
+				delete auxMap;
+
+			} else {
+				FBO->bind();
+				glClear(GL_DEPTH_BUFFER_BIT);
+
+				prog->use()->setMatrix4("lightSpace", light_space);  // upload light space matrix to depth map generation shader
+				scene->draw(prog, false);
+
+				FBO->unbind();
+			}
+
 
 			GL::setViewport(0, 0, Base::getDefaultScreenWidth(), Base::getDefaultScreenHeight(), VIEWPORT_SCALE_FACTOR);
 
@@ -317,7 +357,7 @@ namespace playground {
 
 				scene->draw(common_program);
 
-				//debug_quad->draw(shadow_mapper->map);
+				// debug_quad->draw(shadow_mapper->auxMap);
 
                 GLFW::swapBuffers(window);
                 GLFW::pollEvents();
