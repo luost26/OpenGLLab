@@ -92,23 +92,19 @@ float CalculateShadowOfIndex(int idx, vec3 light_dir) {
 
 	float current_depth = proj_coords.z;
 
-	float bias = max(0.05 * (1.0 - dot(Normal, -light_dir)), 0.005);
-
-	// 0-1 shadow
-	// if (current_depth-bias > texture(shadowMaps[idx], proj_coords.xy).r ) return 1.0;
-	// else return 0.0;
+	float bias = max(0.005 * (1.0 - dot(Normal, -light_dir)), 0.0005);
 
 	vec2 textel_size = 1.0 / textureSize(shadowMaps[idx], 0);
 	float shadow = 0.0;
 	int radius = 2;
 
+	// Naive PCF filtering
 	for (int x = -radius; x <= radius; ++ x) {
         for (int y = -radius; y <= radius; ++ y) {
             float pcf_depth = texture(shadowMaps[idx], proj_coords.xy + vec2(x,y)*textel_size).r;
             shadow += current_depth - bias > pcf_depth ? 1.0: 0.0;
         }
     }
-
 	shadow /= (2*radius+1)*(2*radius+1);
 
     if (proj_coords.z > 1.0)
