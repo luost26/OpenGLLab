@@ -34,6 +34,10 @@ namespace wglfw {
             glGenFramebuffers(1, &_FBO);
         }
         
+		~FrameBuffer() {
+			glDeleteFramebuffers(1, &_FBO);
+		}
+
         FrameBuffer * bind(GLenum target=GL_FRAMEBUFFER) {
             _boundTo = target;
             glBindFramebuffer(target, _FBO);
