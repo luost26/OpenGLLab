@@ -94,6 +94,11 @@ namespace wglfw {
             glUniform3f(getUniformLocation(name), value.x, value.y, value.z);
             return this;
         }
+
+		Program * setVec2(const char * name, glm::vec2 value) {
+			glUniform2f(getUniformLocation(name), value.x, value.y);
+			return this;
+		}
         
         Program * setMatrix4(const char * name, glm::mat4 mat) {
             glUniformMatrix4fv(getUniformLocation(name), 1, false, glm::value_ptr(mat));
