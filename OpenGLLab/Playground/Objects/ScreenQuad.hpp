@@ -43,6 +43,32 @@ namespace playground {
             _program->setTexture(uniform, TextureUnit::get(0));
         }
 
+		void setUpVertices() {
+			/* Set up VAO */
+			_VAO = new VertexArray();
+			_VAO->bind();
+
+			/* Set up VBO */
+			_VBO = new ArrayBuffer();
+			_VBO->bind()->load(sizeof(vertices), vertices, GL_STATIC_DRAW);
+			_VBO->getVertexAttributePointer(VertexAttributePointerConfiguration::make()
+				->index(0)
+				->size(3)
+				->type(GL_FLOAT)
+				->normalized(GL_FALSE)
+				->stride(5 * sizeof(float))
+				->pointer(0)
+			)->enable();
+			_VBO->getVertexAttributePointer(VertexAttributePointerConfiguration::make()
+				->index(1)
+				->size(2)
+				->type(GL_FLOAT)
+				->normalized(GL_FALSE)
+				->stride(5 * sizeof(float))
+				->pointer((void *)(3 * sizeof(float)))
+			)->enable();
+		}
+
     public:
 
         ScreenQuad(VertexShader * vshader = NULL, FragmentShader * fshader = NULL) {
@@ -54,30 +80,18 @@ namespace playground {
             delete vshader;
             delete fshader;
 
-            /* Set up VAO */
-            _VAO = new VertexArray();
-            _VAO->bind();
-
-            /* Set up VBO */
-            _VBO = new ArrayBuffer();
-            _VBO->bind()->load(sizeof(vertices), vertices, GL_STATIC_DRAW);
-            _VBO->getVertexAttributePointer(VertexAttributePointerConfiguration::make()
-                                                    ->index(0)
-                                                    ->size(3)
-                                                    ->type(GL_FLOAT)
-                                                    ->normalized(GL_FALSE)
-                                                    ->stride(5*sizeof(float))
-                                                    ->pointer(0)
-            )->enable();
-            _VBO->getVertexAttributePointer(VertexAttributePointerConfiguration::make()
-                                                    ->index(1)
-                                                    ->size(2)
-                                                    ->type(GL_FLOAT)
-                                                    ->normalized(GL_FALSE)
-                                                    ->stride(5*sizeof(float))
-                                                    ->pointer((void *)(3*sizeof(float)))
-            )->enable();
+			setUpVertices();
         }
+
+		ScreenQuad(Program * prog) {
+			_program = prog;
+
+			setUpVertices();
+		}
+
+		Program * program() {
+			return _program;
+		}
 
         ScreenQuad * draw(Texture2D * tex, const char * uniform="screenTexture") {
             glDisable(GL_DEPTH_TEST);
@@ -106,7 +120,7 @@ namespace playground {
                                      "    gl_Position = vec4(aPos, 1.0);\n"
                                      "    TexCoord = aTexCoord;\n"
                                      "}";
-    char ScreenQuad::SCREEN_QUAD_FRAG[] = "#version 330 core\n"
+    char ScreenQuad::SCREEN_QUAD_FRAG[] = "#version 410 core\n"
                                      "out vec4 color;\n"
                                      "\n"
                                      "in vec2 TexCoord;\n"

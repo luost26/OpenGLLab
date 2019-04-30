@@ -145,7 +145,7 @@ float CalculateMSMHamburger(vec4 moments, float frag_depth, float depth_bias, fl
                       vec4(0.0f,0.0f,0.0f,0.0f));
     float quotient = (switchVal[0] * z[2] - b[0] * (switchVal[0] + z[2]) + b[1])/((z[2] - switchVal[1]) * (z[0] - z[1]));
     float shadowIntensity = switchVal[2] + switchVal[3] * quotient;
-    return 1.0f - clamp(shadowIntensity, 0.0f, 1.0f);
+    return 1.0f - clamp(shadowIntensity, 0.0f, 1.0f) * 1.02f;  // *1.02f : diminish light leaking
 }
 
 float CalculateShadowOfIndex(int idx, vec3 light_dir) {

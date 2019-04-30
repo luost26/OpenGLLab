@@ -151,6 +151,7 @@ namespace playground {
 	public:
 		FrameBuffer * FBO;
 		FrameBuffer * FBOMS;
+		FrameBuffer * auxFBO;
 
 		Texture2D * map;
 		Texture2D * auxMap;
@@ -162,6 +163,8 @@ namespace playground {
 		GymSpotLight * light;
 		int mapSize;
 		int index;
+
+		GLenum shadowMapInternalFormat;
 
 		enum Algorithm {
 			Naive,
@@ -187,12 +190,14 @@ namespace playground {
 			map = new Texture2D();
 
 			if (algorithm == Moment) {
+				shadowMapInternalFormat = GL_RGBA32F;
+
 				/* Moment shadow mapping */
 				FBOMS = new FrameBuffer();
 				auxMapMS = new Texture2DMultisample();
 				auxMapMS->bind()->empty(mapSize, mapSize, 8, GL_DEPTH_COMPONENT)->unbind();
 				mapMS = new Texture2DMultisample();
-				mapMS->bind()->empty(mapSize, mapSize, 8, GL_RGBA32F)->unbind();
+				mapMS->bind()->empty(mapSize, mapSize, 8, shadowMapInternalFormat)->unbind();
 				FBOMS->bind()
 					->attachTexture2D(auxMapMS, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D_MULTISAMPLE)
 					->attachTexture2D(mapMS, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D_MULTISAMPLE)
@@ -205,7 +210,7 @@ namespace playground {
 					->wrapS(GL_CLAMP_TO_EDGE)->wrapT(GL_CLAMP_TO_EDGE)
 					->borderColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 
-				map->bind()->empty(mapSize, mapSize, GL_RGBA, GL_FLOAT, GL_RGBA32F)
+				map->bind()->empty(mapSize, mapSize, GL_RGBA, GL_FLOAT, shadowMapInternalFormat)
 					->minFilter(GL_NEAREST)->magFilter(GL_NEAREST)
 					->wrapS(GL_CLAMP_TO_EDGE)->wrapT(GL_CLAMP_TO_EDGE)
 					->borderColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
@@ -251,6 +256,7 @@ namespace playground {
 
 			if (algorithm == Moment) {
 
+				/* First step: Generate multisampled moment shadow map */
 				FBOMS->bind();
 				glClear(GL_DEPTH_BUFFER_BIT);
 
@@ -261,12 +267,43 @@ namespace playground {
 				FBO->bind(GL_DRAW_FRAMEBUFFER);
 				glBlitFramebuffer(0, 0, mapSize, mapSize, 0, 0, mapSize, mapSize, GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT, GL_NEAREST);
 
-
 				FBOMS->unbind(GL_FRAMEBUFFER);
 
 				delete auxMapMS;
 				delete mapMS;
 				delete auxMap;
+
+				/* Second step: apply two-pass gaussian blur */
+				auxMap = new Texture2D();
+
+				auxMap->bind()->empty(mapSize, mapSize, GL_RGBA, GL_FLOAT, shadowMapInternalFormat)
+					->minFilter(GL_NEAREST)->magFilter(GL_NEAREST)
+					->wrapS(GL_CLAMP_TO_EDGE)->wrapT(GL_CLAMP_TO_EDGE)
+					->borderColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				FBO->bind()->attachTexture2D(auxMap, GL_COLOR_ATTACHMENT0)->unbind();
+
+				Program * gaussian_blur_program = simple_shader_program(shader_path("shadow2/gaussian_blur.vert"), shader_path("shadow2/gaussian_blur.frag"));
+				gaussian_blur_program->use()->setVec2("resolution", glm::vec2(mapSize, mapSize));
+
+				ScreenQuad * quad = new ScreenQuad(gaussian_blur_program);
+				gaussian_blur_program->use()
+					->setVec2("direction", glm::vec2(1.0f, 0.0f));
+
+				FBO->bind();
+				quad->draw(map);
+				FBO->unbind();
+
+				FBO->bind()->attachTexture2D(map, GL_COLOR_ATTACHMENT0)->unbind();
+				gaussian_blur_program->use()
+					->setVec2("direction", glm::vec2(0.0f, 1.0f));
+				FBO->bind();
+				quad->draw(auxMap);
+				FBO->unbind();
+
+				delete auxMap;
+
+				delete FBOMS;
+				delete FBO;
 
 			} else {
 				FBO->bind();
@@ -281,7 +318,7 @@ namespace playground {
 
 			GL::setViewport(0, 0, Base::getDefaultScreenWidth(), Base::getDefaultScreenHeight(), VIEWPORT_SCALE_FACTOR);
 
-			glEnable(GL_CULL_FACE);
+			//glEnable(GL_CULL_FACE);
 
 			return this;
 		}
@@ -319,8 +356,8 @@ namespace playground {
             GL::enableDepthTest();
 
 			glEnable(GL_MULTISAMPLE);
-            glEnable(GL_CULL_FACE);
-            glCullFace(GL_BACK);
+            //glEnable(GL_CULL_FACE);
+            //glCullFace(GL_BACK);
 
             UniformBuffer * cameraUBO = new UniformBuffer();
             cameraUBO->bind()->load(2*sizeof(glm::mat4), NULL, GL_STATIC_DRAW)->bindRange(0)->unbind();
