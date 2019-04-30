@@ -21,15 +21,15 @@ namespace playground {
 		glm::aligned_vec3 attenuation;
 		glm::aligned_vec2 cutoff;
 
-		bool shadow_enabled;
+		int shadow_enabled;
 		int shadow_map_index;
 
 		GymSpotLight() {}
 
 		GymSpotLight(const glm::vec3 & pos) {
-			ambient = glm::vec3(0.3f, 0.3f, 0.3f);
-			diffuse = glm::vec3(0.9f, 0.9f, 0.9f);
-			specular = glm::vec3(1.0f, 1.0f, 1.0f);
+			ambient = glm::vec3(0.2f, 0.2f, 0.2f);
+			diffuse = glm::vec3(0.75f, 0.75f, 0.75f);
+			specular = glm::vec3(0.8f, 0.8f, 0.8f);
 
 			position = pos;
 			direction = glm::vec3(0.0f, -1.0f, 0.0f);
@@ -67,7 +67,8 @@ namespace playground {
 		int uboRange;
 
 		GymSpotLightArray() {
-			lights.push_back(GymSpotLight(glm::vec3(24.092, 10.141, -13.476)));
+			lights.push_back(GymSpotLight(glm::vec3(14.046, 9.783, -16.6264)));
+			lights.push_back(GymSpotLight(glm::vec3(27.358, 9.783, -16.7371)));
 		}
 
 		void initUBO(int ubo_range) {
@@ -330,11 +331,15 @@ namespace playground {
 			int unit = 4 + index;
 			map->bindToTextureUnit(TextureUnit::get(unit));
 			char idxstr[5];
-			itoa(index, idxstr, 10);
+			sprintf(idxstr, "%d", index);
 
 			prog->use();  // Notice! Activate the program before uploading data (especially texture)
 			prog->setTexture((std::string("shadowMaps[") + idxstr + "]").c_str(), TextureUnit::get(unit));
 			prog->setMatrix4((std::string("lightSpaces[") + idxstr + "]").c_str(), lightSpace);
+
+			printf("Shadow map %d : Unit_%d %s %s\n", index, unit,
+				(std::string("shadowMaps[") + idxstr + "]").c_str(),
+				(std::string("lightSpaces[") + idxstr + "]").c_str());
 
 			return this;
 		}
@@ -356,8 +361,8 @@ namespace playground {
             GL::enableDepthTest();
 
 			glEnable(GL_MULTISAMPLE);
-            //glEnable(GL_CULL_FACE);
-            //glCullFace(GL_BACK);
+            glEnable(GL_CULL_FACE);
+            glCullFace(GL_BACK);
 
             UniformBuffer * cameraUBO = new UniformBuffer();
             cameraUBO->bind()->load(2*sizeof(glm::mat4), NULL, GL_STATIC_DRAW)->bindRange(0)->unbind();
@@ -375,7 +380,19 @@ namespace playground {
 				->draw(msm_program, scene)
 				->bind(common_program);
 
+			GymSpotLightShadowMapper * shadow_mapper_2 = GymSpotLightShadowMapper::create(&scene->spotLights->lights[1]);
+			shadow_mapper_2->init(GymSpotLightShadowMapper::Algorithm::Moment)
+				->draw(msm_program, scene)
+				->bind(common_program);
+
 			scene->uploadLights();
+
+			shadow_mapper->map->bindToTextureUnit(TextureUnit::get(4));
+			shadow_mapper_2->map->bindToTextureUnit(TextureUnit::get(5));
+
+			common_program->use()->setTexture("shadowMaps[0]", TextureUnit::get(4))
+				->setTexture("shadowMaps[1]", TextureUnit::get(5));
+
 
 			getCamera()->setPosition(glm::vec3(17.3f, 2.2f, -9.5f));
 
@@ -394,7 +411,7 @@ namespace playground {
 
 				scene->draw(common_program);
 
-				// debug_quad->draw(shadow_mapper->auxMap);
+				//debug_quad->draw(shadow_mapper->map);
 
                 GLFW::swapBuffers(window);
                 GLFW::pollEvents();
