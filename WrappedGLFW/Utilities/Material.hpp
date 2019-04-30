@@ -117,10 +117,16 @@ namespace wglfw {
         }
 
         float loadShininess() {
-            float val;
+            float val = 0.0f;
             assimpMaterial->Get(AI_MATKEY_SHININESS, val);
             return val;
         }
+
+		float loadOpacity() {
+			float val = 1.0f;
+			assimpMaterial->Get(AI_MATKEY_OPACITY, val);
+			return val;
+		}
     };
 
     class Material {
