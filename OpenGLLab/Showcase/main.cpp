@@ -1,4 +1,9 @@
 
+#include "App/GymApp.hpp"
+
+using namespace Showcase;
+
 int main() {
-	return 0;
+	GymApp * app = new GymApp;
+	return app->run();
 }
