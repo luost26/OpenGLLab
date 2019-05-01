@@ -63,7 +63,7 @@ namespace Showcase {
 		int mapForSpotLight(SpotLight * spotlight, Scene * scene) {
 			Program * prog = defaultProgram;
 
-			/* Preprocess 1: Generate empty shadow map and bind to Frame Buffer */
+			/* Preprocess 1: Generate empty shadow map */
 			ShadowMap * shadow_map = new ShadowMap(mapSize, shadowMapFormat, shadowMapInternalFormat);
 
 			/* Preprocess 2: Calculate light space matrix*/
@@ -98,11 +98,13 @@ namespace Showcase {
 			
 			FBOMS->bind();
 			glDisable(GL_CULL_FACE);
+			saveViewport();
 			GL::setViewport(0, 0, mapSize, mapSize);
 			glClear(GL_DEPTH_BUFFER_BIT);
 			prog->use()->setMatrix4("lightSpace", light_space);  // upload light space matrix to depth map generation shader
 			scene->draw(prog, SceneDrawConfig::configForShadowMapping());
 			FBOMS->unbind();
+			
 
 			/* Step 2: Downsample the multisampled map */
 			FBO->bind()->attachTexture2D(auxMap, GL_DEPTH_ATTACHMENT)
@@ -122,6 +124,7 @@ namespace Showcase {
 				9, FBO
 			);
 
+			resumeViewport();
 			return spotlight->shadow_map_index;
 		}
 

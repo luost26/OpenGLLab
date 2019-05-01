@@ -20,6 +20,7 @@ namespace Showcase {
 		bool _release_FBO;
 
 		ShadowStorage * shadowStorage;
+		int previousViewport[4];
 	public:
 		ShadowMapper(ShadowStorage * store, FrameBuffer * fb = NULL) {
 			shadowStorage = store;
@@ -38,6 +39,13 @@ namespace Showcase {
 
 		virtual int mapForSpotLight(SpotLight * spotlight, Scene * scene) = 0;
 
+		void saveViewport() {
+			glGetIntegerv(GL_VIEWPORT, previousViewport);
+		}
+
+		void resumeViewport() {
+			GL::setViewport(previousViewport[0], previousViewport[1], previousViewport[2], previousViewport[3]);
+		}
 		
 	};
 
