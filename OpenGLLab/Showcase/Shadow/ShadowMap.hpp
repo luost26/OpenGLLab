@@ -47,6 +47,12 @@ namespace Showcase {
 			shadowMapsUnitOffset = unit;
 		}
 
+		~ShadowStorage() {
+			for (auto map : maps) {
+				delete map;
+			}
+		}
+
 		ShadowMap * getShadowMap(int idx) {
 			if (idx >= maps.size())
 				return NULL;
