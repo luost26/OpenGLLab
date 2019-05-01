@@ -72,10 +72,15 @@ namespace Showcase {
 			float _near = 1.0f;
 			float _far = 25.0f;
 			light_proj = glm::perspective(glm::radians(120.0f), aspect, _near, _far);
+			glm::vec3 light_pos = glm::vec3(spotlight->position);
+			glm::vec3 light_dir = glm::normalize(glm::vec3(spotlight->direction));
+			glm::vec3 top_vec = light_dir == glm::vec3(1.0f, 0.0f, 0.0f) || light_dir == glm::vec3(-1.0f, 0.0f, 0.0f) ?
+				glm::cross(glm::vec3(0.0f, 0.0f, 1.0f), light_dir) :
+				glm::cross(glm::vec3(1.0f, 0.0f, 0.0f), light_dir);
 			light_view = glm::lookAt(
-				glm::vec3(spotlight->position.x, spotlight->position.y, spotlight->position.z),
-				glm::vec3(spotlight->position.x, 0.0f, spotlight->position.z),
-				glm::vec3(0.0f, 0.0f, -1.0f)
+				light_pos,
+				light_pos + light_dir,
+				top_vec
 			);
 			light_space = light_proj * light_view;
 
