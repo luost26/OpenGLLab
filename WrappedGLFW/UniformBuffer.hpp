@@ -18,6 +18,10 @@ namespace wglfw {
     public:
         UniformBuffer() : Buffer() {}
         
+		~UniformBuffer() {
+			glDeleteBuffers(1, &_buffer);
+		}
+
         UniformBuffer * bind() {
             glBindBuffer(GL_UNIFORM_BUFFER, _buffer);
             return this;
