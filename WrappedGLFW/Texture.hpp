@@ -206,6 +206,11 @@ namespace wglfw {
     };
     
     class Texture2D : public Texture {
+	private:
+		GLenum _format;
+		GLenum _internalFormat;
+		unsigned int _width;
+		unsigned int _height;
     public:
         Texture2D() : Texture() {}
         
@@ -256,18 +261,44 @@ namespace wglfw {
             return this;
         }
         
-        Texture2D * empty(unsigned int width, unsigned int height, GLenum format, GLenum type=GL_UNSIGNED_BYTE, GLenum internal_format=0) {
+        Texture2D * empty(unsigned int w, unsigned int h, GLenum fm, GLenum type=GL_UNSIGNED_BYTE, GLenum internal_format=0) {
             assertIsBound();
 			if (internal_format == 0) 
-				internal_format = format;
-            glTexImage2D(GL_TEXTURE_2D, 0, internal_format, width, height, 0, format, type, NULL);
+				internal_format = fm;
+
+			_width = w;
+			_height = h;
+			_format = fm;
+			_internalFormat = internal_format;
+            glTexImage2D(GL_TEXTURE_2D, 0, internal_format, w, h, 0, fm, type, NULL);
+			
             return this;
         }
+
+		unsigned int width() {
+			return _width;
+		}
+
+		unsigned int height() {
+			return _height;
+		}
+
+		GLenum format() {
+			return _format;
+		}
+
+		GLenum internalFormat() {
+			return _internalFormat;
+		}
         
         Texture2D * loadImage(TextureImage * loader) {
             assertIsBound();
             glTexImage2D(GL_TEXTURE_2D, loader->_level, loader->_format, loader->width, loader->height,
                          0, loader->_format, GL_UNSIGNED_BYTE, loader->data);
+			_width = loader->width;
+			_height = loader->height;
+			_format = loader->_format;
+			_internalFormat = loader->_format;
             return this;
         }
         
