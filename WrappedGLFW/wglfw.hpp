@@ -26,5 +26,6 @@
 #include "Utilities/Mesh.hpp"
 #include "Utilities/Material.hpp"
 #include "Utilities/AssimpModel.hpp"
+#include "Utilities/UniformBufferRangeManager.hpp"
 
 #endif /* wglfw_hpp */
