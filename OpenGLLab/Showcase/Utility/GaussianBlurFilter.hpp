@@ -24,7 +24,7 @@ namespace Showcase {
 
 		Texture2D * auxMap = new Texture2D();
 
-		auxMap->bind()->empty(mapSize, mapSize, map->format(), GL_FLOAT, map->internalFormat())
+		auxMap->bind()->empty(map->width(), map->height(), map->format(), GL_FLOAT, map->internalFormat())
 			->minFilter(GL_NEAREST)->magFilter(GL_NEAREST)
 			->wrapS(GL_CLAMP_TO_EDGE)->wrapT(GL_CLAMP_TO_EDGE)
 			->borderColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));

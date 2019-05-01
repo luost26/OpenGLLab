@@ -21,7 +21,7 @@ namespace Showcase {
 		SpotLightArray * spotLights;
 		AssimpModel * gymModel;
 
-		void initSpotLights(int ubo) {
+		void initSpotLights() {
 			glm::vec3 ambient = glm::vec3(0.2f, 0.2f, 0.2f);
 			glm::vec3 diffuse = glm::vec3(0.75f, 0.75f, 0.75f);
 			glm::vec3 specular = glm::vec3(0.8f, 0.8f, 0.8f);
@@ -32,8 +32,8 @@ namespace Showcase {
 			glm::vec2 cutoff = glm::vec2(glm::cos(glm::radians(30.0f)), glm::cos(glm::radians(60.0f)));
 
 			std::vector<glm::vec3> positions{
-				glm::vec3(14.046, 9.783, -16.6264),
-				glm::vec3(27.358, 9.783, -16.7371)
+				glm::vec3(27.358, 9.783, -16.7371),
+				glm::vec3(14.046, 9.783, -16.6264)
 			};
 
 			std::vector<SpotLight> lights;
@@ -56,9 +56,7 @@ namespace Showcase {
 				lights.push_back(light);
 			}
 
-			spotLights = new SpotLightArray(lights, ubo);
-			spotLights->uploadAllLights();
-
+			spotLights = new SpotLightArray(lights);
 		}
 	
 		void initGymModel() {
@@ -67,9 +65,17 @@ namespace Showcase {
 
 	public:
 
-		Gym(int spotlight_ubo) {
+		Gym() {
 			initGymModel();
-			initSpotLights(spotlight_ubo);
+			initSpotLights();
+		}
+
+		void uploadLights() {
+			spotLights->uploadAllLights();
+		} 
+
+		SpotLightArray * spotLightArray() {
+			return spotLights;
 		}
 
 		void draw(Program * prog, SceneDrawConfig config) {

@@ -23,5 +23,4 @@ void main()
 {
 	float depth = gl_FragCoord.z;
 	FragColor = GetOptimizedMoments(depth);
-
 }

@@ -5,7 +5,7 @@
 
 using namespace wglfw;
 
-namespace playground {
+namespace Showcase {
 
 	class ScreenQuad {
 	private:

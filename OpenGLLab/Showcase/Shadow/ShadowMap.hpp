@@ -35,6 +35,69 @@ namespace Showcase {
 		}
 	};
 
+	class ShadowStorage {
+	private:
+		std::vector<ShadowMap*> maps;
+		std::vector<glm::mat4> lightSpaces;
+		int shadowMapsLimit;
+		int shadowMapsUnitOffset;
+	public:
+		ShadowStorage(int limit = 12, int unit = 4) {
+			shadowMapsLimit = limit;
+			shadowMapsUnitOffset = unit;
+		}
+
+		ShadowMap * getShadowMap(int idx) {
+			if (idx >= maps.size())
+				return NULL;
+			return maps[idx];
+		}
+
+		int addShadow(ShadowMap * map, glm::mat4 mat) {
+			maps.push_back(map);
+			lightSpaces.push_back(mat);
+			return maps.size() - 1;
+		}
+
+		void updateShadow(int idx, ShadowMap * map, glm::mat4 mat) {
+			maps[idx] = map;
+			lightSpaces[idx] = mat;
+		}
+
+		bool isFull() {
+			return maps.size() >= shadowMapsLimit;
+		}
+
+		void uploadAllShadowMaps(Program * prog) {
+			prog->use();
+			for (int idx = 0; idx < maps.size(); ++idx) {
+				int unit = shadowMapsUnitOffset + idx;
+				ShadowMap * map = maps[idx];
+				map->texture()->bindToTextureUnit(TextureUnit::get(unit));
+
+				char idxstr[5];
+				sprintf(idxstr, "%d", idx);
+
+				prog->setTexture((std::string("shadowMaps[") + idxstr + "]").c_str(), TextureUnit::get(unit));
+				prog->setMatrix4((std::string("lightSpaces[") + idxstr + "]").c_str(), lightSpaces[idx]);
+			}
+		}
+
+		void uploadShadowMap(Program * prog, int idx) {
+			prog->use();
+
+			int unit = shadowMapsUnitOffset + idx;
+			ShadowMap * map = maps[idx];
+			map->texture()->bindToTextureUnit(TextureUnit::get(unit));
+
+			char idxstr[5];
+			sprintf(idxstr, "%d", idx);
+
+			prog->setTexture((std::string("shadowMaps[") + idxstr + "]").c_str(), TextureUnit::get(unit));
+			prog->setMatrix4((std::string("lightSpaces[") + idxstr + "]").c_str(), lightSpaces[idx]);
+		}
+	};
+
 }
 
 #endif // !SHOWCASE_SHADOW_SHADOWMAP

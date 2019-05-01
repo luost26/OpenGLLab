@@ -31,14 +31,14 @@ namespace Showcase {
 		UniformBuffer * UBO;
 		int uboRange;
 
-		void initUBO(int ubo_range) {
+		void initUBO(UniformBufferRangeManager * ubo_range_manager) {
 			UBO = new UniformBuffer();
-			uboRange = ubo_range;
+			uboRange = ubo_range_manager->getRange((void*)this);
 		}
     public:
-		SpotLightArray(std::vector<SpotLight> _lights, int ubo_range) {
+		SpotLightArray(std::vector<SpotLight> _lights, UniformBufferRangeManager * ubo_range_manager=UniformBufferRangeManager::global()) {
 			lights = _lights;
-			initUBO(ubo_range);
+			initUBO(ubo_range_manager);
         }
 
 		~SpotLightArray() {

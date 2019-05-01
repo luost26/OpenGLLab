@@ -3,6 +3,7 @@
 
 #include "App.hpp"
 #include "../Scene/Gym.hpp"
+#include "../Shadow/MSMShadowMapper.hpp"
 
 namespace Showcase {
 	class GymApp : public App {
@@ -24,21 +25,31 @@ namespace Showcase {
 		}
 
 		int run() {
-			const int camera_ubo_id = 0;
-			const int spotlight_ubo_id = 1;
 
 			UniformBuffer * cameraUBO = new UniformBuffer();
+			int camera_ubo_id = UniformBufferRangeManager::global()->getRange((void*)cameraUBO);
 			cameraUBO->bind()
 				->load(2*sizeof(glm::mat4)+sizeof(glm::aligned_vec3), NULL, GL_STATIC_DRAW)
 				->bindRange(camera_ubo_id)->unbind();
 
-			Gym * scene = new Gym(spotlight_ubo_id);
+			Gym * scene = new Gym();
 			Program * common_program = simple_shader_program(
 				shader_path("object/common.vert"),
 				shader_path("object/common_msm.frag")
 			);
 
-			
+			ScreenQuad * debug_quad = new ScreenQuad(NULL, load_fragment_shader(shader_path("debug_quad.frag")));
+
+			ShadowStorage * shadow_storage = new ShadowStorage();
+			MSMShadowMapper * shadow_mapper = new MSMShadowMapper(shadow_storage);
+			shadow_mapper->mapForSpotLight(scene->spotLightArray()->lightPtr(0), scene);
+			shadow_mapper->mapForSpotLight(scene->spotLightArray()->lightPtr(1), scene);
+
+			scene->uploadLights();
+			shadow_storage->uploadAllShadowMaps(common_program);
+
+			delete shadow_mapper;
+
 			camera->setPosition(glm::vec3(17.3f, 2.2f, -9.5f));
 
 			SceneDrawConfig draw_config;
@@ -59,6 +70,8 @@ namespace Showcase {
 
 				/* Draw scene */
 				scene->draw(common_program, draw_config);
+
+				//debug_quad->draw(shadow_mapper->maps[0]->texture());
 
 				GLFW::swapBuffers(window);
 				GLFW::pollEvents();

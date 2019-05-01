@@ -22,10 +22,11 @@ namespace Showcase {
 		Program * defaultProgram;
 	public:
 		MSMShadowMapper(
+			ShadowStorage * store,
 			int size=2048, GLenum format=GL_RGBA, GLenum intformat=GL_RGBA32F, 
-			int limit = 12, int unit = 4, FrameBuffer * fb = NULL) :
+			FrameBuffer * fb = NULL) :
 			mapSize(size), shadowMapFormat(format), shadowMapInternalFormat(intformat),
-			ShadowMapper(limit, unit, fb) {
+			ShadowMapper(store, fb) {
 		
 			/* Create an auxiliary framebuffer for multisampling */
 			FBOMS = new FrameBuffer();
@@ -33,6 +34,10 @@ namespace Showcase {
 			auxMapMS->bind()->empty(mapSize, mapSize, 8, GL_DEPTH_COMPONENT)->unbind();
 			mapMS = new Texture2DMultisample();
 			mapMS->bind()->empty(mapSize, mapSize, 8, shadowMapInternalFormat)->unbind();
+			FBOMS->bind()
+				->attachTexture2D(auxMapMS, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D_MULTISAMPLE)
+				->attachTexture2D(mapMS, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D_MULTISAMPLE)
+				->unbind();
 
 			/* Create an auxiliary texture for depth data */
 			auxMap = new Texture2D();
@@ -68,27 +73,21 @@ namespace Showcase {
 			float _far = 25.0f;
 			light_proj = glm::perspective(glm::radians(120.0f), aspect, _near, _far);
 			light_view = glm::lookAt(
-				glm::vec3(light->position.x, light->position.y, light->position.z),
-				glm::vec3(light->position.x, 0.0f, light->position.z),
+				glm::vec3(spotlight->position.x, spotlight->position.y, spotlight->position.z),
+				glm::vec3(spotlight->position.x, 0.0f, spotlight->position.z),
 				glm::vec3(0.0f, 0.0f, -1.0f)
 			);
 			light_space = light_proj * light_view;
 
-
 			/* Preprocess 3: check shadow maps limit and update light's attributes */
-			if (spotlight->shadow_enabled) {
-				delete maps[spotlight->shadow_map_index];
-				maps[spotlight->shadow_map_index] = shadow_map;
-				lightSpaces[spotlight->shadow_map_index] = light_space;
+			if (spotlight->shadow_enabled && shadowStorage->getShadowMap(spotlight->shadow_map_index) != NULL) {
+				delete shadowStorage->getShadowMap(spotlight->shadow_map_index);
+				shadowStorage->updateShadow(spotlight->shadow_map_index, shadow_map, light_space);
 			} else {
-				if (maps.size() >= shadowMapsLimit) {
-					delete shadow_map;
+				if (shadowStorage->isFull())
 					return -1;
-				}
-				maps.push_back(shadow_map);
-				lightSpaces.push_back(light_space);
 				spotlight->shadow_enabled = 1;
-				spotlight->shadow_map_index = maps.size() - 1;
+				spotlight->shadow_map_index = shadowStorage->addShadow(shadow_map, light_space);
 			}
 
 
@@ -96,13 +95,14 @@ namespace Showcase {
 
 
 			/* Step 1: Generate multisampled moment shadow map */
-			FBOMS->bind()
-				->attachTexture2D(auxMapMS, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D_MULTISAMPLE)
-				->attachTexture2D(mapMS, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D_MULTISAMPLE);
+			
+			FBOMS->bind();
+			glDisable(GL_CULL_FACE);
+			GL::setViewport(0, 0, mapSize, mapSize);
 			glClear(GL_DEPTH_BUFFER_BIT);
 			prog->use()->setMatrix4("lightSpace", light_space);  // upload light space matrix to depth map generation shader
 			scene->draw(prog, SceneDrawConfig::configForShadowMapping());
-
+			FBOMS->unbind();
 
 			/* Step 2: Downsample the multisampled map */
 			FBO->bind()->attachTexture2D(auxMap, GL_DEPTH_ATTACHMENT)
@@ -112,8 +112,8 @@ namespace Showcase {
 			FBO->bind(GL_DRAW_FRAMEBUFFER);
 			glBlitFramebuffer(0, 0, mapSize, mapSize, 0, 0, mapSize, mapSize, GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT, GL_NEAREST);
 
-			FBOMS->unbind(GL_FRAMEBUFFER);
-
+			FBOMS->unbind(GL_READ_FRAMEBUFFER);
+			FBO->unbind(GL_DRAW_FRAMEBUFFER);
 
 			/* Step 3: apply two-pass gaussian blur */
 			two_pass_gaussian_blur(
