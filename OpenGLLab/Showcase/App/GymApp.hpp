@@ -27,10 +27,10 @@ namespace Showcase {
 		int run() {
 
 			UniformBuffer * cameraUBO = new UniformBuffer();
-			int camera_ubo_id = UniformBufferRangeManager::global()->getRange((void*)cameraUBO);
+			int camera_ubo_range = UniformBufferRangeManager::global()->getRange(cameraUBO);
 			cameraUBO->bind()
 				->load(2*sizeof(glm::mat4)+sizeof(glm::aligned_vec3), NULL, GL_STATIC_DRAW)
-				->bindRange(camera_ubo_id)->unbind();
+				->bindRange(camera_ubo_range)->unbind();
 
 			Gym * scene = new Gym();
 			Program * common_program = simple_shader_program(
@@ -66,7 +66,7 @@ namespace Showcase {
 					->loadSub(sizeof(glm::mat4), sizeof(glm::mat4), glm::value_ptr(camera->viewMatrix()))
 					->loadSub(2*sizeof(glm::mat4), sizeof(glm::aligned_vec3), glm::value_ptr(camera->position()))
 					->unbind();
-				common_program->use()->setUniformBlockBinding("Camera", camera_ubo_id);
+				common_program->use()->setUniformBlockBinding("Camera", camera_ubo_range);
 
 				/* Draw scene */
 				scene->draw(common_program, draw_config);

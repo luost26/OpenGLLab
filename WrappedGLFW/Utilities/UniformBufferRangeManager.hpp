@@ -3,12 +3,13 @@
 
 #include <map>
 #include <vector>
+#include "../UniformBuffer.hpp"
 
 namespace wglfw {
 
 	class UniformBufferRangeManager {
 	private:
-		std::map<void*, int> rangeAllocation;
+		std::map<UniformBuffer*, int> rangeAllocation;
 		int nextRange;
 		static UniformBufferRangeManager * globalManager;
 	
@@ -23,7 +24,7 @@ namespace wglfw {
 			return globalManager;
 		}
 
-		int getRange(void * object) {
+		int getRange(UniformBuffer * object) {
 			if (rangeAllocation.count(object) > 0) {
 				return rangeAllocation[object];
 			} else {

@@ -5,5 +5,7 @@ using namespace Showcase;
 
 int main() {
 	GymApp * app = new GymApp;
-	return app->run();
+	app->run();
+	delete app;
+	return 0;
 }
