@@ -15,7 +15,6 @@ namespace Showcase {
 			->contextVersionMinor(1)
 			->openGLProfile(GLFW_OPENGL_CORE_PROFILE)
 			->openGLForwardCompatability(GL_TRUE)
-			->samples(8)
 		) {
 			
 			GL::enableDepthTest();
@@ -40,7 +39,7 @@ namespace Showcase {
 			);
 
 			/* Framebuffers should be created early (before uploading textures and others to shader program) otherwise weired bugs will appear */
-			IlluminationBufferMultisample * illum_buffer = new IlluminationBufferMultisample(width, height, 4);
+			IlluminationBufferMultisample * illum_buffer = new IlluminationBufferMultisample(width, height, 8);
 			CleanerCollection * illum_buffer_cleaners = new CleanerCollection();
 			illum_buffer_cleaners
 				->add(new ColorBufferCleaner(glm::vec4(0.1f/3.0f, 0.1f/3.0f, 0.1f/3.0f, 1.0f/3.0f)))
@@ -88,6 +87,7 @@ namespace Showcase {
 
 				//debug_quad->displayTexture(shadow_mapper->maps[0]->texture());
 
+				printInfo();
 				GLFW::swapBuffers(window);
 				GLFW::pollEvents();
 			}

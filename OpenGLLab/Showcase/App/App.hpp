@@ -78,6 +78,15 @@ namespace Showcase {
 			return 1 / deltaTime;
 		}
 
+		virtual void printInfo() {
+			printf("CameraPosition:(%.3f, %.3f, %.3f)  FPS:%d               \r",
+				camera->position().x,
+				camera->position().y,
+				camera->position().z,
+				(int)getFPS()
+			);
+		}
+
 		virtual void processInput(Window *window) {
 			if (window->getKey(GLFW_KEY_ESCAPE) == GLFW_PRESS) {
 				window->setShouldClose(true);
