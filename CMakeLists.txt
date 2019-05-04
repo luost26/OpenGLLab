@@ -18,14 +18,10 @@ add_executable(Showcase
         OpenGLLab/Showcase/main.cpp
 )
 
-add_definitions(
-		-DTEXTURE_DIR="${PROJECT_SOURCE_DIR}/Textures"
-		-DSHADER_DIR="${PROJECT_SOURCE_DIR}/Shaders"
-		-DMODEL_DIR="${PROJECT_SOURCE_DIR}/Models"
-
-		-DSHOWCASE_TEXTURE_DIR="${PROJECT_SOURCE_DIR}/Textures"
-		-DSHOWCASE_SHADER_DIR="${PROJECT_SOURCE_DIR}/Shaders/Showcase"
-		-DSHOWCASE_MODEL_DIR="${PROJECT_SOURCE_DIR}/Models"
+target_compile_definitions(Playground
+		PUBLIC -DTEXTURE_DIR="${PROJECT_SOURCE_DIR}/Textures"
+		PUBLIC -DSHADER_DIR="${PROJECT_SOURCE_DIR}/Shaders"
+		PUBLIC -DMODEL_DIR="${PROJECT_SOURCE_DIR}/Models"
 	)
 
 if (APPLE)
@@ -38,6 +34,7 @@ add_definitions(-DVIEWPORT_SCALE_FACTOR=${VIEWPORT_SCALE_FACTOR})
 
 if (APPLE)
     include_directories(/usr/local/include)
+
     target_link_libraries(Playground
             /usr/local/Cellar/assimp/4.1.0/lib/libassimp.4.1.0.dylib
             /usr/local/Cellar/glfw/3.2.1/lib/libglfw.3.2.dylib
@@ -46,14 +43,16 @@ if (APPLE)
             "-framework Cocoa"
             "-framework IOKit"
             )
+
 	target_link_libraries(Showcase
-			/usr/local/Cellar/assimp/4.1.0/lib/libassimp.4.1.0.dylib
-			/usr/local/Cellar/glfw/3.2.1/lib/libglfw.3.2.dylib
-			"-framework CoreVideo"
-			"-framework OpenGL"
-			"-framework Cocoa"
-			"-framework IOKit"
-			)
+            /usr/local/Cellar/assimp/4.1.0/lib/libassimp.4.1.0.dylib
+            /usr/local/Cellar/glfw/3.2.1/lib/libglfw.3.2.dylib
+            "-framework CoreVideo"
+            "-framework OpenGL"
+            "-framework Cocoa"
+            "-framework IOKit"
+            )
+
 elseif(WIN32)
 	include_directories(
 		"C:/Users/luost/workspace/Libraries/glfw-3.3.bin.WIN64/include"
@@ -65,19 +64,40 @@ elseif(WIN32)
 		"C:/Users/luost/workspace/Libraries/glfw-3.3.bin.WIN64/lib-vc2017/glfw3.lib"
 		"C:/Program Files/Assimp/lib/x64/assimp-vc140-mt.lib"
 	)
+
+	target_link_libraries(Showcase
+		"C:/Users/luost/workspace/Libraries/glfw-3.3.bin.WIN64/lib-vc2017/glfw3.lib"
+		"C:/Program Files/Assimp/lib/x64/assimp-vc140-mt.lib"
+	)
+
 	add_custom_command(TARGET Playground PRE_BUILD
 		COMMAND ${CMAKE_COMMAND} -E copy_if_different 
 		"C:/Program Files/Assimp/bin/x64/assimp-vc140-mt.dll"
 		$<TARGET_FILE_DIR:Playground>
 	)
 
-	target_link_libraries(Showcase
-		"C:/Users/luost/workspace/Libraries/glfw-3.3.bin.WIN64/lib-vc2017/glfw3.lib"
-		"C:/Program Files/Assimp/lib/x64/assimp-vc140-mt.lib"
-	)
 	add_custom_command(TARGET Showcase PRE_BUILD
 		COMMAND ${CMAKE_COMMAND} -E copy_if_different 
 		"C:/Program Files/Assimp/bin/x64/assimp-vc140-mt.dll"
 		$<TARGET_FILE_DIR:Showcase>
 	)
+
+	add_custom_command(TARGET Showcase PRE_BUILD
+		COMMAND ${CMAKE_COMMAND} -E copy_directory 
+		${PROJECT_SOURCE_DIR}/Models
+		$<TARGET_FILE_DIR:Showcase>/Resources/Models
+	)
+
+	add_custom_command(TARGET Showcase PRE_BUILD
+		COMMAND ${CMAKE_COMMAND} -E copy_directory 
+		${PROJECT_SOURCE_DIR}/Shaders/Showcase
+		$<TARGET_FILE_DIR:Showcase>/Resources/Shaders
+	)
+
+	add_custom_command(TARGET Showcase PRE_BUILD
+		COMMAND ${CMAKE_COMMAND} -E copy_directory 
+		${PROJECT_SOURCE_DIR}/Textures
+		$<TARGET_FILE_DIR:Showcase>/Resources/Textures
+	)
+
 endif()

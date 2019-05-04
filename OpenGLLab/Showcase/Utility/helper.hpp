@@ -7,18 +7,15 @@
 namespace Showcase {
 
 	std::string shader_path(const char * fn) {
-		std::string base = SHOWCASE_SHADER_DIR;
-		return base + "/" + fn;
+		return std::string("./Resources/Shaders/") + fn;
 	}
 
 	std::string texture_path(const char * fn) {
-		std::string base = SHOWCASE_TEXTURE_DIR;
-		return base + "/" + fn;
+		return  std::string("./Resources/Textures/") + fn;
 	}
 
 	std::string model_path(const char * fn) {
-		std::string base = SHOWCASE_MODEL_DIR;
-		return base + "/" + fn;
+		return std::string("./Resources/Models/") + fn;
 	}
 
 }
