@@ -76,7 +76,6 @@ namespace wglfw {
         }
         
         FrameBuffer * unbind(GLenum target=0) {
-            assertIsBound();
 			if (target == 0)
 				target = _boundTo;
             glBindFramebuffer(target, 0);
@@ -100,6 +99,12 @@ namespace wglfw {
             glDrawBuffer(buf);
             return this;
         }
+
+		FrameBuffer * setDrawBuffers(unsigned int count, GLenum *bufs) {
+			assertIsBound();
+			glDrawBuffers(count, bufs);
+			return this;
+		}
 
         FrameBuffer * setReadBuffer(GLenum buf) {
             assertIsBound();

@@ -4,6 +4,7 @@
 #include "App.hpp"
 #include "../Scene/Gym.hpp"
 #include "../Shadow/MSMShadowMapper.hpp"
+#include "../Utility/IlluminationBuffer.hpp"
 
 namespace Showcase {
 	class GymApp : public App {
@@ -35,8 +36,16 @@ namespace Showcase {
 			Gym * scene = new Gym();
 			Program * common_program = simple_shader_program(
 				shader_path("object/common.vert"),
-				shader_path("object/common_msm.frag")
+				shader_path("object/common_msm_illum.frag")
 			);
+
+			/* Framebuffers should be created early (before uploading textures and others to shader program) otherwise weired bugs will appear */
+			IlluminationBufferMultisample * illum_buffer = new IlluminationBufferMultisample(width, height, 4);
+			CleanerCollection * illum_buffer_cleaners = new CleanerCollection();
+			illum_buffer_cleaners
+				->add(new ColorBufferCleaner(glm::vec4(0.1f/3.0f, 0.1f/3.0f, 0.1f/3.0f, 1.0f/3.0f)))
+				->add(new DepthBufferCleaner);
+
 
 			ScreenQuad * debug_quad = new ScreenQuad(NULL, load_fragment_shader(shader_path("debug_quad.frag")));
 
@@ -51,6 +60,7 @@ namespace Showcase {
 			delete shadow_mapper;
 
 			camera->setPosition(glm::vec3(17.3f, 2.2f, -9.5f));
+
 
 			SceneDrawConfig draw_config;
 			draw_config.illumination = true;
@@ -69,9 +79,14 @@ namespace Showcase {
 				common_program->use()->setUniformBlockBinding("Camera", camera_ubo_range);
 
 				/* Draw scene */
+				illum_buffer->bind(illum_buffer_cleaners);
 				scene->draw(common_program, draw_config);
+				illum_buffer->unbind();
 
-				//debug_quad->draw(shadow_mapper->maps[0]->texture());
+
+				illum_buffer->mergeDisplay();
+
+				//debug_quad->displayTexture(shadow_mapper->maps[0]->texture());
 
 				GLFW::swapBuffers(window);
 				GLFW::pollEvents();

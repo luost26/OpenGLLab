@@ -56,6 +56,12 @@ namespace wglfw {
             collection.push_back(cleaner);
             return this;
         }
+
+		~CleanerCollection() {
+			for (auto x : collection) {
+				delete x;
+			}
+		}
         
         void prepare() {
             for (auto x : collection) {

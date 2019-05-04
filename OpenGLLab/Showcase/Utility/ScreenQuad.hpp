@@ -89,7 +89,7 @@ namespace Showcase {
 			return _program;
 		}
 
-		ScreenQuad * draw(Texture2D * tex, const char * uniform = "screenTexture") {
+		ScreenQuad * displayTexture(Texture2D * tex, const char * uniform = "screenTexture") {
 			glDisable(GL_DEPTH_TEST);
 			glClearColor(0.0f, 0.2f, 0.2f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT);
@@ -99,6 +99,13 @@ namespace Showcase {
 			_VAO->bind();
 			GL::drawArrays(GL_TRIANGLES, 0, 6);
 			GL::enableDepthTest();
+			return this;
+		}
+
+		ScreenQuad * draw() {
+			_program->use();
+			_VAO->bind();
+			GL::drawArrays(GL_TRIANGLES, 0, 6);
 			return this;
 		}
 

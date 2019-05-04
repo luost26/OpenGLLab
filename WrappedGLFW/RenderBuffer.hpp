@@ -48,11 +48,17 @@ namespace wglfw {
             return this;
         }
         
-        RenderBuffer * storage(unsigned int width, unsigned int height, GLenum format=GL_DEPTH24_STENCIL8) {
+        RenderBuffer * storage(unsigned int width, unsigned int height, GLenum format) {
             assertIsBound();
             glRenderbufferStorage(GL_RENDERBUFFER, format, width, height);
             return this;
         }
+
+		RenderBuffer * storageMultisample(unsigned int width, unsigned int height, unsigned int samples, GLenum format) {
+			assertIsBound();
+			glRenderbufferStorageMultisample(GL_RENDERBUFFER, samples, format, width, height);
+			return this;
+		}
         
         unsigned int RBO() {
             return _RBO;

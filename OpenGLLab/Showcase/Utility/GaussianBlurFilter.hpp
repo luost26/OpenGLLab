@@ -40,7 +40,7 @@ namespace Showcase {
 			->setInt("level", level);
 
 		FBO->bind();
-		quad->draw(map);
+		quad->displayTexture(map);
 		FBO->unbind();
 
 		FBO->bind()->attachTexture2D(map, GL_COLOR_ATTACHMENT0)->unbind();
@@ -48,7 +48,7 @@ namespace Showcase {
 			->setVec2("direction", dir2)
 			->setInt("level", level);
 		FBO->bind();
-		quad->draw(auxMap);
+		quad->displayTexture(auxMap);
 		FBO->unbind();
 
 		delete auxMap;

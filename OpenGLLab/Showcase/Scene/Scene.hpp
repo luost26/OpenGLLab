@@ -23,6 +23,12 @@ namespace Showcase {
 			return config;
 		}
 
+		static SceneDrawConfig configForGBuffer() {
+			SceneDrawConfig config;
+			config.illumination = false;
+			return config;
+		}
+
     };
 
     class Scene {
