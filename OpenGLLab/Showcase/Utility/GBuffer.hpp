@@ -12,7 +12,7 @@ namespace Showcase {
 	class GBuffer {
 	private:
 		FrameBuffer * gBuffer;
-		Texture2D * positionTexture, normalTexture, albedoTexture, specularTexture;
+		Texture2D *positionTexture, *normalTexture, *albedoTexture, *specularTexture;
 		RenderBuffer * depthRenderBuffer;
 		unsigned int width, height;
 		CleanerCollection * bufferCleaners;
@@ -21,7 +21,7 @@ namespace Showcase {
 		void initPositionTexture() {
 			positionTexture = new Texture2D();
 			positionTexture->bind()
-				->empty(width, height, GL_RGB, GL_FLOAT, GL_RGB16F)
+				->empty(width, height, GL_RGBA, GL_FLOAT, GL_RGBA16F)
 				->minFilter(GL_NEAREST)->magFilter(GL_NEAREST);
 			gBuffer->attachTexture2D(positionTexture, GL_COLOR_ATTACHMENT0);
 		}
@@ -58,8 +58,8 @@ namespace Showcase {
 		}
 
 		void initBufferCleaners() {
-			cleaners = new CleanerCollection;
-			cleaners->add(new ColorBufferCleaner(glm::vec4(0.0f, 0.0f, 0.0f, 0.0f)))
+			bufferCleaners = new CleanerCollection;
+			bufferCleaners->add(new ColorBufferCleaner(glm::vec4(0.0f, 0.0f, 0.0f, 0.0f)))
 				->add(new DepthBufferCleaner);
 		}
 
@@ -93,7 +93,7 @@ namespace Showcase {
 			gBuffer->unbind();
 
 			initBufferCleaners();
-
+		
 			initShaderProgram();
 		}
 

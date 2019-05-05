@@ -62,7 +62,7 @@ namespace playground {
             FBO->attachTexture2D(frame_tex, GL_COLOR_ATTACHMENT0);
 
             RenderBuffer * RBO = new RenderBuffer();
-            RBO->bind()->storage(realScreenSize(800), realScreenSize(600));
+            RBO->bind()->storage(realScreenSize(800), realScreenSize(600), GL_RGBA);
             FBO->attachRenderBuffer(RBO);
 
             FBO->assertIsComplete();

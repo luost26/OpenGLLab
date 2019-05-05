@@ -3,10 +3,10 @@
 out vec4 color;
 in vec2 TexCoord;
 
-uniform sampler2D depthMap;
+uniform sampler2D screenTexture;
 
 void main()
 {
-    float depthValue = texture(depthMap, TexCoord).r;
-    color = vec4(normalize(texture(depthMap, TexCoord)).rgb, 1.0);
+	float red=(texture(screenTexture, TexCoord)).r;
+    color = vec4(red, red, red, 1.0);
 }

@@ -125,7 +125,6 @@ namespace Showcase {
 		unsigned int samples;
 
 		unsigned int width, height;
-		Program * drawProgram;
 		FragmentShader * mergeFragmentShader;
 		ScreenQuad * displayQuad;
 
@@ -186,6 +185,17 @@ namespace Showcase {
 			initDisplayQuad();
 		}
 
+		~IlluminationBufferMultisample() {
+			delete ambientTextureMS;
+			delete diffuseTextureMS;
+			delete specularTextureMS;
+			delete depthRenderBuffer;
+			delete FBO;
+
+			delete mergeFragmentShader;
+			delete displayQuad;
+		}
+
 		void bind(CleanerCollection * cleaners) {
 			FBO->bind();
 			GL::clear(cleaners);
@@ -193,6 +203,10 @@ namespace Showcase {
 
 		void unbind() {
 			FBO->unbind();
+		}
+
+		void setAmbientOcclusion(Texture2D * occ) {
+			Program * prog = displayQuad->program();
 		}
 
 		void mergeDisplay() {

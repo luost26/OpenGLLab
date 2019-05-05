@@ -301,6 +301,19 @@ namespace wglfw {
 			_internalFormat = loader->_format;
             return this;
         }
+
+		Texture2D * load(unsigned int w, unsigned int h, void *data, GLenum fm, GLenum type = GL_UNSIGNED_BYTE, GLenum internal_format = 0) {
+			assertIsBound();
+			if (internal_format == 0)
+				internal_format = fm;
+
+			_width = w;
+			_height = h;
+			_format = fm;
+			_internalFormat = internal_format;
+			glTexImage2D(GL_TEXTURE_2D, 0, internal_format, w, h, 0, fm, type, data);
+			return this;
+		}
         
         Texture2D * generateMipmap() {
             assertIsBound();

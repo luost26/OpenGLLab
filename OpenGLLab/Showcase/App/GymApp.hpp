@@ -5,16 +5,19 @@
 #include "../Scene/Gym.hpp"
 #include "../Shadow/MSMShadowMapper.hpp"
 #include "../Utility/IlluminationBuffer.hpp"
+#include "../Utility/GBuffer.hpp"
+#include "../GI/SSAO.hpp"
 
 namespace Showcase {
 	class GymApp : public App {
 	public:
-		GymApp(): App(1024, 768, "Gym", 
+		GymApp(): App(1366, 768, "Gym", 
 			WindowHintList::create()
 			->contextVersionMajor(4)
 			->contextVersionMinor(1)
 			->openGLProfile(GLFW_OPENGL_CORE_PROFILE)
 			->openGLForwardCompatability(GL_TRUE)
+			->set(GLFW_RESIZABLE, GL_FALSE)
 		) {
 			
 			GL::enableDepthTest();
@@ -39,12 +42,15 @@ namespace Showcase {
 			);
 
 			/* Framebuffers should be created early (before uploading textures and others to shader program) otherwise weired bugs will appear */
-			IlluminationBufferMultisample * illum_buffer = new IlluminationBufferMultisample(width, height, 8);
+			IlluminationBufferMultisample * illum_buffer = new IlluminationBufferMultisample(width, height, 16);
 			CleanerCollection * illum_buffer_cleaners = new CleanerCollection();
 			illum_buffer_cleaners
 				->add(new ColorBufferCleaner(glm::vec4(0.1f/3.0f, 0.1f/3.0f, 0.1f/3.0f, 1.0f/3.0f)))
 				->add(new DepthBufferCleaner);
 
+			GBuffer * g_buffer = new GBuffer(width, height);
+			
+			SSAO * ssao = new SSAO(width, height);
 
 			ScreenQuad * debug_quad = new ScreenQuad(NULL, load_fragment_shader(shader_path("debug_quad.frag")));
 
@@ -57,7 +63,7 @@ namespace Showcase {
 			shadow_storage->uploadAllShadowMaps(common_program);
 
 			delete shadow_mapper;
-
+			
 			camera->setPosition(glm::vec3(17.3f, 2.2f, -9.5f));
 
 
@@ -77,16 +83,24 @@ namespace Showcase {
 					->unbind();
 				common_program->use()->setUniformBlockBinding("Camera", camera_ubo_range);
 
-				/* Draw scene */
+				/* Fill GBuffer*/
+				g_buffer->bind();
+				scene->draw(g_buffer->getShaderProgram(), SceneDrawConfig::configForGBuffer());
+				g_buffer->unbind();
+
+				/* Create SSAO texture */
+				Texture2D *st = ssao->create(g_buffer, cameraUBO);
+
+				/* Fill illum buffer */
 				illum_buffer->bind(illum_buffer_cleaners);
 				scene->draw(common_program, draw_config);
 				illum_buffer->unbind();
 
-
+				illum_buffer->setAmbientOcclusion(st);
 				illum_buffer->mergeDisplay();
 
-				//debug_quad->displayTexture(shadow_mapper->maps[0]->texture());
-
+				//debug_quad->displayTexture(st);
+				
 				printInfo();
 				GLFW::swapBuffers(window);
 				GLFW::pollEvents();

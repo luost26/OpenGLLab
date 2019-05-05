@@ -1,6 +1,6 @@
 #version 410 core
 
-layout (location = 0) out vec3 gPosition;
+layout (location = 0) out vec4 gPosition;
 layout (location = 1) out vec3 gNormal;
 layout (location = 2) out vec3 gAlbedo;
 layout (location = 3) out vec3 gSpecular;
@@ -41,9 +41,18 @@ vec4 SpecularColor() {
     + vec4(material.specular, 1.0) * (1 - material.texture_specular0_enabled);
 }
 
+const float NEAR = 0.1f;
+const float FAR = 100.0f;
+float LinearizeDepth(float depth) {
+    float z = depth * 2.0 - 1.0;
+    return (2.0 * NEAR * FAR) / (FAR + NEAR - z * (FAR - NEAR));    
+}
+
+
 void main()
 {    
-    gPosition = FragPos;
+    gPosition.xyz = FragPos;
+	gPosition.a = LinearizeDepth(gl_FragCoord.z);
     gNormal = normalize(Normal);
     gAlbedo = DiffuseColor().rgb;
 	gSpecular = SpecularColor().rgb;
