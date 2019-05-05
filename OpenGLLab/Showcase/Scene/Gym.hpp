@@ -34,7 +34,7 @@ namespace Showcase {
 			std::vector<glm::vec3> positions{
 				glm::vec3(27.358, 9.783, -16.737),
 				glm::vec3(14.046, 9.783, -16.626),
-				glm::vec3(20.751, 9.783, -29.489)
+				glm::vec3(20.712, 9.783, -32.746)
 			};
 
 			std::vector<SpotLight> lights;
