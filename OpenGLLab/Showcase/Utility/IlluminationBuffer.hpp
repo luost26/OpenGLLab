@@ -101,6 +101,18 @@ namespace Showcase {
 			FBO->unbind();
 		}
 
+		void setAmbientOcclusion(Texture2D * tex) {
+			tex->bindToTextureUnit(TextureUnit::get(3));
+			displayQuad->program()->use()
+				->setInt("AOEnabled", 1)
+				->setTexture("AOTexture", TextureUnit::get(3));
+		}
+
+		void disableAmbientOcclusion() {
+			displayQuad->program()->use()
+				->setInt("AOEnabled", 0);
+		}
+
 		void mergeDisplay() {
 			Program * prog = displayQuad->program();
 			ambientTexture->bindToTextureUnit(TextureUnit::get(0));
@@ -205,8 +217,16 @@ namespace Showcase {
 			FBO->unbind();
 		}
 
-		void setAmbientOcclusion(Texture2D * occ) {
-			Program * prog = displayQuad->program();
+		void setAmbientOcclusion(Texture2D * tex) {
+			tex->bindToTextureUnit(TextureUnit::get(3));
+			displayQuad->program()->use()
+				->setInt("AOEnabled", 1)
+				->setTexture("AOTexture", TextureUnit::get(3));
+		}
+
+		void disableAmbientOcclusion() {
+			displayQuad->program()->use()
+				->setInt("AOEnabled", 0);
 		}
 
 		void mergeDisplay() {

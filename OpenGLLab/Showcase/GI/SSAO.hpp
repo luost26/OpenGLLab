@@ -7,6 +7,7 @@
 
 #include "../Utility/ScreenQuad.hpp"
 #include "../Utility/GBuffer.hpp"
+#include "../Utility/GaussianBlurFilter.hpp"
 
 using namespace wglfw;
 
@@ -56,7 +57,7 @@ namespace Showcase {
 		}
 
 		void initRenderQuad() {
-			fragmentShader = load_fragment_shader(shader_path("gi/ssao.frag"));
+  			fragmentShader = load_fragment_shader(shader_path("gi/ssao.frag"));
 			renderQuad = new ScreenQuad(NULL, fragmentShader);
 		}
 	public:
@@ -104,6 +105,9 @@ namespace Showcase {
 			renderQuad->draw();
 
 			FBO->unbind();
+
+			two_pass_gaussian_blur(colorBuffer);
+
 			return colorBuffer;
 		}
 

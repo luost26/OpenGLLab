@@ -25,8 +25,8 @@ void main()
 {
 
 
-    vec3 fragPos = (view * vec4(texture(gPosition, TexCoord).xyz, 1.0f)).xyz;
-    vec3 normal = view * texture(gNormal, TexCoord).rgb;
+    vec3 fragPos = texture(gPosition, TexCoord).xyz;
+    vec3 normal = texture(gNormal, TexCoord).rgb;
     vec3 randomVec = texture(texNoise, TexCoord * noiseScale).xyz;
 
     vec3 tangent = normalize(randomVec - normal * dot(randomVec, normal));

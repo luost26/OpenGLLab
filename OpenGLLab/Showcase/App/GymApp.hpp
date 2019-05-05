@@ -27,7 +27,19 @@ namespace Showcase {
 
 		}
 
+		void processInput(Window *window) {
+			App::processInput(window);
+
+			if (window->getKey(GLFW_KEY_Z) == GLFW_PRESS)
+				SSAOEnabled = true;
+			if (window->getKey(GLFW_KEY_X) == GLFW_PRESS)
+				SSAOEnabled = false;
+		}
+
+		bool SSAOEnabled;
+
 		int run() {
+			SSAOEnabled = true;
 
 			UniformBuffer * cameraUBO = new UniformBuffer();
 			int camera_ubo_range = UniformBufferRangeManager::global()->getRange(cameraUBO);
@@ -58,6 +70,7 @@ namespace Showcase {
 			MSMShadowMapper * shadow_mapper = new MSMShadowMapper(shadow_storage);
 			shadow_mapper->mapForSpotLight(scene->spotLightArray()->lightPtr(0), scene);
 			shadow_mapper->mapForSpotLight(scene->spotLightArray()->lightPtr(1), scene);
+			shadow_mapper->mapForSpotLight(scene->spotLightArray()->lightPtr(2), scene);
 
 			scene->uploadLights();
 			shadow_storage->uploadAllShadowMaps(common_program);
@@ -89,17 +102,20 @@ namespace Showcase {
 				g_buffer->unbind();
 
 				/* Create SSAO texture */
-				Texture2D *st = ssao->create(g_buffer, cameraUBO);
+				Texture2D *ao_texture = ssao->create(g_buffer, cameraUBO);
 
 				/* Fill illum buffer */
 				illum_buffer->bind(illum_buffer_cleaners);
 				scene->draw(common_program, draw_config);
 				illum_buffer->unbind();
 
-				illum_buffer->setAmbientOcclusion(st);
+
+				if (SSAOEnabled) illum_buffer->setAmbientOcclusion(ao_texture);
+				else illum_buffer->disableAmbientOcclusion();
+				 
 				illum_buffer->mergeDisplay();
 
-				//debug_quad->displayTexture(st);
+				//debug_quad->displayTexture(ao_texture);
 				
 				printInfo();
 				GLFW::swapBuffers(window);

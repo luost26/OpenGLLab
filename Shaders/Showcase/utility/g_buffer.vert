@@ -18,10 +18,10 @@ layout (std140) uniform Camera {
 void main()
 {
     vec4 worldPos = model * vec4(aPos, 1.0);
-    FragPos = (view * worldPos).xyz;  // Important, don't forget to multipy `worldPos` by `view` matrix
+    FragPos = (view * vec4(worldPos.xyz, 1.0)).xyz;
     TexCoords = aTexCoords;
     
-    mat3 normalMatrix = transpose(inverse(mat3(view * model)));  // Important, same here, don't forget to multipy `model` by `view` matrix
+    mat3 normalMatrix = transpose(inverse(mat3(view * model)));
     Normal = normalMatrix * aNormal;
 
     gl_Position = projection * view * worldPos;

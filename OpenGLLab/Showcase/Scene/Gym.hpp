@@ -32,8 +32,9 @@ namespace Showcase {
 			glm::vec2 cutoff = glm::vec2(glm::cos(glm::radians(30.0f)), glm::cos(glm::radians(60.0f)));
 
 			std::vector<glm::vec3> positions{
-				glm::vec3(27.358, 9.783, -16.7371),
-				glm::vec3(14.046, 9.783, -16.6264)
+				glm::vec3(27.358, 9.783, -16.737),
+				glm::vec3(14.046, 9.783, -16.626),
+				glm::vec3(20.751, 9.783, -29.489)
 			};
 
 			std::vector<SpotLight> lights;
