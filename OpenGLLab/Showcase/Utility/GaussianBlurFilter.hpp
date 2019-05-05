@@ -30,11 +30,12 @@ namespace Showcase {
 			->borderColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 		FBO->bind()->attachTexture2D(auxMap, GL_COLOR_ATTACHMENT0)->unbind();
 
-		Program * gaussian_blur_program = simple_shader_program(
+		static Program * gaussian_blur_program = simple_shader_program(
 			shader_path("utility/gaussian_blur.vert"), 
 			shader_path("utility/gaussian_blur.frag"));
+		static ScreenQuad * quad = new ScreenQuad(gaussian_blur_program);
+		// static modifier: share Program and ScreenQuad among calls to avoid memory leak
 
-		ScreenQuad * quad = new ScreenQuad(gaussian_blur_program);
 		gaussian_blur_program->use()
 			->setVec2("direction", dir1)
 			->setInt("level", level);
