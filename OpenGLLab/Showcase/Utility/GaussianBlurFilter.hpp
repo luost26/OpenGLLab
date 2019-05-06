@@ -16,10 +16,9 @@ namespace Showcase {
 		int level = 9,
 		FrameBuffer * FBO = NULL
 	) {
-		bool release_FBO = false;
 		if (FBO == NULL) {
-			FBO = new FrameBuffer();
-			release_FBO = true;
+			static FrameBuffer * shared_FBO = new FrameBuffer();
+			FBO = shared_FBO;
 		}
 
 		Texture2D * auxMap = new Texture2D();
@@ -53,9 +52,6 @@ namespace Showcase {
 		FBO->unbind();
 
 		delete auxMap;
-
-		if (release_FBO)
-			delete FBO;
 
 		return map;
 	}
