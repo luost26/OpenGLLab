@@ -10,7 +10,7 @@ using namespace wglfw;
 namespace Showcase {
 
 	class GBuffer {
-	private:
+	protected:
 		FrameBuffer * gBuffer;
 		Texture2D *positionTexture, *normalTexture, *albedoTexture, *specularTexture;
 		RenderBuffer * depthRenderBuffer;
@@ -63,7 +63,7 @@ namespace Showcase {
 				->add(new DepthBufferCleaner);
 		}
 
-		void initShaderProgram() {
+		virtual void initShaderProgram() {
 			shaderProgram = simple_shader_program(
 				shader_path("utility/g_buffer.vert"),
 				shader_path("utility/g_buffer.frag")
@@ -136,6 +136,18 @@ namespace Showcase {
 		Program * getShaderProgram() {
 			return shaderProgram;
 		}
+	};
+
+	class GBufferForSSAO : public GBuffer {
+	protected:
+		void initShaderProgram() {
+			shaderProgram = simple_shader_program(
+				shader_path("utility/g_buffer_ssao.vert"),
+				shader_path("utility/g_buffer.frag")
+			);
+		}
+	public:
+		GBufferForSSAO(int w, int h) : GBuffer(w, h) {}
 	};
 
 }

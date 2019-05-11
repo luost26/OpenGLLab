@@ -58,7 +58,7 @@ namespace Showcase {
 				->add(new ColorBufferCleaner(glm::vec4(0.1f/3.0f, 0.1f/3.0f, 0.1f/3.0f, 1.0f/3.0f)))
 				->add(new DepthBufferCleaner);
 
-			GBuffer * g_buffer = new GBuffer(width, height);
+			GBufferForSSAO * g_buffer = new GBufferForSSAO(width, height);
 			
 			SSAO * ssao = new SSAO(width, height);
 

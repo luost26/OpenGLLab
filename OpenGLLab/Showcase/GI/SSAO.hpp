@@ -84,7 +84,7 @@ namespace Showcase {
 			initRenderQuad();
 		}
 
-		Texture2D * create(GBuffer * gbuf, UniformBuffer * cam_ubo) {
+		Texture2D * create(GBufferForSSAO * gbuf, UniformBuffer * cam_ubo) {
 			FBO->bind(); 
 			glClear(GL_COLOR_BUFFER_BIT);
 
