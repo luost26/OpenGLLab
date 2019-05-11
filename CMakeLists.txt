@@ -71,33 +71,33 @@ elseif(WIN32)
 	)
 
 	add_custom_command(TARGET Playground PRE_BUILD
-		COMMAND ${CMAKE_COMMAND} -E copy_if_different 
+		COMMAND ${CMAKE_COMMAND} -E copy_if_different
 		"C:/Program Files/Assimp/bin/x64/assimp-vc140-mt.dll"
 		$<TARGET_FILE_DIR:Playground>
 	)
 
 	add_custom_command(TARGET Showcase PRE_BUILD
-		COMMAND ${CMAKE_COMMAND} -E copy_if_different 
+		COMMAND ${CMAKE_COMMAND} -E copy_if_different
 		"C:/Program Files/Assimp/bin/x64/assimp-vc140-mt.dll"
 		$<TARGET_FILE_DIR:Showcase>
 	)
 
-	add_custom_command(TARGET Showcase PRE_BUILD
-		COMMAND ${CMAKE_COMMAND} -E copy_directory 
+endif()
+
+add_custom_command(TARGET Showcase PRE_BUILD
+		COMMAND ${CMAKE_COMMAND} -E copy_directory
 		${PROJECT_SOURCE_DIR}/Models
 		$<TARGET_FILE_DIR:Showcase>/Resources/Models
-	)
+		)
 
-	add_custom_command(TARGET Showcase PRE_BUILD
-		COMMAND ${CMAKE_COMMAND} -E copy_directory 
+add_custom_command(TARGET Showcase PRE_BUILD
+		COMMAND ${CMAKE_COMMAND} -E copy_directory
 		${PROJECT_SOURCE_DIR}/Shaders/Showcase
 		$<TARGET_FILE_DIR:Showcase>/Resources/Shaders
-	)
+		)
 
-	add_custom_command(TARGET Showcase PRE_BUILD
-		COMMAND ${CMAKE_COMMAND} -E copy_directory 
+add_custom_command(TARGET Showcase PRE_BUILD
+		COMMAND ${CMAKE_COMMAND} -E copy_directory
 		${PROJECT_SOURCE_DIR}/Textures
 		$<TARGET_FILE_DIR:Showcase>/Resources/Textures
-	)
-
-endif()
+		)
