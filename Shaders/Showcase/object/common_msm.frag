@@ -89,13 +89,14 @@ vec4 SpecularColor() {
 
 
 vec4 ConvertOptimizedMoments(vec4 opt_moments) {
-	opt_moments.x -= 0.035955884801f;
-	mat4 convert_mat = transpose(mat4(
-			0.2227744146f, 0.1549679261f, 0.1451988946f, 0.163127443f,
-			0.0771972861f, 0.1394629426f, 0.2120202157f, 0.2591432266f,
-			0.7926986636f, 0.7963415838f, 0.7258694464f, 0.6539092497f,
-			0.0319417555f,-0.1722823173f,-0.2758014811f,-0.3376131734f
-		));
+	const float SQRT3 = 1.732050807568877f;
+	opt_moments -= vec4(0.5f, 0.0f, 0.5f, 0.0f);
+	mat4 convert_mat = mat4(
+			-1.0f/3.0f,	0.0f,	SQRT3,	0.0f,
+			0.0f,	0.125f,		0.0f,	1.0f,
+			-0.75f,	0.0f,	0.75f*SQRT3, 0.0f,
+			0.0f,	-0.125f,	0.0f,	1.0f
+		);
 	vec4 converted = convert_mat * opt_moments;
 	return converted;
 }
