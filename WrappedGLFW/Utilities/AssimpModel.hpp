@@ -136,6 +136,7 @@ namespace wglfw {
         static AssimpModel * fromFile(const char * path) {
             AssimpModel * instance = new AssimpModel;
             instance->loadFromFile(path);
+			instance->sortMeshesByAlpha();
             return instance;
         }
         
@@ -145,6 +146,12 @@ namespace wglfw {
             }
             delete texturePool;
         }
+
+		void sortMeshesByAlpha() {
+			std::sort(meshes.begin(), meshes.end(), [](const Mesh * a, const Mesh * b) {
+				return a->material->floats["material.opacity"] > b->material->floats["material.opacity"];
+			});
+		}
         
         void draw(Program * program) {
             for (Mesh * mesh : meshes) {

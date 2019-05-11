@@ -22,6 +22,7 @@ namespace Showcase {
 			
 			GL::enableDepthTest();
 			GL::enable(GL_MULTISAMPLE);
+
 			GL::enable(GL_CULL_FACE);
 			glCullFace(GL_BACK);
 
@@ -104,11 +105,13 @@ namespace Showcase {
 				/* Create SSAO texture */
 				Texture2D *ao_texture = ssao->create(g_buffer, cameraUBO);
 
-				/* Fill illum buffer */
+				GL::enable(GL_BLEND);
+				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+				/* Fill illum buffer */ 
 				illum_buffer->bind(illum_buffer_cleaners);
 				scene->draw(common_program, draw_config);
-				illum_buffer->unbind();
-
+				illum_buffer->unbind(); 
+				GL::disable(GL_BLEND);
 
 				if (SSAOEnabled) illum_buffer->setAmbientOcclusion(ao_texture);
 				else illum_buffer->disableAmbientOcclusion();

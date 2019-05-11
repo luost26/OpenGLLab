@@ -22,6 +22,7 @@ struct Material {
     vec3 diffuse;
     vec3 specular;
     float shininess;
+	float opacity;
 };
 
 uniform Material material;
@@ -56,4 +57,6 @@ void main()
     gNormal = normalize(Normal);
     gAlbedo = DiffuseColor().rgb;
 	gSpecular = SpecularColor().rgb;
+
+	if (material.opacity < 0.9) discard;
 }

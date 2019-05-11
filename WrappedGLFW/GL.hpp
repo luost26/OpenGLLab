@@ -108,6 +108,10 @@ namespace wglfw {
         static void enable(GLenum cap) {
             glEnable(cap);
         }
+
+		static void disable(GLenum cap) {
+			glDisable(cap);
+		}
         
         static void enableDepthTest() {
             glEnable(GL_DEPTH_TEST);

@@ -7,10 +7,11 @@
 #ifndef support_hpp
 #define support_hpp
 
-/* STL containers */
+/* C++ Libraries */
 #include <vector>
 #include <string>
 #include <map>
+#include <algorithm>
 
 /* Input/Output */
 #include <fstream>

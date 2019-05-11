@@ -19,6 +19,7 @@ struct Material {
     vec3 diffuse;
     vec3 specular;
     float shininess;
+	float opacity;
 };
 
 struct PointLight {
@@ -250,6 +251,5 @@ in vec4 position;
 
 void main()
 {
-    FragColor = vec4(MergeAllPointLights() + MergeAllSpotLights(), 1.0);
-	//FragColor = vec4(texture(shadowMaps[0], position.xy).r);
+    FragColor = vec4(MergeAllPointLights() + MergeAllSpotLights(), material.opacity);
 }

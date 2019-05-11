@@ -23,6 +23,7 @@ struct Material {
     vec3 diffuse;
     vec3 specular;
     float shininess;
+	float opacity;
 };
 
 struct PointLight {
@@ -259,7 +260,7 @@ in vec4 position;
 void main()
 {
     mat3 merged = MergeAllPointLights() + MergeAllSpotLights();
-	aAmbient = vec4(merged[0], 1.0f);
-	aDiffuse = vec4(merged[1], 0.0f);
-	aSpecular = vec4(merged[2], 0.0f); // 1+0+0 = 1
+	aAmbient = vec4(merged[0], material.opacity);
+	aDiffuse = vec4(merged[1], material.opacity);
+	aSpecular = vec4(merged[2], material.opacity); // 1+0+0 = 1
 }

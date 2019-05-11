@@ -125,7 +125,7 @@ namespace wglfw {
 		float loadOpacity() {
 			float val = 1.0f;
 			assimpMaterial->Get(AI_MATKEY_OPACITY, val);
-			return val;
+  			return val;
 		}
     };
 
@@ -170,6 +170,7 @@ namespace wglfw {
             if (tex_height) textures["material.texture_height0"] = tex_height;
 
             floats["material.shininess"] = loader->loadShininess();
+			floats["material.opacity"] = loader->loadOpacity();
 
             return this;
         }
