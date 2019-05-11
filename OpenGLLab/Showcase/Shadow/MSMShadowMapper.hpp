@@ -8,7 +8,7 @@
 #include "../Utility/helper.hpp"
 
 namespace Showcase {
-
+	 
 	class MSMShadowMapper : public ShadowMapper {
 	private:
 		GLenum shadowMapInternalFormat;
@@ -34,6 +34,7 @@ namespace Showcase {
 			auxMapMS->bind()->empty(mapSize, mapSize, 8, GL_DEPTH_COMPONENT)->unbind();
 			mapMS = new Texture2DMultisample();
 			mapMS->bind()->empty(mapSize, mapSize, 8, shadowMapInternalFormat)->unbind();
+
 			FBOMS->bind()
 				->attachTexture2D(auxMapMS, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D_MULTISAMPLE)
 				->attachTexture2D(mapMS, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D_MULTISAMPLE)
@@ -102,14 +103,16 @@ namespace Showcase {
 			/* Step 1: Generate multisampled moment shadow map */
 			
 			FBOMS->bind();
-			glDisable(GL_CULL_FACE);
+			GL::enable(GL_BLEND);
+			glBlendFunc(GL_SRC1_COLOR, GL_ONE_MINUS_SRC1_COLOR);
 			saveViewport();
 			GL::setViewport(0, 0, mapSize, mapSize);
 			glClear(GL_DEPTH_BUFFER_BIT);
 			prog->use()->setMatrix4("lightSpace", light_space);  // upload light space matrix to depth map generation shader
 			scene->draw(prog, SceneDrawConfig::configForShadowMapping());
 			FBOMS->unbind();
-			
+			GL::disable(GL_BLEND);
+			 
 
 			/* Step 2: Downsample the multisampled map */
 			FBO->bind()->attachTexture2D(auxMap, GL_DEPTH_ATTACHMENT)

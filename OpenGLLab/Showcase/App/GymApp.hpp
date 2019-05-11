@@ -23,9 +23,6 @@ namespace Showcase {
 			GL::enableDepthTest();
 			GL::enable(GL_MULTISAMPLE);
 
-			GL::enable(GL_CULL_FACE);
-			glCullFace(GL_BACK);
-
 		}
 
 		void processInput(Window *window) {
@@ -118,8 +115,8 @@ namespace Showcase {
 				 
 				illum_buffer->mergeDisplay();
 
-				//debug_quad->displayTexture(ao_texture);
-				
+				//debug_quad->displayTexture(shadow_storage->getShadowMap(1)->texture());
+			
 				printInfo();
 				GLFW::swapBuffers(window);
 				GLFW::pollEvents();

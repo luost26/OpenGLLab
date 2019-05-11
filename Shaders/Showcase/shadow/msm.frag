@@ -1,6 +1,18 @@
 #version 330 core
-layout(location = 0) out vec4 outOptimizedMoments;
-layout(location = 1) out vec4 outAlpha;
+layout(location = 0, index = 0) out vec4 outOptimizedMoments;
+layout(location = 0, index = 1) out vec4 outAlpha;
+
+struct Material {
+	float opacity;
+};
+
+uniform Material material;
+
+vec4 GetMoments(float depth) {
+	float squared = depth * depth;
+	vec4 moments  = vec4(depth, squared, depth*squared, squared*squared);
+	return moments;
+}
 
 vec4 GetOptimizedMoments(float depth) {
     const float SQRT3 = 1.732050807568877f;
@@ -25,5 +37,7 @@ out vec4 FragColor;
 void main()
 {
 	float depth = gl_FragCoord.z;
-	FragColor = GetOptimizedMoments(depth);
+	outOptimizedMoments = GetOptimizedMoments(depth);
+	outAlpha = vec4(material.opacity);
+	//outOptimizedMoments = vec4(material.opacity);
 }
