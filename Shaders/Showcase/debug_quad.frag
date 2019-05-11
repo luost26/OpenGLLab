@@ -22,6 +22,6 @@ void main()
 {
 	float red=(texture(screenTexture, TexCoord)).r;
     //color = vec4( (normalize(texture(screenTexture, TexCoord)).rgb + vec3(1.0, 1.0, 1.0)) / 2.0, 1.0);
-	// color = vec4(red,red,red,1.0);
-	color = ConvertOptimizedMoments(texture(screenTexture, TexCoord));
+	color = vec4(red,red,red,1.0);
+	//color = ConvertOptimizedMoments(texture(screenTexture, TexCoord));
 }
