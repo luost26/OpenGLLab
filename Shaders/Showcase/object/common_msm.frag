@@ -101,14 +101,13 @@ vec4 ConvertOptimizedMoments(vec4 opt_moments) {
 	return converted;
 }
 
-float CalculateMSMHamburger(vec4 moments, float frag_depth, float depth_bias, float moment_bias) {
+float CalculateMSM(vec4 moments, float frag_depth, float depth_bias, float moment_bias) {
     // Bias input data to avoid artifacts
-    vec4 b = mix(moments, vec4(0.5f, 0.5f, 0.5f, 0.5f), moment_bias);
+    vec4 b = mix(moments, vec4(0.0f, 0.63f, 0.0f, 0.63f), moment_bias);
     vec3 z;
     z[0] = frag_depth - depth_bias;
 
-    // Compute a Cholesky factorization of the Hankel matrix B storing only non-
-    // trivial entries or related products
+    // Cholesky factorization
     float L32D22 = fma(-b[0], b[1], b[2]);
     float D22 = fma(-b[0], b[0], b[1]);
     float squaredDepthVariance = fma(-b[1], b[1], b[3]);
@@ -116,23 +115,17 @@ float CalculateMSMHamburger(vec4 moments, float frag_depth, float depth_bias, fl
     float InvD22 = 1.0f / D22;
     float L32 = L32D22 * InvD22;
 
-    // Obtain a scaled inverse image of bz = (1,z[0],z[0]*z[0])^T
     vec3 c = vec3(1.0f, z[0], z[0] * z[0]);
 
-    // Forward substitution to solve L*c1=bz
     c[1] -= b.x;
     c[2] -= b.y + L32 * c[1];
 
-    // Scaling to solve D*c2=c1
     c[1] *= InvD22;
     c[2] *= D22 / D33D22;
 
-    // Backward substitution to solve L^T*c3=c2
     c[1] -= L32 * c[2];
     c[0] -= dot(c.yz, b.xy);
 
-    // Solve the quadratic equation c[0]+c[1]*z+c[2]*z^2 to obtain solutions
-    // z[1] and z[2]
     float p = c[1] / c[2];
     float q = c[0] / c[2];
     float D = (p * p * 0.25f) - q;
@@ -140,12 +133,14 @@ float CalculateMSMHamburger(vec4 moments, float frag_depth, float depth_bias, fl
     z[1] =- p * 0.5f - r;
     z[2] =- p * 0.5f + r;
 
-    // Compute the shadow intensity by summing the appropriate weights
     vec4 switchVal = (z[2] < z[0]) ? vec4(z[1], z[0], 1.0f, 1.0f) :
                       ((z[1] < z[0]) ? vec4(z[0], z[1], 0.0f, 1.0f) :
                       vec4(0.0f,0.0f,0.0f,0.0f));
+
     float quotient = (switchVal[0] * z[2] - b[0] * (switchVal[0] + z[2]) + b[1])/((z[2] - switchVal[1]) * (z[0] - z[1]));
+
     float shadowIntensity = switchVal[2] + switchVal[3] * quotient;
+
     return 1.0f - clamp(shadowIntensity, 0.0f, 1.0f) * 1.02f;  // *1.02f : diminish light leaking
 }
 
@@ -160,7 +155,7 @@ float CalculateShadowOfIndex(int idx, vec3 light_dir) {
 
 	vec4 moments = ConvertOptimizedMoments(texture(shadowMaps[idx], proj_coords.xy));
 
-    return 1.0f - CalculateMSMHamburger(moments, current_depth, 0.0000, 0.00003);
+    return 1.0f - CalculateMSM(moments, current_depth, 0.0000, 0.00003);
 }
 
 vec3 CalculatePointLightOfIndex(int idx) {
