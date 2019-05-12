@@ -152,19 +152,7 @@ namespace wglfw {
         Texture() {
             glGenTextures(1, &_texture);
         }
-        
-        static std::vector<Texture*> createMany(int n) {
-            unsigned int * ts = new unsigned int[n+1];
-            glGenVertexArrays(n, ts);
-            std::vector<Texture*> arrays;
-            while (n > 0) {
-                arrays.push_back(new Texture(*ts));
-                ++ ts; -- n;
-            }
-            delete [] ts;
-            return arrays;
-        }
-        
+
         unsigned int texture() {
             return _texture;
         }
