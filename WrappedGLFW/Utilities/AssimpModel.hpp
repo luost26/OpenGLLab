@@ -11,7 +11,6 @@
 #include "../Exception.hpp"
 #include "../Program.hpp"
 #include "Mesh.hpp"
-#include "MeshTextureNameGenerator.hpp"
 #include "Material.hpp"
 
 namespace wglfw {
